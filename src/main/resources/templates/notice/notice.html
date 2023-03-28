@@ -1,0 +1,104 @@
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="include/htmlHeader"></div>
+<body>
+	<div class="wrap clearfix">
+		<div class="bodypart width100 clearfix">
+			<div th:replace="include/lnb"></div>
+
+			 <div class="container floatleft">
+				<div th:replace="include/header"></div>
+
+				<div class="content width100 clearfix">
+                    <div class="mainpart floatleft">
+                        <div class="subtitle clearfix">
+                            <div class="st clearfix">
+                                <h3 class="st_title">공지사항</h3>
+                                <span class="st_exp">글쓰기는 공지권한이 있는 관리자만 작성 가능합니다.</span>
+                            </div>
+                            <div class="locationbar clearfix">
+                                <a th:href="@{/main.do}" class="home"></a>
+                                <span class="local">공지사항</span>
+                            </div>
+                        </div>
+                        <div class="topbox infotb width100">
+                        <form th:action="@{/notice.do}" method="GET">
+                        	<select id="search-type" name="searchType" class="selectbox width130px">
+                                <option th:value="searchTitle" th:selected="${searchType} == 'searchTitle'">제목</option>
+                                <option th:value="searchCrtId" th:selected="${searchType} == 'searchCrtId'">작성자</option>
+                            </select>
+                        
+                            <input type="text" name="keyword" class="inputbox width400px ml5" th:value="${keyword}">
+                            <input type="submit" style="background : #1256BB" class="btn jjblue ml10" value="검색">
+                        </form>
+                        </div>
+                        <div class="listbox width100">
+                            <div class="lbtop mb10 clearfix">
+                                <p id="total-cnt" class="total" th:text="|총 게시물 ${noticeList.totalElements} 건|"/>
+                                <a th:href="@{/notice/write.do}" class="btn jjblue" id="writeAuthority">글쓰기</a>
+                            </div>
+                            <div class="defaulttb main_table width100">
+                                <table class="width100">
+                                    <colgroup>
+                                        <col width="6%" />
+                                        <col width="45%" />
+                                        <col width="13%" />
+                                        <col width="8%" />
+                                        <col width="13%" />
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>번호</th>
+                                            <th>제목</th>
+                                            <th>작성자</th>
+                                            <th>첨부파일</th>
+                                            <th>등록일</th>
+                                        </tr>
+                                    </thead>
+                                   <!--  <tbody id="notice">
+                                    </tbody> -->
+                                    <!--  th:onclick="@{notice/view.do(id=${e.id}) }"--> 
+                                    
+		                                    <tbody>
+		                                    	<tr class="tbbody" 
+		                                    	th:if="${noticeList.content.size() > 0}" th:each ="e : ${noticeList.content}" th:onclick="|location.href = '@{notice/view.do(id = ${e.id})}'|">
+							                    <td th:text="${e.id}"/>
+							                    <td th:text="${e.title}"/>
+							                    <td th:text="${e.member.name}"/>
+							                    <td>
+							                        <img th:if="${e.attachesCnt > 0}" th:src="@{common/img/file.png}" alt="첨부파일">
+							                    </td>
+							                    
+							                    <td th:text="${#strings.substring(e.crtDt, 0, 10)}"/>
+							                    </tr>
+							                    
+							                    <tr class="tbbody"
+							                    th:if="${noticeList.content.size() <= 0}">
+	                                			<td colspan="5">게시글이 존재하지 않습니다.</td>
+	                                			</tr>
+		                                    </tbody>
+                                    
+                                </table>
+                            </div>
+	                            <div class="pagination" th:if="${noticeList.totalPages > 0}">
+	                            	<a role='button' class='pfirst' th:href="@{notice.do(page = 0,searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pfirst.png}' alt='첫페이지'></a>
+	                            	<a role='button' class='pprev' th:href="@{notice.do(page = ${noticeList.number >=1 ? noticeList.number -1 : noticeList.number} ,searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pprev.png}' alt='앞페이지'></a>
+	                            	 <th:block th:each="i : ${#numbers.sequence(0 , noticeList.totalPages-1)}">
+			                        	<a role='button' class='pnum' 
+			                        	th:classappend="${noticeList.number == i} ? active : ''"
+			                        	th:href="@{notice.do(page=${i} , searchType=${searchType} , keyword=${keyword})}"
+			                        	th:text ="${i+1}"></a>
+			                        </th:block>
+	                            	<a role='button' class='pnext' th:href="@{notice.do(page =${noticeList.number < noticeList.totalPages -1? noticeList.number +1 : noticeList.number} , searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pnext.png}' alt='뒤페이지'></a>
+	                            	<a role='button' class='plast' th:href="@{notice.do(page =${noticeList.totalPages -1} , searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/plast.png}' alt='마지막페이지'></a>
+	                            </div> 
+                        </div>
+                    </div>
+                    <div th:replace="include/rnb"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

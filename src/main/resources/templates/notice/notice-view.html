@@ -1,0 +1,62 @@
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="include/htmlHeader"></div>
+<body>
+	<div class="wrap clearfix">
+		<div class="bodypart width100 clearfix">
+			<div th:replace="include/lnb"></div>
+
+			 <div class="container floatleft">
+				<div th:replace="include/header"></div>
+				<div class="content width100 clearfix">
+                    <input type="hidden" id="id" th:value="${notice.id}">
+                    <div class="mainpart floatleft">
+                        <!-- 페이지 컨텐츠 -->
+                        <div class="subtitle clearfix">
+                            <div class="st clearfix">
+                                <h3 class="st_title">공지사항</h3>
+                                <span class="st_exp">글쓰기는 공지권한이 있는 관리자만 작성 가능합니다.</span>
+                            </div>
+                            <div class="locationbar clearfix">
+                                <a th:href="@{/main.do}" class="home"></a>
+                                <span class="local">공지사항</span>
+                            </div>
+                        </div>
+                        <form id="download-form" th:action="@{/notice/download.do}" method="post">
+                            <input type="hidden" name="id">
+                        </form>
+                        <div class="mcpart clearfix">
+                            <div class="icbox width100">
+                                <h3 class="ictitle" th:text="${notice.title}"></h3>
+                            </div>
+                            <div class="icbox width100 clearfix">
+                                <span>작성자 <span class="icname ml5" th:text="${notice.member.name}"></span></span>
+                                <span class="floatright">작성일 <span class="icname ml5" th:text="${#strings.substring(notice.crtDt,0,10)}"></span></span>
+                            </div>
+                            <div class="icbox width100">
+                                <div class="iccontent">
+                                    <p class="mb25" th:utext="${notice.content}"></p>
+                                </div>
+                            </div>
+                            <div class="icbox width100 clearfix">
+                                <span class="icfile floatleft mr25">첨부파일</span>
+                                <div class="filelist floatleft">
+                                	<a role="button" class="file mb10" th:onclick="downloadAttach([[${a.id}]])"
+                                    	th:each="a : ${notice.attaches}" th:text="${a.originalFileName}"></a>
+                                </div>
+                            </div>
+                            <div class="floatright">
+                                <a role="button" th:if="${notice.member.id} == ${#authentication.principal.member.id}" id="edit-btn" class="btn jjgray">수정</a>
+                                <a role="button" th:if="${notice.member.id} == ${#authentication.principal.member.id}" id="delete-btn" class="btn jjred">삭제</a>
+                                <a th:href="@{/notice.do}"class="btn jjblue">목록</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div th:replace="include/rnb"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<script th:src="@{/common/js/notice/notice-view.js}"></script>
+</body>
+
+</html>

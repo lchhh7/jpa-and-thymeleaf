@@ -1,0 +1,89 @@
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div th:replace="include/htmlHeader"></div>
+<body>
+	<div class="wrap clearfix">
+		<div class="bodypart width100 clearfix">
+			<div th:replace="include/lnb"></div>
+
+			 <div class="container floatleft">
+				<div th:replace="include/header"></div>
+
+				<div class="content width100 clearfix">
+                    <div class="mainpart floatleft">
+                        <!-- 페이지 컨텐츠 -->
+						<div class="subtitle clearfix">
+							<div class="st clearfix">
+								<h3 class="st_title">공지사항</h3>
+								<span class="st_exp">글쓰기는 공지권한이 있는 관리자만 작성 가능합니다.</span>
+							</div>
+							<div class="locationbar clearfix">
+								<a th:href="@{/main.do}" class="home"></a>
+								 <span class="local">공지사항</span>
+							</div>
+						</div>
+						<div class="defaulttb sub_table width100">
+							<form id="write-form" enctype="multipart/form-data">
+								<table class="width100">
+									<colgroup>
+										<col width="15%">
+										<col width="85%">
+									</colgroup>
+									<tbody>
+										<tr>
+											<th>제목 <span class="required">*</span></th>
+											<td><input type="text" name="title"
+												class="inputbox width100"></td>
+										</tr>
+									<!-- 	<tr>
+											<th>사용자 게시여부</th>
+											<td><label class="chklabel_tb"> <input
+													type="checkbox" name="postYN" id="postYN" class="check"><span
+													class="checkwd">사용자 사이트에 공지를 게시합니다.</span>
+											</label>
+											
+													<div class="mline mb5">
+														<input type="hidden" name="postStrDt" class="inputbox mhalf datepicker" readonly>
+														<input type="hidden" name="postEndDt" class="inputbox mhalf datepicker" readonly>
+													</div>
+												</td>
+										</tr>
+									-->
+										<tr>
+											<th>내용 <span class="required">*</span></th>
+											<td><textarea name="ir1" id="ir1" class="editor"
+													rows="10" cols="100"></textarea></td>
+										</tr>
+										<tr>
+											<th>첨부파일<br>
+											<span class="max">(최대 2개)</span></th>
+											<td>
+												<div id="files"></div> <a role="button"
+												id="upload-modal-btn" class="btn jjcyan mb5">파일 선택</a>
+											</td>
+										</tr>
+										<tr>
+											<td colspan="2">
+												<div class="floatright mt10 mb10">
+													<a role="button" id="write-btn" class="btn jjblue">등록</a> <a
+														th:href="@{/notice.do}" class="btn jjblue">목록</a>
+												</div>
+											</td>
+										</tr>
+									</tbody>
+								</table>
+							</form>
+						</div>
+					</div>
+					<div th:replace="include/rnb"></div>
+					<div th:replace="include/datepicker"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div th:replace="include/fileupload"></div>
+	<script th:src="@{/common/smarteditor/js/HuskyEZCreator.js}"></script>
+	<script th:src="@{/common/js/notice/notice-common.js}"></script>
+	<script th:src="@{/common/js/notice/notice-write.js}"></script>
+</body>
+
+</html>
