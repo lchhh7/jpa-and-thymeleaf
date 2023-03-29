@@ -20,7 +20,71 @@
                             <span class="local">근태관리</span>
                         </div>
                     </div>
-                   
+                    <div class="topcal width100 clearfix">
+                        <div class="worktime tc floatleft">
+                            <div class="tcontent rccont">
+                                <div class="timecheck midtc">
+                                    <div class="working clearfix">
+                                        <p class="wtime" id="workingTime"></p>
+                                        <p>
+                                            <span class="wk" th:text="${workingStatus}"></span>
+                                        </p>
+                                    </div>
+                                    <div class="wstart clearfix">
+                                        <p class="ws">출근시간</p>
+                                        <p class="wstime" id="goWorkTime"></p>
+                                    </div>
+                                </div>
+                                <div class="checkbtn bottc clearfix">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="daycheck floatleft">
+                            <div class="tcontent">
+                                <div class="apptop midtc clearfix">
+                                    <div class="statetitle">
+                                        <p id="request-title"></p>
+                                    </div>
+                                    <div class="statement dchk">
+                                        <div class="s_title">
+                                            <p id="request-content"></p>
+                                        </div>
+                                        <div class="state dchk">
+                                          <!--  <p id="request-status" th:text="${nearRequest.statusName}"></p> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="bottc clearfix">
+                                    <a role="button" id="apply-detail-btn" class="go">내역확인</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="defaulttb caltable rctable floatleft">
+                            <table class="width100">
+                                <colgroup>
+                                    <col width="30%"/>
+                                    <col width="70%"/>
+                                </colgroup>
+                                <tbody>
+                                <tr>
+                                    <th>금월초과근무<br>통계</th>
+                                    <td id="total-ot" class="dwbtntb">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th>초과근무<br>엑셀다운로드</th>
+                                    <td class="dwbtntb">
+                                        <a class="btn jjdownload" href="javascript:void(0)" id="excelWriter"><span
+                                                class="dwicon">월간 초과근무</span></a>
+                                        <a class="btn jjdownload ml5" href="javascript:void(0)" id="excel_yearchoiceModal"><span
+                                                class="dwicon">연간 초과근무</span></a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
                     <div class="mcpart" id='calendar-container'>
                         <div id='calendar'></div>
                     </div>
@@ -37,6 +101,7 @@
     <div th:replace="include/datepicker"></div>
     <div th:replace="include/fullcalendar"></div>
 </div>
+
 
 <script th:src="@{/common/js/commuting/commuting-common.js}"></script>
 <script th:src="@{/common/js/commuting/commuting-write.js}"></script>

@@ -28,7 +28,10 @@ public class Member extends BaseEntity{
 	
 	@Column(nullable = false, length =30 , unique = true)
 	private String memberId;
-	
+
+	@Column(unique = true)
+	private String oauthId;
+
 	private String password;
 	
 	private String name;

@@ -16,6 +16,7 @@
                     <p class="num" th:text="|내선번호 : ${#authentication.principal.member.phoneNo}|"> </p>
                 </div>
             </div>
+
             <a class="btn jjblue" th:href="@{/member/edit.do}">정보수정</a>
             <a class="btn jjblue" th:href="@{/member/p/edit.do}">비밀번호변경</a>
         </div>
