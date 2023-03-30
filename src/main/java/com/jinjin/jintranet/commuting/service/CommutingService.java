@@ -66,6 +66,7 @@ public class CommutingService {
 		//출퇴근은 캘린더에서 수정할수 없어야함
 		List<CommutingsInterface> list = commutingRepository.findCommuteOn(member, strDt , endDt);
 		list.addAll(commutingRepository.findCommuteOff(member, strDt , endDt));
+		list.addAll(commutingRepository.findCommuteOvertime(member,strDt,endDt));
 		return list;
 	}
 	

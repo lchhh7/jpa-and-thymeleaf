@@ -1,5 +1,8 @@
 package com.jinjin.jintranet.commuting.web;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.Period;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -91,13 +94,39 @@ public class CommutingController {
             map.put("schedules", schedules);
             map.put("commute" , commute.stream().filter(c -> c.getCnt() ==1).collect(Collectors.toList()));
             map.put("commuteRequests", commuteRequests);
+			map.put("overtimes", overtimes(commute));
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.CONFLICT);
         }
     }
-    
+
+	public String overtimes(List<CommutingsInterface> commute) {
+		int hour = 0; int minute =0;
+		List<Integer> overtimeDates = commute.stream().filter(m -> m.getAttendYn().equals("O"))
+				.map(d -> d.getCommutingTm().getDayOfMonth()).sorted().toList();
+
+		for(Integer i : overtimeDates) {
+			List<LocalDateTime> dayOfTime
+					= commute.stream()
+					.filter(c -> c.getCnt() ==1)
+					.filter(c -> !c.getAttendYn().equals("O"))
+					.filter(d -> d.getCommutingTm().getDayOfMonth() == i).map(m -> m.getCommutingTm()).toList();
+
+			if(dayOfTime.size() < 2) break;
+
+			Duration diff = Duration.between(dayOfTime.get(0).toLocalTime(), dayOfTime.get(1).toLocalTime());
+			if(diff.toHours() > 10)  {
+				minute += diff.toMinutes() - 600;
+			}
+		}
+		hour = (minute/60);
+		minute = minute%60;
+
+		return hour+ "시간" + minute +"분";
+	};
+
     /**
      * 일정관리 > 일정 선택
      */
