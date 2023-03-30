@@ -1,0 +1,23 @@
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<script th:src="@{/common/js/common.js}"/></script>
+<div class="lnb floatleft">
+    <div class="lnb_header width100">
+        <h1><a class="toplogo" th:href="@{/main.do}"></a></h1>
+    </div>
+    <ul class="menulist">
+        <li th:classappend="${#request.requestURI.equals('/notice.do')} ? 'active' : ''">
+      	<a class='m_icon1' th:href='@{/notice.do}'>공지사항</a></li>
+		<li th:classappend="${#request.requestURI.equals('/schedule.do')} ? 'active' : ''">
+      	 <a class='m_icon2' th:href='@{/schedule.do}'>일정관리</a></li>
+		<li th:classappend="${#request.requestURI.equals('/commuting.do')} ? 'active' : ''">
+      	<a class='m_icon3' th:href='@{/commuting.do}'>근태관리</a></li>
+    </ul>
+    <ul class="menulist" sec:authorize="hasRole('ROLE_ADMIN')">
+			<li th:classappend="${#request.requestURI.equals('/admin/member.do')} ? 'active' : ''">
+	      	 <a class='m_icon6' th:href='@{/admin/member.do}'>사용자관리(관)</a></li>
+			<li th:classappend="${#request.requestURI.equals('/admin/schedule.do')} ? 'active' : ''">
+	      	 <a class='m_icon7' id='m_icon7' th:href='@{/admin/schedule.do}'>일정신청관리(관)</a></li>
+			<li th:classappend="${#request.requestURI.equals('/admin/commuting.do')} ? 'active' : ''">
+	      	 <a class='m_icon8' id='m_icon8' th:href='@{/admin/commuting.do}'>근태수정관리(관)</a></li>
+    </ul>
+</div>

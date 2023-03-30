@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="fragment-htmlHeader">
+
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta charset="utf-8"/>
+    <title>인트라넷</title>
+    <meta name="description" content=""/>
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1, user-scalable=no, maximum-scale=1, minimum-scale=1"/>
+
+    <link rel="stylesheet" th:href="@{/common/css/reset.css}"/>
+    <link rel="stylesheet" th:href="@{/common/css/main.css}">
+    <link rel="stylesheet" th:href="@{/common/css/sub.css}">
+    <link rel="stylesheet" th:href="@{/common/jquery/css/jquery-ui.min.css}">
+    
+    <link rel="stylesheet" th:href="@{/common/jquery/css/jquery.timepicker.css}">
+    
+    <script th:src="@{/common/jquery/js/jquery-1.10.1.min.js}"></script>
+    <script th:src="@{/common/jquery/js/jquery-ui.min.js}"></script>
+    
+	<script th:src="@{/common/jquery/js/jquery.timepicker.min.js}"/></script>
+	
+	<link id="contextPathHolder" th:data-contextPath="${#httpServletRequest.getContextPath()}"/>
+     <script type="text/javascript">
+        var contextPath = $('#contextPathHolder').attr('data-contextPath');
+
+        var doc = document.documentElement;
+        doc.setAttribute('data-useragent', navigator.userAgent);
+    </script>
+</head>
+<body>
+
+</body>
+</html>

@@ -1,0 +1,17 @@
+<!DOCTYPE html><html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<div class="header width100 clearfix" th:fragment="fragment-header">
+    <div class="floatleft clearfix">
+        <div class="menu_btn">
+            <div class="ham_icon"></div>
+        </div>
+        <div class="today">
+            <p id="today"></p>
+        </div>
+    </div>
+    <div class="h_right floatright clearfix">
+        <div class="mail_btn">
+            <a th:href="@{https://mail.google.com}" target="_blank" class="mail_icon" ></a>
+        </div>
+        <a href="/jintranet/logout" class="btn jjblue">로그아웃</a>
+    </div>
+</div>
