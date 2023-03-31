@@ -98,11 +98,12 @@
     </div>
     <div th:replace="commuting/commuting-edit"></div>
     <div th:replace="commuting/commuting-write"></div>
+        <div th:replace="commuting/commuting-apply"></div>
     <div th:replace="include/datepicker"></div>
     <div th:replace="include/fullcalendar"></div>
 </div>
 
-
+    <script th:src="@{/common/js/commuting/commuting-apply.js}"></script>
 <script th:src="@{/common/js/commuting/commuting-common.js}"></script>
 <script th:src="@{/common/js/commuting/commuting-write.js}"></script>
 <script th:src="@{/common/js/commuting/commuting-edit.js}"></script>

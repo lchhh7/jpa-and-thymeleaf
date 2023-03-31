@@ -77,4 +77,9 @@ public class CommutingRequestService {
 			commutingRepository.save(commuting);
 		}
 	}
+
+	@Transactional
+	public List<CommutingRequest> commutingRequestSearching(Member member) {
+		return commutingRequestRepository.commutingRequestSearching(member);
+	}
 }

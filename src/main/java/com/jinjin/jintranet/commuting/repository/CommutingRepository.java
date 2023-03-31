@@ -2,6 +2,7 @@ package com.jinjin.jintranet.commuting.repository;
 
 import java.util.List;
 
+import com.jinjin.jintranet.model.CommutingRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -28,4 +29,6 @@ public interface CommutingRepository extends JpaRepository<Commuting, Integer>{
 
 	@Query(value="SELECT com.id , com.commutingTm , com.attendYn ,  count(com.commutingTm) over(partition by date_format(commutingTm,'%Y-%m-%d') , attendYn order by id desc rows 1 preceding) as cnt FROM Commuting com WHERE com.memberId = ?1 AND date_format(com.commutingTm,'%Y-%m-%d') >= ?2 AND date_format(com.commutingTm,'%Y-%m-%d') <= ?3 and attendYn='O' order by com.commutingTm desc", nativeQuery = true)
 	List<CommutingsInterface> findCommuteOvertime(Member member , String strDt , String endDt);
+
+
 }
