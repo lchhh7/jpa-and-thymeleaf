@@ -12,6 +12,7 @@
 		<li th:classappend="${#request.requestURI.equals('/commuting.do')} ? 'active' : ''">
       	<a class='m_icon3' th:href='@{/commuting.do}'>근태관리</a></li>
     </ul>
+
     <ul class="menulist" sec:authorize="hasRole('ROLE_ADMIN')">
 			<li th:classappend="${#request.requestURI.equals('/admin/member.do')} ? 'active' : ''">
 	      	 <a class='m_icon6' th:href='@{/admin/member.do}'>사용자관리(관)</a></li>
