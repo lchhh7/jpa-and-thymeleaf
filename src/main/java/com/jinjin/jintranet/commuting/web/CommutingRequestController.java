@@ -43,10 +43,18 @@ public class CommutingRequestController {
 
 	@GetMapping("/commuting/searching.do")
 	public ResponseEntity<List<CommutingRequest>> searching(
+<<<<<<< HEAD
 			@RequestParam(value ="st", required = false , defaultValue ="") String st,
 			@RequestParam(value ="y", required = false , defaultValue ="") String y,
 			@AuthenticationPrincipal PrincipalDetail principal) {
 		return new ResponseEntity<>(commutingRequestService.commutingRequestSearching(principal.getMember()), HttpStatus.OK);
+=======
+			@RequestParam(value ="st", required = false , defaultValue = "") String st,
+			@RequestParam(value ="y", required = false , defaultValue ="") String y,
+			@AuthenticationPrincipal PrincipalDetail principal) {
+		List<CommutingRequest> list = commutingRequestService.commutingRequestSearching(principal.getMember() , st , y);
+		return new ResponseEntity<>(list, HttpStatus.OK);
+>>>>>>> chlee
 	}
 	
 
