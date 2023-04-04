@@ -13,6 +13,6 @@ public interface CommutingRequestRepository extends JpaRepository<CommutingReque
 	@Query(value ="select * from CommutingRequest where memberId=?1 and requestDt >= ?2 and requestDt <= ?3" , nativeQuery = true)
 	List<CommutingRequest> findAll(Member member , String strDt , String endDt);
 
-	@Query(value="SELECT * FROM CommutingRequest com WHERE com.memberId = ?1 AND type ='O'", nativeQuery = true)
-	List<CommutingRequest> commutingRequestSearching(Member member);
+	@Query(value="SELECT DISTINCT year(requestDt) FROM CommutingRequest com WHERE com.memberId = ?1" , nativeQuery = true)
+	List<String> yearList(Member member);
 }

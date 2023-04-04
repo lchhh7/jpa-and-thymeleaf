@@ -21,7 +21,7 @@ import com.jinjin.jintranet.model.Member;
 public class CommutingRequestService {
 	
 	private CommutingRepository commutingRepository; 
-	
+
 	private CommutingRequestRepository commutingRequestRepository; 
 	
 	private CommutingRequestDslRepository commutingRequestDslRepository; 
@@ -79,7 +79,12 @@ public class CommutingRequestService {
 	}
 
 	@Transactional
-	public List<CommutingRequest> commutingRequestSearching(Member member) {
-		return commutingRequestRepository.commutingRequestSearching(member);
+	public List<CommutingRequest> commutingRequestSearching(Member member, String st , String y) {
+		return commutingRequestDslRepository.commutingRequestSearching(member , st ,y);
+	}
+
+	@Transactional
+	public List<String> yearList(Member member) {
+		return commutingRequestRepository.yearList(member);
 	}
 }

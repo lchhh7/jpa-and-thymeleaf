@@ -1,17 +1,18 @@
-// $('#search-year').val(new Date().getYear() + 1900).prop("selected", true);
-//
-// const searchType = document.getElementById('search-type');
-// const searchYear = document.getElementById('search-year');
+ $('#search-year').val(new Date().getYear() + 1900).prop("selected", true);
+
+ const searchType = document.getElementById('search-type');
+ const searchYear = document.getElementById('search-year');
 // const requestForm = document.getElementById('request-form');
 const searching = function() {
-
+	let url ="";
+	url += ('st=' + (searchType != null ? searchType.value : ''));
+	url += ('&y=' + (searchYear != null ? searchYear.value : ''));
 
 	$.ajax({
-		url: contextPath + '/commuting/searching.do',
+		url: contextPath + '/commuting/searching.do?' + url,
 		method: 'get'
 	})
 		.done(function(data) {
-			console.log(data);
 			let tr = '';
 			if (data.length > 0) {
 				data.forEach(function(e) {
@@ -282,9 +283,10 @@ const searching = function() {
 //
 // 	return isEditForm(data, form);
 // };
-// document.getElementById('searching').addEventListener('click', function() {
-// 	searching();
-// });
+
+ document.getElementById('searching').addEventListener('click', function() {
+ 	searching();
+ });
 
 
 document.getElementById('apply-detail-btn').addEventListener('click', searching, true);

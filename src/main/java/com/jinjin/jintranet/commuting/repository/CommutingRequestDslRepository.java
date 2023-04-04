@@ -1,10 +1,13 @@
 package com.jinjin.jintranet.commuting.repository;
 
+import java.util.Arrays;
 import java.util.List;
 
+import com.jinjin.jintranet.model.Schedule;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import com.jinjin.jintranet.model.CommutingRequest;
@@ -38,19 +41,39 @@ public class CommutingRequestDslRepository {
 		
 		return new PageImpl<>(approvesList , pageable , count);
 	}
-	
+
+	public List<CommutingRequest> commutingRequestSearching(Member member,  String st , String y) {
+		 List<CommutingRequest> approvesList =  jPAQueryFactory.selectFrom(commutingRequest)
+				.where(memberEq2(member.getId()) , typeEq(st) , yearEq(y)).fetch();
+		return approvesList;
+	}
+
 	private BooleanExpression approveEq(Member member) {
 		if(member == null) {
 			return null;
 		}
 		return commutingRequest.approve.eq(member);
 	}
-	
+
 	private BooleanExpression memberEq2(Integer approveId) {
 		if(approveId == null) {
 			return null;
 		}
 		return commutingRequest.member.id.eq(approveId);
+	}
+
+	private BooleanExpression typeEq(String st) {
+		if(st.equals("") || st == null) {
+			return null;
+		}
+		return commutingRequest.type.eq(st);
+	}
+
+	private BooleanExpression yearEq(String y) {
+		if(y.equals("") || y == null) {
+			return null;
+		}
+		return commutingRequest.requestDt.contains(y);
 	}
 	
 	private BooleanBuilder statusBb(String status) {
