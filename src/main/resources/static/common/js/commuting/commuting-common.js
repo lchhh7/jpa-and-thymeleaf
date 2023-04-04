@@ -174,6 +174,11 @@ const commutings = function (info, successCallback) {
 			Array.prototype.push.apply(events, commuteRequests);
             Array.prototype.push.apply(events, holidays);
             successCallback(events);
+
+            const r = data.nearList;
+            document.getElementById('request-title').innerText = r.requestDt;
+            document.getElementById('request-content').innerText = koreanType(r.type);
+            document.getElementById('request-status').innerText = koreanStatus(r.status);
         })
         .fail(function () {
             alert('일정 정보 조회 중 오류가 발생했습니다.');

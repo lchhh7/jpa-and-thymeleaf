@@ -3,6 +3,7 @@ package com.jinjin.jintranet.commuting.web;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,6 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.jinjin.jintranet.model.CommutingRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -90,12 +92,16 @@ public class CommutingController {
             List<CommutingsInterface> commute = commutingService.findAll(principal.getMember() ,sd ,ed);
             List<CommuteRequestDTO> commuteRequests = commutingRequestService.findAll(principal.getMember() , sd, ed)
             		.stream().map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
-            
+
+			List<CommutingRequest> list = commutingRequestService.commutingRequestSearching(principal.getMember() , null , null);
+			CommutingRequest nearList = list.stream().sorted(Comparator.comparing(CommutingRequest::getRequestDt).reversed()).toList().get(0);
+
             map.put("holidays" , holidays);
             map.put("schedules", schedules);
             map.put("commute" , commute.stream().filter(c -> c.getCnt() ==1).collect(Collectors.toList()));
             map.put("commuteRequests", commuteRequests);
 			map.put("overtimes", overtimes(commute));
+			map.put("nearList" , nearList);
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

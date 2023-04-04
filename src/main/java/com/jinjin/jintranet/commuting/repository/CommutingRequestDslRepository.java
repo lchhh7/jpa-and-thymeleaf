@@ -63,14 +63,14 @@ public class CommutingRequestDslRepository {
 	}
 
 	private BooleanExpression typeEq(String st) {
-		if(st.equals("") || st == null) {
+		if(st == null || st.equals("")) {
 			return null;
 		}
 		return commutingRequest.type.eq(st);
 	}
 
 	private BooleanExpression yearEq(String y) {
-		if(y.equals("") || y == null) {
+		if(y == null || y.equals("")) {
 			return null;
 		}
 		return commutingRequest.requestDt.contains(y);
