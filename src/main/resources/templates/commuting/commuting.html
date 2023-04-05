@@ -114,8 +114,6 @@
             const goWorkTime = document.getElementById("goWorkTime");
             const goToWorkTime = [[${goToWorkTime}]];
 
-            console.log(workingStatus);
-
             if (workingStatus == '근무중') {
                 goWorkTime.innerHTML = goToWorkTime.substr(11, 2) + "시" + goToWorkTime.substr(14, 2) + "분";
                 workTime();

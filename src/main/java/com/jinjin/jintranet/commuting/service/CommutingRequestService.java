@@ -65,9 +65,9 @@ public class CommutingRequestService {
 		if(requestCommutingRequest.getStatus().equals("Y")) {
 			Commuting commuting = new Commuting();
 			commuting.setAttendYn(commutingRequest.getType());
-			commuting.setCommutingTm(DateUtils.toLocalDateTime(commutingRequest.getRequestDt(), commutingRequest.getRequestTm()));
 			commuting.setMember(commutingRequest.getMember());
-			
+			if(!commutingRequest.getType().equals("O")) commuting.setCommutingTm(DateUtils.toLocalDateTime(commutingRequest.getRequestDt(), commutingRequest.getRequestTm()));
+
 			if("N".equals(commuting.getAttendYn())) {
 				if(commuting.getCommutingTm().getHour() < 9) {
 					commuting.setAttendYn("V");

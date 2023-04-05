@@ -1,8 +1,10 @@
 package com.jinjin.jintranet.commuting.web;
 
 import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
@@ -95,13 +97,16 @@ public class CommutingController {
             		.stream().map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
 
 			List<CommutingRequest> list = commutingRequestService.commutingRequestSearching(principal.getMember() , null , null);
-			CommutingRequest nearList = list.stream().sorted(Comparator.comparing(CommutingRequest::getRequestDt).reversed()).toList().get(0);
+			CommutingRequest nearList = null;
+			if(list.size() !=0) {
+				nearList = list.stream().sorted(Comparator.comparing(CommutingRequest::getRequestDt).reversed()).toList().get(0);
+			}
 
             map.put("holidays" , holidays);
             map.put("schedules", schedules);
             map.put("commute" , commute.stream().filter(c -> c.getCnt() ==1).collect(Collectors.toList()));
             map.put("commuteRequests", commuteRequests);
-			map.put("overtimes", overtimes(commute));
+			map.put("overtimes", overtimes(commute , commuteRequests));
 			map.put("nearList" , nearList);
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
@@ -110,17 +115,18 @@ public class CommutingController {
         }
     }
 
-	public String overtimes(List<CommutingsInterface> commute) {
+	public String overtimes(List<CommutingsInterface> commute , List<CommuteRequestDTO> commuteRequests) {
 		int hour = 0; int minute =0;
-		List<Integer> overtimeDates = commute.stream().filter(m -> m.getAttendYn().equals("O"))
-				.map(d -> d.getCommutingTm().getDayOfMonth()).sorted().toList();
+		List<Integer> overtimeDates = commuteRequests.stream()
+				.filter(m -> m.getType().equals("O"))
+				.filter(m -> m.getStatus().equals("Y"))
+				.map(d -> LocalDate.parse(d.getRequestDt() , DateTimeFormatter.ISO_DATE).getDayOfMonth()).sorted().toList();
 
 		for(Integer i : overtimeDates) {
 			List<LocalDateTime> dayOfTime
 					= commute.stream()
 					.filter(c -> c.getCnt() ==1)
-					.filter(c -> !c.getAttendYn().equals("O"))
-					.filter(d -> d.getCommutingTm().getDayOfMonth() == i).map(m -> m.getCommutingTm()).toList();
+					.filter(d -> d.getCommutingTm().getDayOfMonth() == i ).map(m -> m.getCommutingTm()).toList();
 
 			if(dayOfTime.size() < 2) break;
 
