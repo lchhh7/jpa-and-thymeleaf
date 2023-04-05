@@ -1,0 +1,238 @@
+@charset "utf-8";
+@import url("../fonts/notokr/notoKR.css");
+@import url("../fonts/nanumgothic/nanumgothic.css");
+
+/* 서브페이지 타이틀 */
+.subtitle{width: 100%; height: 35px; margin-bottom: 15px;}
+.st{float: left;}
+.st_title{float: left; font-size: 1.5rem; font-weight: bold;}
+.st_exp{font-size: 1rem; color: #0A3A6C; display: inline-block; margin-top: 7px;}
+.st_exp::before{content: "";background-image: url(../img/exp.png); width: 13px; height: 13px; margin:1px 5px 0 15px; float: left;}
+.locationbar{float: right; margin-top: 8px;}
+.home{float: left;}
+.home::before{content: "";background-image: url(../img/home.png); width: 20px; height: 17px; float: left; position: relative; bottom:2px;}
+.local{color: #777; display: inline-block; font-weight: bold;}
+.local.here{color:#246EDB}
+.local::before{content: "";background-image: url(../img/loca_arrow.png); width: 6px; height: 11px; margin: 1px 7px; float: left;}
+
+.mcpart{width: 100%; height: auto; border: 1px solid #dedede; background: #fff; padding: 20px; box-sizing: border-box;}
+
+/* info.html (리스트형 서브페이지) */
+.topbox{background: #fff; border: 1px solid #dedede; height: 108px; display: flex; box-sizing: border-box; margin-bottom: 25px; justify-content: center; align-items: center;}
+.listbox{background: #fff; border: 1px solid #dedede; padding: 20px; box-sizing: border-box;}
+.total{float: left; margin-top: 7px; font-weight: bold;}
+.lbtop .btn{float: right;}
+.pagination{text-align: center; margin-top: 20px; display: flex; justify-content: center;}
+.pagination a{width: 25px; height: 25px; border-radius: 25px; display: flex; justify-content: center; align-items: center; text-align: center; line-height: 25px; color: #707070;}
+.pagination .pnum.active{color: #fff; background: #246EDB;}
+/* info.html (리스트형 서브페이지) 끝 */
+
+
+/* info_content.html (글보기) */
+.icbox{padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #dedede;}
+.ictitle{font-size: 1.125rem; font-weight: bold;}
+.icname{border-left: 1px solid #dedede; padding-left: 8px; font-weight: bold;}
+.icfile{ border-right: 1px solid #dedede; padding-right: 8px;  height: auto; font-weight: bold ;}
+.file{color: #246EDB; text-decoration: underline; display: flex; font-weight: bold;}
+.file::before{content: "";background-image: url(../img/file.png); width: 15px; height: 10px; margin-right: 10px; margin-top: 4px;}
+.max{font-weight: bold; color: #da0000;}
+.eximg{display: inline-block;}
+.editor{width: 960px; height:400px;}
+/* info_content.html (글보기) 끝 */
+
+
+/* schedule.html (캘린더형 서브페이지) */
+.topcal{height: 135px; margin-bottom: 25px;}
+.restv{width: calc(35% - 25px); height: 100%; background: #246EDB; padding: 10px; box-sizing: border-box; margin-right: 25px;}
+.midrv{border-bottom: 1px solid #0E54BB; text-align: right; margin-bottom: 10px;}
+.restday{color: #fff; margin-bottom: 5px; line-height: 24px;}
+.restday.rd1{margin: 0; font-weight: bold;}
+.rd2{font-weight: bold;}
+.rd{font-size: 1.25rem; color: #ffff00; margin: 0 5px;}
+.brtitle{float: left; line-height: 26px; color: #fff; font-weight: bold;}
+.brdays{float: right; font-size: 1.125rem; font-weight: bold; color: #fff;}
+.brcalc{font-size: 0.875rem; font-weight: normal; margin-right: 5px;}
+
+.caltable{width: 65%;}
+.caltable tbody tr{height: 67px;}
+.caltable th{border: 1px solid #0781bf; font-size: 1rem; background: #2BAEF1; color: #fff; font-weight: bold; vertical-align: middle;}
+.caltable td{padding-left: 25px; background: #fff; vertical-align: middle;}
+.chklabel{display: inline-block;height: 18px; margin-right: 7%; display: inline-flex; align-items: center;}
+
+/* .rccont{height:135px;} */
+.rccont .midtc{height: 65px; margin-top: 10px;}
+.rccont .bottc{margin-top: 10px;}
+.daycheck{width: calc(20.3333% - 15px); height: 100%; margin: 0 15px; background: #7992B2; box-sizing: border-box;}
+.daycheck p{color: #fff;}
+.dchk .s_title p{font-size: 1rem; font-weight: normal;}
+.state.dchk{width: 55px; height: 30px;}
+.state.dchk p{ font-size: 1rem; line-height: 31px;}
+.daycheck .tcontent .bottc{text-align: center;}
+.daycheck .tcontent .bottc .go{width: auto; padding: 0 15px;}
+.daycheck .tcontent .midtc{height: 65px; margin-top: 10px; border-bottom: 1px solid #395273;}
+.dctitle{font-size: 0.925rem; font-weight: bold;}
+.dctime{font-size: 1.25rem; font-weight: bold;}
+.caltable.rctable{width: calc(46.3% + 10px);}
+.caltable .dwbtntb{padding: 5px 0; text-align: center;}
+.dwbtntb .btn{font-size: 0.825rem; padding: 0 10px;}
+/* .dw{padding: 0 2%;} */
+/* .dw_left{margin-left: 3%;} */
+.dwicon::after{content: "";background-image: url(../img/download.png); width: 16px; height: 16px; margin: 9px 0 0 5px; float: right;}
+.todaytotal{color: #D51E3C; font-size: 1.4rem; line-height: 32px; font-weight: bold;}
+.todaytotal_rest{font-size: 1rem;}
+
+
+#calendar {width: 100%;}
+/* 여기서 부터 캘린더 */
+.fc-resource-area td {cursor: pointer;}
+.fc-widget-header {
+  margin-right: 0 !important;
+}
+.fc-day-grid-container {
+  height: auto !important;
+  overflow: visible !important;
+}
+/* 버튼 */
+.fc-right button {border-radius: 0; font-family: 'Nanum Gothic', sans-serif;}
+.fc-right .fc-button-group button {background-color: #2C3E50; font-size: 1rem;}
+.legendBox{margin-right: 10px; width:20px; height:20px; border: 1px solid #dedede; background: #2DA400; display: inline-block; vertical-align:middle; opacity: 0.3}
+.legendBox2{margin-right: 10px; width:20px; height:20px; border: 1px solid #dedede; background: #452E86; display: inline-block; vertical-align:middle; opacity: 0.3}
+.legendTxt{vertical-align:middle; margin-right: 20px;}
+.legendTxt2{vertical-align:middle; margin-right: 20px;}
+/* 년,월 */
+.fc-left h2 {font-size: 1.75rem; font-weight: bold; font-family: 'Nanum Gothic', sans-serif;}
+/* schedule.html (캘린더형 서브페이지) 끝 */
+
+/* project.html (테이블검색형 서브페이지) */
+.topsearch{height: auto; padding: 20px; background: #fff; border: 1px solid #dedede; box-sizing: border-box; margin-bottom: 25px;}
+.pjdate{width: calc(50% - 10.5px);}
+.s_btn{padding: 0 10px;}
+.searchtb{width: 350px;}
+.searchtb .sub_table tr{height: 35px;}
+.searchtb .sub_table tr td{padding: 8px 15px 4px; text-align: center;}
+.chklabel.s_chk{margin-right: 4%;}
+.chklabel.s_chk.last_chk{margin-right: 0;}
+.stb2{width: 300px;}
+/* project.html (테이블검색형 서브페이지) 끝 */
+
+/* project_sch.html (프로젝트 일정표 서브페이지) */
+.pjtop{margin-bottom: 30px;}
+.pjtop tbody tr td{font-size: 1rem;}
+.pschpart{text-align: right;}
+.psch_title{height: 65px; background: #0A3A6C; margin-top: 10px;text-align: center; line-height: 65px;}
+.psch_title h3{color: #fff; font-size: 1.75rem; font-weight: bold;}
+.psch_title .btn{padding: 13px 15px;}
+.schprev::before{content: "";background-image: url(../img/schprev.png); width: 22px; height: 38px; float: left;}
+.schnext::before{content: "";background-image: url(../img/schnext.png); width: 22px; height: 38px; float: left;}
+.pj_table{margin-bottom: 30px;}
+
+.pschtb{margin-top: 15px;}
+.pschtb .tbhead{height: 45px;}
+.pschtb .tbbody{height: 90px; min-height: 90px;}
+.pschtb .tbbody td{width: 18%; padding: 0;}
+.schyellow,.schpurple, .schgreen{display: block; line-height: 20px; padding: 5px 10px; margin: 5px 0; min-height: 70px; cursor: pointer;}
+.schyellow{background: #FFF4D9; border-top: 2px solid #FFB500;}
+.schpurple{background: #F7F3FF; border-top: 2px solid #724BDC;}
+.schgreen{background: #F0FFE0; border-top: 2px solid #5DBA00;}
+.schtb_tit{font-size: 1rem; font-weight: bold;}
+.schtb_time{font-size: 0.875rem;}
+.schtb_place{margin-top: 10px;}
+/* project_sch.html (프로젝트 일정표 서브페이지) */
+
+
+
+/* project_new.html (서브테이블) */
+.required{color: #ff0000;}
+.chklabel_tb{display: flex; align-items: center; cursor: pointer;}
+.chklabel_tb .checkbox{vertical-align: top;}
+.chklabel_tb .checkwd{vertical-align: top;}
+
+/* .chklabel_tb{position: relative;}
+.check{display: none;}
+.chklabel_tb .checkwd{margin-left: 25px;}
+.check + .chklabel_tb{content: ""; width: 18px; height: 18px; border: 1px solid #dedede; position: absolute; left: 0; bottom: 0;}
+.check:checked + .chklabel_tb{background: #FFB500;} */
+
+.bttext{line-height: 32px;}
+.btnpart{text-align: right;}
+.plus{display: inline-block; width: auto; height: 35px; line-height: 35px; padding: 0 7px; font-size: 0.875rem; color: #777; text-align: center; border: 1px solid #dedede; vertical-align: middle; box-sizing: border-box;}
+/* project_new.html (서브테이블) */
+
+
+.btn-reset {font-size: 0.675rem; font-weight: normal; color: #fff; line-height: 20px; display: inline-block; text-align: center; margin-top: 5px;padding: 2px 7px;}
+.badge {font-size : 0.75rem; display: inline-block; padding: 1px 3px; border: 1px solid #ffffff; border-radius: 10px;}
+
+
+/* 미디어쿼리 */
+@media all and (max-width:1460px){
+  .dctitle{font-size: 0.825rem; font-weight: bold;}
+  .dctime{font-size: 1.125rem; font-weight: bold;}
+}
+
+@media all and (max-width:1440px){
+  /* 서브페이지 타이틀 */
+  .subtitle{margin-bottom: 5px;}
+  .st_title{font-size: 1.25rem;}
+  .st_exp{font-size: 0.875rem; margin-top: 5px;}
+  .st_exp::before{margin-top: 1px;}
+  .locationbar{margin-top: 4px;}
+  .home::before{background-size: 15px 14px; width: 15px; height: 14px; bottom: -1px;}
+  .local{font-size: 0.875rem;}
+
+  /* 공지 컨텐츠 */
+  .icbox{padding-bottom: 15px; margin-bottom: 15px;}
+  .ictitle{font-size: 1rem;}
+  .icbox span, .iccontent, .file{font-size: 0.875rem;}
+  .total{font-size: 0.875rem;}
+
+  /* 리스트형 서브페이지 */
+  .topbox{margin-bottom: 15px; height: 80px; padding: 24px 15px;}
+  .topsearch{margin-bottom: 15px; padding: 10px;}
+  .listbox{padding: 10px;}
+  .pagination .pnum{font-size: 0.875rem;}
+  .searchtb{width: 300px;}
+
+  /* 캘린더형 서브페이지 */
+  .topcal{height: 130px; margin-bottom: 15px;}
+  .restv{width: calc(35% - 15px); padding: 7px 15px; margin-right: 15px;}
+  .restday{font-size: 0.875rem;}
+  .rd{font-size: 1rem;}
+  .brtitle{font-size: 0.875rem; line-height: 22px;}
+  .brdays{font-size: 1rem; line-height: 22px;}
+  .brdays .brcalc{font-size: 0.75rem;}
+  .caltable tbody tr{height: 65px;}
+  .check{width: 14px; height: 14px;}
+  .checkwd{font-size: 0.875rem;}
+  .mcpart{padding: 10px;}
+  .fc-left h2 {font-size: 1.5rem;}
+  .legendBox{width:15px; height:15px; margin-top: 2px;}
+  .fc-right .fc-button-group button {font-size: 0.875rem;}
+  .caltable.rctable{width: 46.3334%;}
+  .dctitle{font-size: 0.75rem;}
+  .dctime{font-size: 1rem;}
+  .todaytotal{font-size: 1.2rem;}
+  .todaytotal_rest{font-size: 0.875rem;}
+  .dwbtntb .btn{font-size: 0.8rem; padding: 0 5px;}
+  .dchk .s_title p{font-size: 0.875rem;}
+  .state.dchk{width: 45px; height: 28px;}
+  .state.dchk p{line-height: 28px; font-size: 0.95rem;}
+  .daycheck .tcontent .bottc{margin-top: 10px};
+
+  /* 서브테이블 */
+  .sub_table tr{height: 40px;}
+  .sub_table th {font-size: 0.875rem;}
+  .bttext{font-size: 0.875rem;}
+  .plus{ height: 30px; line-height: 30px;}
+
+  .pjtop tr{height: 35px;}
+  .pjtop tbody tr td{font-size: 0.875rem;}
+  .psch_title{height: 45px;}
+  .psch_title h3{font-size: 1.375rem; line-height: 45px;}
+  .psch_title .btn{padding: 10px 15px 5px 15px;}
+  .schprev::before, .schnext::before{background-size: 14px 24px; width: 14px; height: 24px;}
+
+  .searchtb .sub_table tr{height: 30px;}
+  .searchtb .sub_table tr td{padding: 5px;}
+  .dwicon::after{margin-top: 7px;}
+  .badge {font-size : 0.6rem; display: inline-block; padding: 1px 3px; border: 1px solid #ffffff; border-radius: 10px;}
+}
