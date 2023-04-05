@@ -62,11 +62,11 @@ public class CommutingRequestService {
 		commutingRequest.setApproveDt(LocalDateTime.now());
 		
 		
-		if(requestCommutingRequest.getStatus().equals("Y")) {
+		if(requestCommutingRequest.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
 			Commuting commuting = new Commuting();
 			commuting.setAttendYn(commutingRequest.getType());
 			commuting.setMember(commutingRequest.getMember());
-			if(!commutingRequest.getType().equals("O")) commuting.setCommutingTm(DateUtils.toLocalDateTime(commutingRequest.getRequestDt(), commutingRequest.getRequestTm()));
+			commuting.setCommutingTm(DateUtils.toLocalDateTime(commutingRequest.getRequestDt(), commutingRequest.getRequestTm()));
 
 			if("N".equals(commuting.getAttendYn())) {
 				if(commuting.getCommutingTm().getHour() < 9) {

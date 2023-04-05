@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import com.jinjin.jintranet.model.CommutingRequest;
+import net.bytebuddy.asm.Advice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -74,7 +75,12 @@ public class CommutingController {
 		model.addAllAttributes(commutingService.getWorkTime(principal.getMember()));
 		return "commuting/commuting";
 	}
-	
+
+	public Integer currentMonth(String sd) {
+		LocalDate ld = LocalDate.parse(sd);
+		int month = ld.getDayOfMonth() > 1 ? ld.getMonthValue() +1 : ld.getMonthValue();
+		return month;
+	}
 	/**
      * 근태관리 > 목록 조회
      */
@@ -84,7 +90,7 @@ public class CommutingController {
             @RequestParam(value = "ed") String ed, @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         Map<String, Object> map = new HashMap<>();
         try {
-            
+			int month = currentMonth(sd);
             
             Schedule schedule = Schedule.builder()
             		.member(principal.getMember()).type("FV,HV").status("Y")
@@ -106,7 +112,7 @@ public class CommutingController {
             map.put("schedules", schedules);
             map.put("commute" , commute.stream().filter(c -> c.getCnt() ==1).collect(Collectors.toList()));
             map.put("commuteRequests", commuteRequests);
-			map.put("overtimes", overtimes(commute , commuteRequests));
+			map.put("overtimes", overtimes(commute , commuteRequests , month));
 			map.put("nearList" , nearList);
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
@@ -115,11 +121,12 @@ public class CommutingController {
         }
     }
 
-	public String overtimes(List<CommutingsInterface> commute , List<CommuteRequestDTO> commuteRequests) {
+	public String overtimes(List<CommutingsInterface> commute , List<CommuteRequestDTO> commuteRequests , int month) {
 		int hour = 0; int minute =0;
 		List<Integer> overtimeDates = commuteRequests.stream()
 				.filter(m -> m.getType().equals("O"))
 				.filter(m -> m.getStatus().equals("Y"))
+				.filter(m -> LocalDate.parse(m.getRequestDt()).getMonthValue() == month)
 				.map(d -> LocalDate.parse(d.getRequestDt() , DateTimeFormatter.ISO_DATE).getDayOfMonth()).sorted().toList();
 
 		for(Integer i : overtimeDates) {
