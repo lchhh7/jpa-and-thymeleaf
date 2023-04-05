@@ -154,6 +154,7 @@ const setHolidays = function (list) {
 }
 
 const commutings = function (info, successCallback) {
+    console.log(info);
     $.ajax({
         url: contextPath + '/commuting/search.do?' + ('&sd=' + info.startStr.substr(0, 10)) + ('') + ('&ed=' + info.endStr.substr(0, 10)) + (''),
         method: 'get',
@@ -170,6 +171,7 @@ const commutings = function (info, successCallback) {
 			
             Array.prototype.push.apply(events, commutings);
             Array.prototype.push.apply(events, schedules);
+            Array.prototype.push.apply(events, overtimes);
 			Array.prototype.push.apply(events, commuteRequests);
             Array.prototype.push.apply(events, holidays);
             successCallback(events);

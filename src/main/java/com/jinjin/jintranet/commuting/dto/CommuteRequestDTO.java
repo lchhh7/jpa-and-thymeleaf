@@ -16,7 +16,8 @@ import lombok.Setter;
 public class CommuteRequestDTO {
 	
 	private String status;
-	
+
+	private String type;
 	private String requestDt;
 	
 	//private String requestTm;
@@ -24,6 +25,7 @@ public class CommuteRequestDTO {
 	
 	public CommuteRequestDTO(CommutingRequest c) {
 		this.status = c.getStatus();
+		this.type = c.getType();
 		this.requestDt = c.getRequestDt();
 	}
 }

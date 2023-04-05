@@ -12,9 +12,7 @@
 						<div class="floatleft mhalf mr5">
 							<select class="selectbox width100" id="search-year">
 								<option value="">전체</option>
-								<option 
-								th:if="${#lists.isEmpty(yearList)}"
-								th:each="yearList : ${yearList}" th:value="${yearList}" th:text=${yearList}/>
+								<option th:each="yearList : ${yearList}" th:value="${yearList}" th:text="${yearList}"/>
 							</select>
 						</div>
 						
