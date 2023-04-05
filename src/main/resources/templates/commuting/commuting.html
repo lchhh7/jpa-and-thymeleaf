@@ -107,6 +107,48 @@
 <script th:src="@{/common/js/commuting/commuting-common.js}"></script>
 <script th:src="@{/common/js/commuting/commuting-write.js}"></script>
 <script th:src="@{/common/js/commuting/commuting-edit.js}"></script>
+    <script async th:inline="javascript">
+
+        const goTime = function () {
+            const workingStatus =  [[${workingStatus}]];
+            const goWorkTime = document.getElementById("goWorkTime");
+            const goToWorkTime = [[${goToWorkTime}]];
+
+            console.log(workingStatus);
+
+            if (workingStatus == '근무중') {
+                goWorkTime.innerHTML = goToWorkTime.substr(11, 2) + "시" + goToWorkTime.substr(14, 2) + "분";
+                workTime();
+            } else if (workingStatus != '근무중' && [[${goToWorkTime}]] != '') {
+                const workingTime = document.getElementById("workingTime");
+                const goToWorkTime = [[${goToWorkTime}]];
+                goToWorkTime.innerHTML = goToWorkTime.substr(11, 2) + "시" + goToWorkTime.substr(14, 2) + "분";
+                goWorkTime.innerHTML = goToWorkTime.substr(11, 2) + "시" + goToWorkTime.substr(14, 2) + "분";
+                const goTime = new Date(goToWorkTime.substr(0, 4), goToWorkTime.substr(5, 2) - 1, goToWorkTime.substr(8, 2), goToWorkTime.substr(11, 2), goToWorkTime.substr(14, 2));
+                const offTime = [[${offToWorkTime}]];
+                const now = new Date(offTime.substr(0, 4), offTime.substr(5, 2) - 1, offTime.substr(8, 2), offTime.substr(11, 2), offTime.substr(14, 2));
+                const subTime = now.getTime() - goTime.getTime();
+                const time = parseInt(subTime / 1000 / 60 / 60);
+                const minute = parseInt((subTime - (time * 1000 * 60 * 60)) / 1000 / 60);
+                workingTime.innerHTML = time + "시간 " + minute + "분";
+            }
+        }
+
+        const workTime = function () {
+            const workingTime = document.getElementById("workingTime");
+            const goWorkTime = [[${goToWorkTime}]];
+
+            const goTime = new Date(goWorkTime.substr(0, 4), goWorkTime.substr(5, 2) - 1, goWorkTime.substr(8, 2), goWorkTime.substr(11, 2), goWorkTime.substr(14, 2));
+            const now = new Date();
+            const subTime = now.getTime() - goTime.getTime();
+            const time = parseInt(subTime / 1000 / 60 / 60);
+            const minute = parseInt((subTime - (time * 1000 * 60 * 60)) / 1000 / 60);
+            workingTime.innerHTML = time + "시간 " + minute + "분";
+            setTimeout(workTime, 60000);
+        }
+        goTime();
+        /*]]>*/
+    </script>
 </body>
 
 </html>
