@@ -161,7 +161,6 @@ const commutings = function (info, successCallback) {
         contentType: 'application/json; charset=utf-8'
     })
         .done(function (data) {
-            console.log(data);
             let events = [];
             const commutings = setCommutings(data.commute);
             const overtimes = setOvertimes(data.overtimes);

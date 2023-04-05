@@ -69,6 +69,7 @@ public class CommutingController {
 		model.addAttribute("approves", memberService.findApproves());
 		model.addAttribute("principal", principal);
 		model.addAttribute("yearList" , commutingRequestService.yearList(principal.getMember()));
+		model.addAllAttributes(commutingService.getWorkTime(principal.getMember()));
 		return "commuting/commuting";
 	}
 	
