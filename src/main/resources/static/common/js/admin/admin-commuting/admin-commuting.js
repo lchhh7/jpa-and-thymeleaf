@@ -4,9 +4,9 @@ const approve = function (status) {
 	if (!confirm ('요청을 처리하시겠습니까?')) return false;
 
 	$.ajax({
-		url: contextPath + 'admin/commuting/' + modifyForm.id.value + '.do',
-		method: 'patch',
-		data: JSON.stringify({id: modifyForm.id.value, status: status ,requestDt : modifyForm.requestDt.value , memberId : modifyForm.memberId.value }),
+		url: contextPath + '/admin/commuting/' + modifyForm.id.value + '.do',
+		method: 'put',
+		data: JSON.stringify({id: modifyForm.id.value, status: status ,requestDt : modifyForm.requestDt.value , memberId : modifyForm.memberId.value}),
 		contentType: "application/json; charset=utf-8"
 	})
 		.done(function (data) {
@@ -29,7 +29,7 @@ const approveInit = function() {
 	};
 	
 	$.ajax({
-		url : contextPath + 'admin/commuting/approveInit.do' , 
+		url : contextPath + '/admin/commuting/approveInit.do' , 
 		method : 'patch' , 
 		data : JSON.stringify(data) , 
 		contentType : "application/json; charset=utf-8"
@@ -106,45 +106,11 @@ const displayViewModal = function (d) {
 	}
 	
 	div.appendChild(closeBtn);
-	
-	//12-09 내역보기에서 시간 추가
-	if (d.type == 'O') {
-		modifyForm.startTime1.classList.add('none');
-			modifyForm.endTime1.classList.add('none');
-			modifyForm.startTime2.classList.add('none');
-			modifyForm.endTime2.classList.add('none');
-		
-		if (new Date(modifyForm.requestDt.value).getDay() == 6 || new Date(modifyForm.requestDt.value).getDay() == 0) {
-			modifyForm.startTime1.classList.remove('none');
-			modifyForm.endTime1.classList.remove('none');
-			modifyForm.startTime2.value = '';
-			modifyForm.endTime2.value = '';
-		} else {
-			modifyForm.startTime2.classList.remove('none');
-			modifyForm.endTime2.classList.remove('none');
-			modifyForm.startTime1.value = '';
-			modifyForm.endTime1.value = '';
-		}
-		if ((modifyForm.startTime1.value != '' && modifyForm.endTime1.value != '')||
-			modifyForm.startTime2.value != '' && modifyForm.endTime2.value != '') {
-			modifyForm.requestTm.value = d.pureWorkTm.split(':')[0]+"시간";
-		};
-	} else {
-		modifyForm.startTime1.value = '00:00';
-		modifyForm.startTime2.value = '00:00';
-		modifyForm.endTime1.value = '00:00';
-		modifyForm.endTime2.value = '00:00';
-
-		modifyForm.startTime1.classList.add('none');
-		modifyForm.endTime1.classList.add('none');
-		modifyForm.startTime2.classList.add('none');
-		modifyForm.endTime2.classList.add('none');
-	}
 }
 
 const commuting = function (id) {
 	$.ajax({
-		url: contextPath + 'admin/commuting/' + id + '.do',
+		url: contextPath + '/admin/commuting/' + id + '.do',
 		method: 'get',
 		dataType: 'json',
 		contentType: 'application/json; charset=utf-8'
@@ -155,24 +121,14 @@ const commuting = function (id) {
 			}
 		console.log(data);
 			modifyForm.id.value = data.id;
-			modifyForm.memberId.value = data.memberId;
-			modifyForm.memberName.value = data.memberName;
+			modifyForm.memberId.value = data.member.id;
+			modifyForm.memberName.value = data.member.name;
 			modifyForm.requestDt.value = data.requestDt;
 			modifyForm.requestTm.value = data.requestTm;
 			modifyForm.content.value = data.content;
-			modifyForm.statusName.value = data.statusName;
+			modifyForm.statusName.value = koreanStatus(data.status);
 			if (data.status !== 'R' && data.status !== 'C' ) {
 				modifyForm.approveDt.value = formatDate(new Date(data.approveDt));
-			}
-			
-			if(data.type == 'O'){
-				if(new Date(data.requestDt).getDay() != 6 && new Date(data.requestDt).getDay() !=0) {
-					modifyForm.startTime2.value = data.startTm;
-					modifyForm.endTime2.value = data.endTm;
-				}else{
-					modifyForm.startTime1.value = data.startTm;
-					modifyForm.endTime1.value = data.endTm;
-				}
 			}
 
 			displayViewModal(data);
@@ -197,15 +153,14 @@ const commutings = function (p) {
 	url += "&n=" + (box3.checked ? box3.value : "");
 
 	$.ajax({
-		url: contextPath + 'admin/commuting/search.do?p=' + p + url,
+		url: contextPath + '/admin/commuting/search.do?page=' + (p-1) + url,
 		type: 'get',
 		dataType: "json",
 		contentType: "application/json; charset=utf-8"
 	})
 		.done(function (data) {
-			const list = data.list;
+			const list = data.list.content;
 			let tr = "";
-
 			if (list.length > 0) {
 				list.forEach(function (el) {
 					if (el.type === 'A' && el.content.length < 3) {
@@ -216,19 +171,18 @@ const commutings = function (p) {
 					}
 
 					tr += '<tr class="tbbody" onclick="commuting(' + el.id + ')">';
-					tr += '<td>' + el.memberName + '</td>';
-					tr += '<td>' + el.typeName + '</td>';
+					tr += '<td>' + el.member.name + '</td>';
+					tr += '<td>' + koreanType(el.type) + '</td>';
 					tr += '<td>' + el.requestDt.replaceAll('-', '.') + ' ' + nullStr(el.requestTm) + '</td>';
 					tr += '<td>' + el.content + '</td>';
-					tr += '<td>' + formatDate(new Date(el.crtDt)).replaceAll('-', '.') + '</td>';
-					tr += '<td id="status">' + el.statusName + '</td>';
+					tr += '<td id="status">' + koreanStatus(el.status) + '</td>';
 					tr += '</tr>';
 				});
 			} else {
-				tr += '<tr class="tbbody"><td colspan="6">등록된 신청내역이 없습니다.</td></tr>';
+				tr += '<tr class="tbbody"><td colspan="5">등록된 신청내역이 없습니다.</td></tr>';
 			}
 
-			document.getElementById('totalCommuting').innerText = '총 게시물' + data.totalCnt + '건';
+			document.getElementById('totalCommuting').innerText = '총 게시물' + data.list.totalElements + '건';
 			document.getElementById('commutings').innerHTML = tr;
 			document.getElementById('page').innerHTML = data.page;
 		})
