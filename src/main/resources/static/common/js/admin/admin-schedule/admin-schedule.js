@@ -4,13 +4,12 @@ const approve = function (status) {
     if (!confirm ('요청을 처리하시겠습니까?')) return false;
 
     $.ajax({
-        url: contextPath + 'admin/schedule/' + viewForm.id.value + '.do',
-        method: 'patch',
+        url: contextPath + '/admin/schedule/' + viewForm.id.value + '.do',
+        method: 'put',
         data: JSON.stringify({id: viewForm.id.value, status: status}),
         contentType: "application/json; charset=utf-8"
     })
         .done(function (data) {
-            alert(data);
             location.reload();
         })
         .fail(function (data) {
@@ -73,20 +72,21 @@ const displayViewModal = function (d) {
 
 const schedule = function (id) {
     $.ajax({
-        url: contextPath + 'admin/schedule/' + id + '.do',
+        url: contextPath + '/admin/schedule/' + id + '.do',
         method: 'get'
     })
         .done(function (data) {
+			console.log(data);
             viewForm.id.value = data.id;
-            viewForm.memberName.value = data.memberName;
-            viewForm.typeName.value = data.typeName;
-            viewForm.startDt.value = data.startDt;
-            viewForm.startTm.value = data.startTm;
-            viewForm.endDt.value = data.endDt;
-            viewForm.endTm.value = data.endTm;
+            viewForm.memberName.value = data.member.name;
+            viewForm.typeName.value = koreanType(data.type);
+            viewForm.startDt.value = data.strDt.substr(0,10);
+            viewForm.startTm.value = data.strDt.split(" ")[1].substr(0,5);
+            viewForm.endDt.value = data.endDt.substr(0,10);
+            viewForm.endTm.value = data.endDt.split(" ")[1].substr(0,5);
             viewForm.title.value = data.title;
             viewForm.content.value = data.content;
-            viewForm.statusName.value = data.statusName;
+            viewForm.statusName.value = koreanStatus(data.status);
             if (data.status !== 'R' && data.status !== 'C' )
                 viewForm.approveDt.value = formatDate(new Date(data.approveDt));
 
@@ -111,38 +111,37 @@ const schedules = function (p) {
     url += "&n=" + (box3.checked ? box3.value : "");
 
     $.ajax({
-        url: contextPath + 'admin/schedule/search.do?p=' + p + url,
+        url: contextPath + '/admin/schedule/search.do?page=' + (p-1) + url,
         type: 'get',
         dataType: "json",
         contentType: "application/json; charset=utf-8"
     })
         .done(function (data) {
-            const list = data.list;
+            const list = data.list.content;
             let tr = "";
-
+			
             if (list.length > 0) {
                 list.forEach(function (el) {
                     tr += '<tr class="tbbody" onclick="schedule(' + el.id + ')">';
-                    tr += '<td>' + el.memberName + '</td>';
-                    tr += '<td>' + el.typeName + '</td>';
+                    tr += '<td>' + el.member.name + '</td>';
+                    tr += '<td>' + koreanType(el.type) + '</td>';
                     tr += '<td>' + el.title + '</td>';
-                    if (el.startDt === el.endDt) {
-                        tr += '<td>' + el.startDt.replaceAll('-', '') + '</td>';
+                    if (el.strDt === el.endDt) {
+                        tr += '<td>' + el.strDt.replaceAll('-', '').split(" ")[0] + '</td>';
                     } else {
-                        tr += '<td>' + el.startDt.replaceAll('-', '') + '~' + el.endDt.replaceAll('-', '') + '</td>';
+                        tr += '<td>' + el.strDt.replaceAll('-', '').split(" ")[0] + '~' + el.endDt.replaceAll('-', '').split(" ")[0] + '</td>';
                     }
 
-                    tr += '<td>' + formatDate(new Date(el.crtDt)).replaceAll('-', '.') + '</td>';
-                    tr += '<td id="status">' + el.statusName + '</td>';
+                    tr += '<td id="status">' + koreanStatus(el.status) + '</td>';
                     tr += '</tr>';
                 });
             } else {
                 tr += '<tr class="tbbody"><td colspan="6">등록된 일정신청내역이 없습니다.</td></tr>';
             }
-
-            document.getElementById('totalSchedule').innerText = '총 게시물' + data.totalCnt + '건';
+            document.getElementById('totalSchedule').innerText = '총 게시물' + data.list.totalElements + '건';
             document.getElementById('schedules').innerHTML = tr;
-            document.getElementById('page').innerHTML = data.page;
+            document.getElementById('page').innerHTML = data.page ;
+            
         })
         .fail(function () {
             alert('일정신청 내역을 조회하는 중 오류가 발생했습니다.');
@@ -168,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 const vacationDays = function () {
     $.ajax({
-        url: contextPath + 'admin/schedule/vacationDays.do',
+        url: contextPath + '/admin/schedule/vacationDays.do',
         type: 'get'
     })
         .done(function (data) {
@@ -177,8 +176,8 @@ const vacationDays = function () {
             Array.prototype.forEach.call(data, function (e) {
                 tr += '<tr>';
                 tr += '<td>' + e.name  + '</td>';
-                tr += '<td>' + (e.total+e.add) + '(' + e.total +  '+' + e.add +')'  + '</td>';
-                tr += '<td>' + (e.total+e.add-e.use)  + '</td>';
+                tr += '<td>' + (e.total) + '(' + e.total +  '-' + e.use +')'  + '</td>';
+                tr += '<td>' + (e.total-e.use)  + '</td>';
                 tr += '</tr>';
             });
 
