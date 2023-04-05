@@ -15,6 +15,8 @@ input[readonly]{cursor: pointer;}
 .wordbreak{word-break: break-all;}
 
 /* 디폴트 */
+.hide{display : none;}
+.center{text-align : center;}
 .width10{width: 10%;}
 .width15{width: 15%;}
 .width20{width: 20%;}
@@ -159,7 +161,8 @@ input::placeholder{color: #aaa;}
 .lnb.active{width: 0;}
 .lnb_header{ height: 70px; border-bottom: 1px solid #001F3E; margin-bottom: 25px;}
 .toplogo{width: 219px; height: 40px; display: inline-block; padding: 15px 0px; margin-left: 20px;}
-.toplogo::before{content: "";background-image: url(../img/lnb_logo.png);width: 219px; height: 40px; display: inline-block;}
+.toplogo::before{content: ""; color: #fff; background-image: url(../img/home.png);background-repeat : no-repeat; background-size : contain; width: 50px; height: 50px; display: inline-block;}
+
 .menulist{margin-left: 15px;}
 .menulist li{height:40px; box-sizing: border-box; margin-bottom: 10px; width: 250px;}
 .menulist li.active{background: #2BAEF1; border-radius: 50px;}
@@ -228,7 +231,6 @@ a.m_icon10::before{background-size: 20px 19px; height: 19px; background-image: u
 .today_rest{border-bottom: 1px solid #dedede;}
 
 .footer{height: 90px; background: #FCFCFC;border-top: 1px solid #dedede;}
-.flogo{margin: 10px 85px 0 30px;}
 .copyright{margin-top: 20px; font-size: 1rem; line-height: 24px; font-weight: normal;}
 /* 기본 레이아웃 끝 */
 
@@ -279,7 +281,6 @@ a.m_icon10::before{background-size: 20px 19px; height: 19px; background-image: u
 .tapmenu li.active{border-bottom: 4px solid #1256BB; padding-bottom: 5px;}
 .tapmenu li a{padding: 5px 20px; color: #888; font-weight: bold;}
 .tapmenu li.active a{color: #1256BB;}
-/* .main_table.mtbox{border: 1px solid #dedede;} */
 
 .bc{width: calc(50% - 12.5px); height: 100%; float: left; background: #fff; border: 1px solid #dedede; box-sizing: border-box;}
 .product{margin-left: 25px;}
@@ -380,8 +381,6 @@ a.m_icon10::before{background-size: 20px 19px; height: 19px; background-image: u
   .stime, .rtime, .mailadd{font-size: 0.75rem;}
 
   .footer{height: 70px;}
-  .flogo{margin: 5px 60px 0 20px;}
-  .flogo::before{background-size: 164px 55px; width: 164px; height: 55px;}
   .copyright{margin-top: 15px;font-size: 0.875rem; line-height: 1.125rem;}
   /* 기본레이아웃 끝 */
 
@@ -410,7 +409,7 @@ a.m_icon10::before{background-size: 20px 19px; height: 19px; background-image: u
   .document{margin-bottom: 7px;}
   .bottc{margin-top: 14px;}
   .checkbtn{margin-top: 5px;}
-
+  
   .project{height: auto; margin-bottom: 15px;}
   .pcontent{padding: 15px 10px;}
   .tapmenu li a{font-size: 0.875rem; font-weight: normal;}

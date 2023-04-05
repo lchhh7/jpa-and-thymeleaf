@@ -16,7 +16,7 @@
 .local::before{content: "";background-image: url(../img/loca_arrow.png); width: 6px; height: 11px; margin: 1px 7px; float: left;}
 
 .mcpart{width: 100%; height: auto; border: 1px solid #dedede; background: #fff; padding: 20px; box-sizing: border-box;}
-
+.joinpart{width: 100%; height: auto; border: 1px solid #dedede; background: #fff; padding: 100px; box-sizing: border-box;}
 /* info.html (리스트형 서브페이지) */
 .topbox{background: #fff; border: 1px solid #dedede; height: 108px; display: flex; box-sizing: border-box; margin-bottom: 25px; justify-content: center; align-items: center;}
 .listbox{background: #fff; border: 1px solid #dedede; padding: 20px; box-sizing: border-box;}
