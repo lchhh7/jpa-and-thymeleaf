@@ -35,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
  * 업로드 성공 시
  */
 const uploadSuccess = function (files, response) {
+	
     let div = "";
     for (let i = 0; i < response.length; i++) {
         let e = response[i];
@@ -43,7 +44,7 @@ const uploadSuccess = function (files, response) {
         div += '<a class="file floatleft" data-id="' + uuid + '" data-path="' + e.path + e.storedFileName + '">';
         div += e.originalFileName;
         div += '</a>';
-        div += '<img class="ml15 eximg pointer" src="' + contextPath + 'common/img/delete.png" alt="삭제" onclick="cancelAttach(this, attaches);">';
+        div += '<img class="ml15 eximg pointer" src="' + contextPath + '/common/img/delete.png" alt="삭제" onclick="cancelAttach(this, attaches);">';
         div += '</div>';
 
         attaches.push(e);
