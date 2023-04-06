@@ -31,8 +31,8 @@ public class CommutingRequestDslRepository {
 	public Page<AdminCommuteRequestViewDTO> approvesList(Member member , Integer approveId , String status , Pageable pageable) {
 		List<AdminCommuteRequestViewDTO> approvesList =  jPAQueryFactory
 				.select(
-						Projections.bean(AdminCommuteRequestViewDTO.class , commutingRequest.id, commutingRequest.member.name , commutingRequest.type ,
-								commutingRequest.requestDt, commutingRequest.content , commutingRequest.status))
+						Projections.bean(AdminCommuteRequestViewDTO.class , commutingRequest.id, commutingRequest.member , commutingRequest.type ,
+								commutingRequest.requestDt, commutingRequest.requestTm , commutingRequest.content , commutingRequest.status))
 				.from(commutingRequest)
 				.where(approveEq(member),memberEq2(approveId) ,statusBb(status))
 				.offset(pageable.getOffset())

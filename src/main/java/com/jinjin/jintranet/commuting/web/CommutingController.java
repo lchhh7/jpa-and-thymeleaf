@@ -99,21 +99,21 @@ public class CommutingController {
             List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd), DateUtils.toLocalDateTime(ed));
             List<ScheduleSearchDTO> schedules = scheduleService.read(schedule);
             List<CommutingsInterface> commute = commutingService.findAll(principal.getMember() ,sd ,ed);
-            List<CommuteRequestDTO> commuteRequests = commutingRequestService.findAll(principal.getMember() , sd, ed)
+           /* List<CommuteRequestDTO> commuteRequests = commutingRequestService.findAll(principal.getMember() , sd, ed)
             		.stream().map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
 
 			List<CommutingRequest> list = commutingRequestService.commutingRequestSearching(principal.getMember() , null , null);
 			CommutingRequest nearList = null;
 			if(list.size() !=0) {
 				nearList = list.stream().sorted(Comparator.comparing(CommutingRequest::getRequestDt).reversed()).toList().get(0);
-			}
+			}*/
 
             map.put("holidays" , holidays);
             map.put("schedules", schedules);
             map.put("commute" , commute.stream().filter(c -> c.getCnt() ==1).collect(Collectors.toList()));
-            map.put("commuteRequests", commuteRequests);
+          /*  map.put("commuteRequests", commuteRequests);
 			map.put("overtimes", overtimes(commute , commuteRequests , month));
-			map.put("nearList" , nearList);
+			map.put("nearList" , nearList); */
             return new ResponseEntity<>(map, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

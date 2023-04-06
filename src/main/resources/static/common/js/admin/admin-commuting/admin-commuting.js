@@ -19,6 +19,7 @@ const approve = function (status) {
 		});
 };
 
+
 const displayViewModal = function (d) {
 	const div = document.getElementById('modify-btn-box');
 	while (div.firstChild) {
@@ -96,7 +97,7 @@ const commuting = function (id) {
 			if (data.type === 'A') {
 				data.content = '추가휴가 ' + data.content + '개'
 			}
-			console.log(data);
+		console.log(data);
 			modifyForm.id.value = data.id;
 			modifyForm.memberId.value = data.member.id;
 			modifyForm.memberName.value = data.member.name;
@@ -148,7 +149,7 @@ const commutings = function (p) {
 					}
 
 					tr += '<tr class="tbbody" onclick="commuting(' + el.id + ')">';
-					tr += '<td>' + el.name + '</td>';
+					tr += '<td>' + el.member.name + '</td>';
 					tr += '<td>' + koreanType(el.type) + '</td>';
 					tr += '<td>' + el.requestDt.replaceAll('-', '.') + ' ' + nullStr(el.requestTm) + '</td>';
 					tr += '<td>' + el.content + '</td>';

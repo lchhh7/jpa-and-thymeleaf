@@ -95,9 +95,9 @@ public class AdminCommutingController {
      * 일정신청관리(관) > 신청내역 조회
      */
     @GetMapping(value = "/admin/commuting/{id}.do")
-    public ResponseEntity<CommutingRequest> findById(@PathVariable("id") int id) throws Exception {
+    public ResponseEntity<AdminCommuteRequestViewDTO> findById(@PathVariable("id") int id) throws Exception {
         try {
-            CommutingRequest commutingRequest = commutingRequestService.findById(id);
+            AdminCommuteRequestViewDTO commutingRequest = commutingRequestService.findById(id);
             return new ResponseEntity<>(commutingRequest, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);

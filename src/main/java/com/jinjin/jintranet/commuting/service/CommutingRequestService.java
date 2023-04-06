@@ -42,10 +42,13 @@ public class CommutingRequestService {
 	}
 
 	@Transactional
-	public CommutingRequest findById(Integer id) {
-		return commutingRequestRepository.findById(id).orElseThrow(() -> {
+	public AdminCommuteRequestViewDTO findById(Integer id) {
+		CommutingRequest commutingRequest = commutingRequestRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("해당 일정을 조회하는중 오류가 발생했습니다");
 		});
+
+		AdminCommuteRequestViewDTO dto = new AdminCommuteRequestViewDTO(commutingRequest);
+		return dto;
 	}
 	
 	@Transactional
