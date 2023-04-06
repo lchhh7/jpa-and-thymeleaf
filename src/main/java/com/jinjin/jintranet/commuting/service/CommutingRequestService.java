@@ -67,8 +67,14 @@ public class CommutingRequestService {
 		commutingRequest.setApproveDt(LocalDateTime.now());
 
 		//영속성 업데이트
+<<<<<<< HEAD
 		member.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
 		
+=======
+		//member.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
+		member.approve(id , commutingRequest , approveDTO);
+
+>>>>>>> chlee
 		if(approveDTO.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
 			Commuting commuting = new Commuting();
 			commuting.setAttendYn(commutingRequest.getType());

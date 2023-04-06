@@ -144,7 +144,7 @@ public class CommutingController {
 					.filter(c -> c.getCnt() ==1)
 					.filter(d -> d.getCommutingTm().getDayOfMonth() == i ).map(m -> m.getCommutingTm()).toList();
 
-			if(dayOfTime.size() < 2) break;
+			if(dayOfTime.size() < 2) continue;
 
 			Duration diff = Duration.between(dayOfTime.get(0).toLocalTime(), dayOfTime.get(1).toLocalTime());
 			if(diff.toHours() > 10)  {

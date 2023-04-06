@@ -49,8 +49,7 @@ public class CommutingRequest extends BaseEntity{
 	private Member approve;
 	
 	private LocalDateTime approveDt;
-	
-	
+
 	@Builder
 	public CommutingRequest(Integer id, String type, String status, Member member, String requestDt,
 			String requestTm, String content, Member approve, LocalDateTime approveDt) {
@@ -64,6 +63,7 @@ public class CommutingRequest extends BaseEntity{
 		this.approve = approve;
 		this.approveDt = approveDt;
 	}
-	
+
+
 	
 }
