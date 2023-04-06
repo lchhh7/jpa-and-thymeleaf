@@ -6,6 +6,7 @@ import java.util.StringJoiner;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -77,7 +78,7 @@ public class AdminCommutingController {
     	
     	Map<String, Object> map = new HashMap<>();
         try {
-            Page<CommutingRequest> approvesList = commutingRequestService.approvesList(principal.getMember(), m , sj.toString() , pageable);
+            Page<AdminCommuteRequestViewDTO> approvesList = commutingRequestService.approvesList(principal.getMember(), m , sj.toString() , pageable);
             String page = PageUtils.page(approvesList, "commutings" , request);
             
             map.put("list" , approvesList);

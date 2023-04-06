@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -48,7 +49,7 @@ public class CommutingRequestService {
 	}
 	
 	@Transactional
-	public Page<CommutingRequest> approvesList(Member member, Integer m, String sj , Pageable pageable) {
+	public Page<AdminCommuteRequestViewDTO> approvesList(Member member, Integer m, String sj , Pageable pageable) {
 		return commutingRequestDslRepository.approvesList(member, m , sj , pageable);
 	}
 	

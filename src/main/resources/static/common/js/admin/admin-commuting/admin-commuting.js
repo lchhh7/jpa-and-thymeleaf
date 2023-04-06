@@ -148,7 +148,7 @@ const commutings = function (p) {
 					}
 
 					tr += '<tr class="tbbody" onclick="commuting(' + el.id + ')">';
-					tr += '<td>' + el.member.name + '</td>';
+					tr += '<td>' + el.name + '</td>';
 					tr += '<td>' + koreanType(el.type) + '</td>';
 					tr += '<td>' + el.requestDt.replaceAll('-', '.') + ' ' + nullStr(el.requestTm) + '</td>';
 					tr += '<td>' + el.content + '</td>';
