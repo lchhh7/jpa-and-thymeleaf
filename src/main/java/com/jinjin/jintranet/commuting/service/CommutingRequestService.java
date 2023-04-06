@@ -57,7 +57,7 @@ public class CommutingRequestService {
 	}
 	
 	@Transactional
-	public void approves(int id, CommuteApproveDTO approveDTO) {
+	public void approves(int id, CommuteApproveDTO approveDTO,  Member member) {
 		CommutingRequest commutingRequest = commutingRequestRepository.findById(id)
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("해당 근태를 찾을 수 없습니다.");
@@ -65,7 +65,9 @@ public class CommutingRequestService {
 
 		commutingRequest.setStatus(approveDTO.getStatus());
 		commutingRequest.setApproveDt(LocalDateTime.now());
-		
+
+		//영속성 업데이트
+		member.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
 		
 		if(approveDTO.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
 			Commuting commuting = new Commuting();

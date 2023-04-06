@@ -61,7 +61,7 @@ public class CommutingService {
 		map.put("workingStatus", commutingRepository.workingStatus(member));
 		return map;
 	}
-	
+
 	@Transactional
 	public List<CommutingsInterface> findAll(Member member, String strDt , String endDt) {
 		//출퇴근은 캘린더에서 수정할수 없어야함
@@ -109,5 +109,9 @@ public class CommutingService {
 		commutingRequest.setStatus("R");
 		commutingRequest.setCreatedBy(member.getName());
 		commutingRequestRepository.save(commutingRequest);
+
+		//영속성 업데이트
+		member.getCommutingRequests().add(commutingRequest);
+		member.setCommutingRequests(member.getCommutingRequests());
 	}
 }

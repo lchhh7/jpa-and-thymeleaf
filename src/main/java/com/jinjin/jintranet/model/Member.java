@@ -50,7 +50,7 @@ public class Member extends BaseEntity implements Serializable {
 	private RoleType role;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "member" , fetch = FetchType.LAZY)
+	@OneToMany(mappedBy = "member" , fetch = FetchType.EAGER)
 	private List<CommutingRequest> commutingRequests;
 	@Transient
 	private Double total;

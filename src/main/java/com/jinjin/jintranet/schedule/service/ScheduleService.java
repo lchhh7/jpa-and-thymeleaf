@@ -105,7 +105,6 @@ public class ScheduleService {
 	}
 
 
-	
 	@Transactional
 	public List<ScheduleSearchDTO> read(Schedule schedule) {
 		return scheduleDslRepository.findSchedule(schedule);
