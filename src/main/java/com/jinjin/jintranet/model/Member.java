@@ -4,12 +4,6 @@ import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
-<<<<<<< HEAD
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
-=======
->>>>>>> cf6c00c53180fa6c538441b605cd2c3c06611366
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
