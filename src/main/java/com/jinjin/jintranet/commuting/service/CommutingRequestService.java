@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -52,17 +53,17 @@ public class CommutingRequestService {
 	}
 	
 	@Transactional
-	public void approves(int id, CommutingRequest requestCommutingRequest) {
+	public void approves(int id, CommuteApproveDTO approveDTO) {
 		CommutingRequest commutingRequest = commutingRequestRepository.findById(id)
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("해당 근태를 찾을 수 없습니다.");
 				});
 		
-		commutingRequest.setStatus(requestCommutingRequest.getStatus());
+		commutingRequest.setStatus(approveDTO.getStatus());
 		commutingRequest.setApproveDt(LocalDateTime.now());
 		
 		
-		if(requestCommutingRequest.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
+		if(approveDTO.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
 			Commuting commuting = new Commuting();
 			commuting.setAttendYn(commutingRequest.getType());
 			commuting.setMember(commutingRequest.getMember());

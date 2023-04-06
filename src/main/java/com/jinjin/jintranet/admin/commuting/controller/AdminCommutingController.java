@@ -6,6 +6,7 @@ import java.util.StringJoiner;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -116,9 +117,9 @@ public class AdminCommutingController {
     @PutMapping(value = "/admin/commuting/{id}.do")
     public ResponseEntity<String> approve(
             @PathVariable("id") int id,
-            @RequestBody CommutingRequest commutingRequest) throws Exception {
+            @RequestBody CommuteApproveDTO approveDTO) throws Exception {
         try {
-            commutingRequestService.approves(id, commutingRequest);
+            commutingRequestService.approves(id, approveDTO);
             return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
