@@ -1,17 +1,14 @@
 package com.jinjin.jintranet.model.Qfile;
 
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+import com.jinjin.jintranet.model.CommutingRequest;
+import com.jinjin.jintranet.model.QBaseEntity;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
 
 import javax.annotation.processing.Generated;
 
-import com.jinjin.jintranet.model.CommutingRequest;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.PathInits;
-import com.querydsl.core.types.dsl.StringPath;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -26,7 +23,7 @@ public class QCommutingRequest extends EntityPathBase<CommutingRequest> {
 
     public static final QCommutingRequest commutingRequest = new QCommutingRequest("commutingRequest");
 
-    public final QBaseEntity _super = new QBaseEntity(this);
+    public final com.jinjin.jintranet.model.QBaseEntity _super = new QBaseEntity(this);
 
     public final QMember approve;
 

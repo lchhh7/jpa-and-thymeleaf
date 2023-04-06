@@ -19,28 +19,6 @@ const approve = function (status) {
 		});
 };
 
-const approveInit = function() {
-	if (!confirm ('요청을 처리하시겠습니까?')) return false;
-	
-	const data = {
-		id : modifyForm.id.value , 
-		memberId : modifyForm.memberId.value , 
-		requestDt : modifyForm.requestDt.value
-	};
-	
-	$.ajax({
-		url : contextPath + '/admin/commuting/approveInit.do' , 
-		method : 'patch' , 
-		data : JSON.stringify(data) , 
-		contentType : "application/json; charset=utf-8"
-	}).done(function(data) {
-		alert('승인초기화가 완료되었습니다');
-		closeModal('modify-modal');
-		
-	}).fail(function(data) {
-		alert(data.responseText);
-	});
-};
 
 const displayViewModal = function (d) {
 	const div = document.getElementById('modify-btn-box');
@@ -56,7 +34,7 @@ const displayViewModal = function (d) {
 	closeBtn.addEventListener('click', function () {
 		closeModal('modify-modal');
 	});
-	
+
 	if (d.status === 'R' || d.status === 'C') {
 		let yBtn = document.createElement('a');
 		yBtn.setAttribute('role', 'button');
@@ -89,7 +67,7 @@ const displayViewModal = function (d) {
 		div.appendChild(yBtn);
 		div.appendChild(nBtn);
 	}
-	
+
 	if ((d.status === 'Y' || d.status === 'N') && d.type === 'O') {
 		let initBtn = document.createElement('a');
 		initBtn.setAttribute('role', 'button');
@@ -97,14 +75,14 @@ const displayViewModal = function (d) {
 		initBtn.classList.add('jjgreen');
 		initBtn.classList.add('mr5');
 		initBtn.innerText = '승인초기화';
-		
+
 		initBtn.addEventListener('click', function () {
-			approveInit();
+			approve('R');
 		}, true);
-		
+
 		div.appendChild(initBtn);
 	}
-	
+
 	div.appendChild(closeBtn);
 }
 

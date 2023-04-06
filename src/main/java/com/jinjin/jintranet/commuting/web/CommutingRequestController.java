@@ -1,6 +1,7 @@
 package com.jinjin.jintranet.commuting.web;
 
 
+import com.jinjin.jintranet.commuting.dto.CommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.service.CommutingRequestService;
 import com.jinjin.jintranet.commuting.service.CommutingService;
 import com.jinjin.jintranet.holiday.service.HolidayService;
@@ -42,11 +43,12 @@ public class CommutingRequestController {
 	}
 
 	@GetMapping("/commuting/searching.do")
-	public ResponseEntity<List<CommutingRequest>> searching(
+	public ResponseEntity<List<CommuteRequestViewDTO>> searching(
 			@RequestParam(value ="st", required = false , defaultValue = "") String st,
 			@RequestParam(value ="y", required = false , defaultValue ="") String y,
 			@AuthenticationPrincipal PrincipalDetail principal) {
-		List<CommutingRequest> list = commutingRequestService.commutingRequestSearching(principal.getMember() , st , y);
+		List<CommuteRequestViewDTO> list = commutingRequestService.commutingRequestSearching(principal.getMember() , st , y)
+				.stream().map(m -> new CommuteRequestViewDTO(m)).toList();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 	

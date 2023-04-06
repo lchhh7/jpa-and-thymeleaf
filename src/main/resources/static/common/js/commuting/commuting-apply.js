@@ -20,7 +20,7 @@ const searching = function() {
 					tr += '<td>' + koreanType(e.type) + '</td>';
 					tr += '<td>' + formatDate(new Date(e.requestDt)).replaceAll('-', '.') + '</td>';
 					tr += '<td>' + formatDate(new Date(e.crtDt)).replaceAll('-', '.') + '</td>';
-					tr += '<td>' + e.approve.name + '</td>';
+					tr += '<td>' + e.name + '</td>';
 					tr += '<td><span>' + koreanStatus(e.status) + '</span></td>';
 					tr += '</tr>';
 				});

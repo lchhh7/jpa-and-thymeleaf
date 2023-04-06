@@ -3,7 +3,9 @@ package com.jinjin.jintranet.commuting.repository;
 import java.util.Arrays;
 import java.util.List;
 
+import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.model.Schedule;
+import com.querydsl.core.types.Projections;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -26,8 +28,12 @@ public class CommutingRequestDslRepository {
 	
 	QCommutingRequest commutingRequest = QCommutingRequest.commutingRequest;
 	
-	public Page<CommutingRequest> approvesList(Member member , Integer approveId , String status , Pageable pageable) {
-		List<CommutingRequest> approvesList =  jPAQueryFactory.selectFrom(commutingRequest)
+	public Page<AdminCommuteRequestViewDTO> approvesList(Member member , Integer approveId , String status , Pageable pageable) {
+		List<AdminCommuteRequestViewDTO> approvesList =  jPAQueryFactory
+				.select(
+						Projections.bean(AdminCommuteRequestViewDTO.class , commutingRequest.id, commutingRequest.member , commutingRequest.type ,
+								commutingRequest.requestDt, commutingRequest.requestTm , commutingRequest.content , commutingRequest.status))
+				.from(commutingRequest)
 				.where(approveEq(member),memberEq2(approveId) ,statusBb(status))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())

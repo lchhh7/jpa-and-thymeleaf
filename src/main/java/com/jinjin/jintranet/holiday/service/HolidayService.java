@@ -16,7 +16,7 @@ public class HolidayService {
 
 	@Autowired
 	private HolidayRepository holidayRepository;
-	
+
 	@Transactional
 	public List<Holiday> findByMonth(LocalDateTime sdt , LocalDateTime edt) {
 		return holidayRepository.findByMonth(sdt , edt);

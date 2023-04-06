@@ -99,14 +99,23 @@ public class CommutingController {
             List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd), DateUtils.toLocalDateTime(ed));
             List<ScheduleSearchDTO> schedules = scheduleService.read(schedule);
             List<CommutingsInterface> commute = commutingService.findAll(principal.getMember() ,sd ,ed);
-            List<CommuteRequestDTO> commuteRequests = commutingRequestService.findAll(principal.getMember() , sd, ed)
+
+			List<CommuteRequestDTO> commuteRequests = principal.getMember().getCommutingRequests().stream()
+					.filter(m -> LocalDate.parse(m.getRequestDt()).isAfter(LocalDate.parse(sd)))
+					.filter(m -> LocalDate.parse(m.getRequestDt()).isBefore(LocalDate.parse(ed)))
+					.map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
+			CommuteRequestDTO nearList = null;
+			if(commuteRequests.size() !=0) {
+				 nearList = commuteRequests.stream().sorted(Comparator.comparing(CommuteRequestDTO::getRequestDt).reversed()).toList().get(0);
+			}
+           /* List<CommuteRequestDTO> commuteRequests = commutingRequestService.findAll(principal.getMember() , sd, ed)
             		.stream().map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
 
 			List<CommutingRequest> list = commutingRequestService.commutingRequestSearching(principal.getMember() , null , null);
 			CommutingRequest nearList = null;
 			if(list.size() !=0) {
 				nearList = list.stream().sorted(Comparator.comparing(CommutingRequest::getRequestDt).reversed()).toList().get(0);
-			}
+			}*/
 
             map.put("holidays" , holidays);
             map.put("schedules", schedules);

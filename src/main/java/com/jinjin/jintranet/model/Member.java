@@ -1,14 +1,8 @@
 package com.jinjin.jintranet.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Transient;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -16,11 +10,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
+import java.io.Serializable;
+import java.util.List;
+
+
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
-public class Member extends BaseEntity{
+public class Member extends BaseEntity implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -50,7 +48,10 @@ public class Member extends BaseEntity{
 	// 시큐리티 ROLE 용
 	@Enumerated(EnumType.STRING)
 	private RoleType role;
-	
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "member" , fetch = FetchType.EAGER)
+	private List<CommutingRequest> commutingRequests;
 	@Transient
 	private Double total;
 	

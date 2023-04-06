@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
+import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -40,29 +42,34 @@ public class CommutingRequestService {
 	}
 
 	@Transactional
-	public CommutingRequest findById(Integer id) {
-		return commutingRequestRepository.findById(id).orElseThrow(() -> {
+	public AdminCommuteRequestViewDTO findById(Integer id) {
+		CommutingRequest commutingRequest = commutingRequestRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("해당 일정을 조회하는중 오류가 발생했습니다");
 		});
+
+		AdminCommuteRequestViewDTO dto = new AdminCommuteRequestViewDTO(commutingRequest);
+		return dto;
 	}
 	
 	@Transactional
-	public Page<CommutingRequest> approvesList(Member member, Integer m, String sj , Pageable pageable) {
+	public Page<AdminCommuteRequestViewDTO> approvesList(Member member, Integer m, String sj , Pageable pageable) {
 		return commutingRequestDslRepository.approvesList(member, m , sj , pageable);
 	}
 	
 	@Transactional
-	public void approves(int id, CommutingRequest requestCommutingRequest) {
+	public void approves(int id, CommuteApproveDTO approveDTO,  Member member) {
 		CommutingRequest commutingRequest = commutingRequestRepository.findById(id)
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("해당 근태를 찾을 수 없습니다.");
 				});
-		
-		commutingRequest.setStatus(requestCommutingRequest.getStatus());
+
+		commutingRequest.setStatus(approveDTO.getStatus());
 		commutingRequest.setApproveDt(LocalDateTime.now());
+
+		//영속성 업데이트
+		member.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
 		
-		
-		if(requestCommutingRequest.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
+		if(approveDTO.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
 			Commuting commuting = new Commuting();
 			commuting.setAttendYn(commutingRequest.getType());
 			commuting.setMember(commutingRequest.getMember());

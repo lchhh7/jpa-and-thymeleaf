@@ -1,20 +1,14 @@
 package com.jinjin.jintranet.model.Qfile;
 
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+import com.jinjin.jintranet.model.QBaseEntity;
+import com.jinjin.jintranet.model.*;
+import com.querydsl.core.types.Path;
+import com.querydsl.core.types.PathMetadata;
+import com.querydsl.core.types.dsl.*;
 
 import javax.annotation.processing.Generated;
 
-import com.jinjin.jintranet.model.DepartmentType;
-import com.jinjin.jintranet.model.Member;
-import com.jinjin.jintranet.model.PositionType;
-import com.jinjin.jintranet.model.RoleType;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.EnumPath;
-import com.querydsl.core.types.dsl.NumberPath;
-import com.querydsl.core.types.dsl.StringPath;
+import static com.querydsl.core.types.PathMetadataFactory.forVariable;
 
 
 /**
@@ -27,7 +21,9 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
-    public final QBaseEntity _super = new QBaseEntity(this);
+    public final com.jinjin.jintranet.model.QBaseEntity _super = new QBaseEntity(this);
+
+    public final ListPath<CommutingRequest, QCommutingRequest> commutingRequests = this.<CommutingRequest, QCommutingRequest>createList("commutingRequests", CommutingRequest.class, QCommutingRequest.class, PathInits.DIRECT2);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;
@@ -53,6 +49,8 @@ public class QMember extends EntityPathBase<Member> {
     public final StringPath modifiedBy = _super.modifiedBy;
 
     public final StringPath name = createString("name");
+
+    public final StringPath oauthId = createString("oauthId");
 
     public final StringPath password = createString("password");
 

@@ -6,6 +6,8 @@ import java.util.StringJoiner;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
+import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -76,7 +78,7 @@ public class AdminCommutingController {
     	
     	Map<String, Object> map = new HashMap<>();
         try {
-            Page<CommutingRequest> approvesList = commutingRequestService.approvesList(principal.getMember(), m , sj.toString() , pageable);
+            Page<AdminCommuteRequestViewDTO> approvesList = commutingRequestService.approvesList(principal.getMember(), m , sj.toString() , pageable);
             String page = PageUtils.page(approvesList, "commutings" , request);
             
             map.put("list" , approvesList);
@@ -93,9 +95,9 @@ public class AdminCommutingController {
      * 일정신청관리(관) > 신청내역 조회
      */
     @GetMapping(value = "/admin/commuting/{id}.do")
-    public ResponseEntity<CommutingRequest> findById(@PathVariable("id") int id) throws Exception {
+    public ResponseEntity<AdminCommuteRequestViewDTO> findById(@PathVariable("id") int id) throws Exception {
         try {
-            CommutingRequest commutingRequest = commutingRequestService.findById(id);
+            AdminCommuteRequestViewDTO commutingRequest = commutingRequestService.findById(id);
             return new ResponseEntity<>(commutingRequest, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.CONFLICT);
@@ -116,9 +118,11 @@ public class AdminCommutingController {
     @PutMapping(value = "/admin/commuting/{id}.do")
     public ResponseEntity<String> approve(
             @PathVariable("id") int id,
-            @RequestBody CommutingRequest commutingRequest) throws Exception {
+            @RequestBody CommuteApproveDTO approveDTO ,
+            @AuthenticationPrincipal PrincipalDetail principal
+            ) throws Exception {
         try {
-            commutingRequestService.approves(id, commutingRequest);
+            commutingRequestService.approves(id, approveDTO , principal.getMember());
             return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
