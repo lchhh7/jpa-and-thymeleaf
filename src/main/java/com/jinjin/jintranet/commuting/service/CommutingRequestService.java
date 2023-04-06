@@ -58,7 +58,7 @@ public class CommutingRequestService {
 				.orElseThrow(() -> {
 					return new IllegalArgumentException("해당 근태를 찾을 수 없습니다.");
 				});
-		
+
 		commutingRequest.setStatus(approveDTO.getStatus());
 		commutingRequest.setApproveDt(LocalDateTime.now());
 		
