@@ -111,7 +111,8 @@ public class CommutingService {
 		commutingRequestRepository.save(commutingRequest);
 
 		//영속성 업데이트
-		member.getCommutingRequests().add(commutingRequest);
-		member.setCommutingRequests(member.getCommutingRequests());
+		member.add(commutingRequest);
+		//member.getCommutingRequests().add(commutingRequest);
+		//member.setCommutingRequests(member.getCommutingRequests());
 	}
 }
