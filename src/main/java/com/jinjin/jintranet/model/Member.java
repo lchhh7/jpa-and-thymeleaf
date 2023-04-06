@@ -1,9 +1,9 @@
 package com.jinjin.jintranet.model;
 
 import javax.persistence.*;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
-
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
