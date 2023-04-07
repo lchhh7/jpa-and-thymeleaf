@@ -22,6 +22,8 @@ public class AdminCommuteRequestViewDTO {
 	private String requestTm;
 	private String content;
 	private String status;
+
+	private String approveName;
 	private LocalDateTime approveDt;
 
 	@Builder
@@ -33,6 +35,7 @@ public class AdminCommuteRequestViewDTO {
 		this.requestTm = commutingRequest.getRequestTm();
 		this.content = commutingRequest.getContent();
 		this.status = commutingRequest.getStatus();
+		this.approveName = commutingRequest.getApprove().getName();
 		this.approveDt = commutingRequest.getApproveDt();
 	}
 }

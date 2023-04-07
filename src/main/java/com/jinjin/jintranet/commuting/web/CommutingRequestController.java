@@ -1,6 +1,7 @@
 package com.jinjin.jintranet.commuting.web;
 
 
+import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.service.CommutingRequestService;
 import com.jinjin.jintranet.commuting.service.CommutingService;
@@ -16,6 +17,8 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.jsp.tagext.TryCatchFinally;
 import java.util.List;
 
 
@@ -51,6 +54,35 @@ public class CommutingRequestController {
 				.stream().map(m -> new CommuteRequestViewDTO(m)).toList();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
-	
+
+	@GetMapping("/commuting/request/{id}.do")
+	public ResponseEntity<AdminCommuteRequestViewDTO> requesting(
+			@PathVariable("id") int id) {
+		AdminCommuteRequestViewDTO dto = commutingRequestService.findById(id);
+		return new ResponseEntity<>(dto, HttpStatus.OK);
+	}
+
+	@PostMapping(value="/commuting/editRequest/{id}.do")
+	public ResponseEntity<String> editRequest(
+			@PathVariable("id") int id ,
+			@RequestBody AdminCommuteRequestViewDTO dto) throws Exception{
+		try {
+			commutingRequestService.EditRequest(id,dto);
+			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
+		}
+	}
+
+	@DeleteMapping(value="/commuting/deleteRequest/{id}.do")
+	public ResponseEntity<String> deleteRequest(
+			@PathVariable("id") int id) {
+		try {
+			commutingRequestService.DeleteRequest(id);
+			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
+		}
+	}
 
 }

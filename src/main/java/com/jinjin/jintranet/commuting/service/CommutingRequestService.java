@@ -7,6 +7,7 @@ import javax.transaction.Transactional;
 
 import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
+import com.jinjin.jintranet.commuting.dto.CommuteRequestViewDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -94,5 +95,20 @@ public class CommutingRequestService {
 	@Transactional
 	public List<String> yearList(Member member) {
 		return commutingRequestRepository.yearList(member);
+	}
+
+	@Transactional
+	public void EditRequest(int id , AdminCommuteRequestViewDTO dto) {
+		CommutingRequest commutingRequest = commutingRequestRepository.findById(id).orElseThrow(() -> {
+			return new IllegalArgumentException("해당 일정을 조회하는중 오류가 발생했습니다");
+		});
+
+		commutingRequest.setRequestTm(dto.getRequestTm());
+		commutingRequest.setContent(dto.getContent());
+	}
+
+	@Transactional
+	public void DeleteRequest(int id) {
+		commutingRequestRepository.deleteById(id);
 	}
 }
