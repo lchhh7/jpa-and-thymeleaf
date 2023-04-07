@@ -3,6 +3,7 @@ package com.jinjin.jintranet.model;
 import javax.persistence.*;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -78,5 +79,13 @@ public class Member extends BaseEntity implements Serializable {
 	public Member update(String name) {
 		this.name = name;
 		return this;
+	}
+
+	public void add(CommutingRequest commutingRequest) {
+		commutingRequest.setMember(this);
+		this.getCommutingRequests().add(commutingRequest);
+	}
+	public void approve(int id, CommutingRequest commutingRequest , CommuteApproveDTO approveDTO) {
+		this.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
 	}
 }
