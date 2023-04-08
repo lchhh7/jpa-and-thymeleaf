@@ -13,6 +13,7 @@ import lombok.Setter;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Getter
@@ -85,7 +86,12 @@ public class Member extends BaseEntity implements Serializable {
 		commutingRequest.setMember(this);
 		this.getCommutingRequests().add(commutingRequest);
 	}
-	public void approve(int id, CommutingRequest commutingRequest , CommuteApproveDTO approveDTO) {
+	public void delete(int id) {
+		this.getCommutingRequests().stream().filter(m ->m.getId() ==id)
+				.collect(Collectors.toList())
+				.forEach(li -> this.getCommutingRequests().remove(li));
+	}
+	public void approve(int id, CommuteApproveDTO approveDTO) {
 		this.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
 	}
 }

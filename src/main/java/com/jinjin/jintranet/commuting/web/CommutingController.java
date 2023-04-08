@@ -103,6 +103,7 @@ public class CommutingController {
 			List<CommuteRequestDTO> commuteRequests = principal.getMember().getCommutingRequests().stream()
 					.filter(m -> LocalDate.parse(m.getRequestDt()).isAfter(LocalDate.parse(sd)))
 					.filter(m -> LocalDate.parse(m.getRequestDt()).isBefore(LocalDate.parse(ed)))
+					.filter(m -> m.getDeletedBy() == null)
 					.map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
 			CommuteRequestDTO nearList = null;
 			if(commuteRequests.size() !=0) {
