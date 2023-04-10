@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import com.jinjin.jintranet.model.CommutingRequest;
+import lombok.RequiredArgsConstructor;
 import net.bytebuddy.asm.Advice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,27 +45,18 @@ import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Controller
+@RequiredArgsConstructor
 public class CommutingController {
 	
-	private CommutingService commutingService;
+	private final CommutingService commutingService;
 	
-	private ScheduleService scheduleService;
+	private final ScheduleService scheduleService;
 	
-	private MemberService memberService;
+	private final MemberService memberService;
 	
-	private HolidayService holidayService;
+	private final HolidayService holidayService;
 	
-	private CommutingRequestService commutingRequestService;
-	
-	
-	public CommutingController(CommutingService commutingService, ScheduleService scheduleService,
-			MemberService memberService, HolidayService holidayService, CommutingRequestService commutingRequestService) {
-		this.commutingService = commutingService;
-		this.scheduleService = scheduleService;
-		this.memberService = memberService;
-		this.holidayService = holidayService;
-		this.commutingRequestService = commutingRequestService;
-	}
+	private final CommutingRequestService commutingRequestService;
 
 	@GetMapping("/commuting.do")
 	public String commuting(Model model , HttpServletRequest request, @AuthenticationPrincipal PrincipalDetail principal) {

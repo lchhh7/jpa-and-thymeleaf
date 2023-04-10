@@ -11,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
+import lombok.RequiredArgsConstructor;
 import org.joda.time.LocalDate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,26 +45,16 @@ import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Controller
+@RequiredArgsConstructor
 public class ScheduleController {
 
-	@PersistenceContext
-	private EntityManager em;
+	private final MemberService memberService;
 
-	private MemberService memberService;
+	private final ScheduleService scheduleService;
 
-	private ScheduleService scheduleService;
+	private final HolidayService holidayService;
 
-	private HolidayService holidayService;
-
-	private VacationDaysUtils vacationDaysUtils;
-
-	public ScheduleController(MemberService memberService, ScheduleService scheduleService,
-			HolidayService holidayService, VacationDaysUtils vacationDaysUtils) {
-		this.memberService = memberService;
-		this.scheduleService = scheduleService;
-		this.holidayService = holidayService;
-		this.vacationDaysUtils = vacationDaysUtils;
-	}
+	private final VacationDaysUtils vacationDaysUtils;
 
 	/**
 	 * 일정관리 > 메인화면

@@ -11,6 +11,7 @@ import com.jinjin.jintranet.model.CommutingRequest;
 
 import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,27 +24,18 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 public class CommutingRequestController {
 
-	private CommutingService commutingService;
+	private final CommutingService commutingService;
 
-	private ScheduleService scheduleService;
+	private final ScheduleService scheduleService;
 
-	private MemberService memberService;
+	private final MemberService memberService;
 
-	private HolidayService holidayService;
+	private final HolidayService holidayService;
 
-	private CommutingRequestService commutingRequestService;
-
-
-	public CommutingRequestController(CommutingService commutingService, ScheduleService scheduleService,
-                                      MemberService memberService, HolidayService holidayService, CommutingRequestService commutingRequestService) {
-		this.commutingService = commutingService;
-		this.scheduleService = scheduleService;
-		this.memberService = memberService;
-		this.holidayService = holidayService;
-		this.commutingRequestService = commutingRequestService;
-	}
+	private final CommutingRequestService commutingRequestService;
 
 	@GetMapping("/commuting/searching.do")
 	public ResponseEntity<List<CommuteRequestViewDTO>> searching(

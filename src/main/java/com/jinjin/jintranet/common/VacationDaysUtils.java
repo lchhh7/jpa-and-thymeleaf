@@ -2,6 +2,7 @@ package com.jinjin.jintranet.common;
 
 import java.util.List;
 
+import lombok.RequiredArgsConstructor;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 
@@ -11,14 +12,9 @@ import com.jinjin.jintranet.model.Schedule;
 import com.jinjin.jintranet.schedule.repository.ScheduleDslRepository;
 
 @Component
+@RequiredArgsConstructor
 public class VacationDaysUtils {
-	
     private ScheduleDslRepository scheduleRepository;
-	
-    
-    public VacationDaysUtils(ScheduleDslRepository scheduleRepository, HolidayRepository holidayRepository) {
-		this.scheduleRepository = scheduleRepository;
-	}
 
 	public Member getMemberVacationDays(
             Member member, int year, int month, int date) throws Exception {

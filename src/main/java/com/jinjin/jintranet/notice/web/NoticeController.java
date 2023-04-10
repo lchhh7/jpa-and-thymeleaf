@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -32,18 +33,12 @@ import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 
 @Controller
+@RequiredArgsConstructor
 public class NoticeController {
-    
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
     
    private final NoticeService noticeService;
-    
-    
-    public NoticeController(NoticeService noticeService,ScheduleService scheduleService) {
-    	this.noticeService = noticeService;
-    	this.scheduleService = scheduleService;
-    }
-    
+
     @GetMapping(value = "/notice.do")
     public String main(Model model, HttpServletRequest request , 
     		@RequestParam(value = "searchType" , required = false , defaultValue = "") String searchType ,

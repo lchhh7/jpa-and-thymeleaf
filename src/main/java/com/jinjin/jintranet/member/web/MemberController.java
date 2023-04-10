@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -35,23 +36,16 @@ import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Controller
+@RequiredArgsConstructor
 public class MemberController {
 
-    private MemberService memberService;
+    private final MemberService memberService;
 
-    private ScheduleService scheduleService;
+    private final ScheduleService scheduleService;
 
-    private CommutingService commutingService;
+    private final CommutingService commutingService;
 
-    private NoticeService noticeService;
-
-    public MemberController(MemberService memberService, ScheduleService scheduleService,
-                            CommutingService commutingService, NoticeService noticeService) {
-        this.memberService = memberService;
-        this.scheduleService = scheduleService;
-        this.commutingService = commutingService;
-        this.noticeService = noticeService;
-    }
+    private final NoticeService noticeService;
 
     @GetMapping("/login.do")
     public String loginPage() {
