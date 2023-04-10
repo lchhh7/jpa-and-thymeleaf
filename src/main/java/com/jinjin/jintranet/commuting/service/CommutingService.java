@@ -110,7 +110,7 @@ public class CommutingService {
 		commutingRequest.setCreatedBy(member.getName());
 		commutingRequestRepository.save(commutingRequest);
 
-		//영속성 업데이트
+		//연관관계 편의성 메소드
 		member.add(commutingRequest);
 		//member.getCommutingRequests().add(commutingRequest);
 		//member.setCommutingRequests(member.getCommutingRequests());

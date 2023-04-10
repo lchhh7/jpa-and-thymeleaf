@@ -50,7 +50,7 @@ public class CommutingRequestDslRepository {
 
 	public List<CommutingRequest> commutingRequestSearching(Member member,  String st , String y) {
 		 List<CommutingRequest> approvesList =  jPAQueryFactory.selectFrom(commutingRequest)
-				.where(memberEq2(member.getId()) , typeEq(st) , yearEq(y)).fetch();
+				.where(memberEq2(member.getId()) , typeEq(st) , yearEq(y) , commutingRequest.deletedBy.isNull()).fetch();
 		return approvesList;
 	}
 

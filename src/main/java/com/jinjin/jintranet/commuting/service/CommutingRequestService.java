@@ -67,9 +67,9 @@ public class CommutingRequestService {
 		commutingRequest.setStatus(approveDTO.getStatus());
 		commutingRequest.setApproveDt(LocalDateTime.now());
 
-		//영속성 업데이트
+		//연관관계 편의성 메소드
 		//member.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
-		member.approve(id , commutingRequest , approveDTO);
+		member.approve(id , approveDTO);
 
 		if(approveDTO.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
 			Commuting commuting = new Commuting();
@@ -100,7 +100,7 @@ public class CommutingRequestService {
 	@Transactional
 	public void EditRequest(int id , AdminCommuteRequestViewDTO dto) {
 		CommutingRequest commutingRequest = commutingRequestRepository.findById(id).orElseThrow(() -> {
-			return new IllegalArgumentException("해당 일정을 조회하는중 오류가 발생했습니다");
+			return new IllegalArgumentException("해당 일정을 수정하는중 오류가 발생했습니다");
 		});
 
 		commutingRequest.setRequestTm(dto.getRequestTm());
@@ -108,7 +108,13 @@ public class CommutingRequestService {
 	}
 
 	@Transactional
-	public void DeleteRequest(int id) {
-		commutingRequestRepository.deleteById(id);
+	public void DeleteRequest(int id , Member member) {
+		CommutingRequest commutingRequest = commutingRequestRepository.findById(id).orElseThrow(() -> {
+			return new IllegalArgumentException("해당 일정을 삭제하는중 오류가 발생했습니다");
+		});
+
+		member.delete(id);
+
+		commutingRequest.setDeletedBy(member.getName());
 	}
 }

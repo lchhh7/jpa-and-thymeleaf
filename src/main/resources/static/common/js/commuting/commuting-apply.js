@@ -88,10 +88,13 @@ const searching = function() {
  		contentType: 'application/json; charset=utf-8'
  	})
  		.done(function(data) {
+			 console.log("!!!!!!!!!!!");
+
  			alert(data);
  			location.reload();
  		})
  		.fail(function(data) {
+			 console.log("@@@@@@@@@@@@@@");
  			alert(data.responseText);
  			return false;
  		});
@@ -102,7 +105,7 @@ const searching = function() {
 
  		$.ajax({
  			url: contextPath + '/commuting/editRequest/' + requestForm.id.value + '.do',
- 			method: 'post',
+ 			method: 'put',
  			data: JSON.stringify({
  				requestDt: requestForm.requestDt.value,
  				requestTm: requestForm.requestTm.value,

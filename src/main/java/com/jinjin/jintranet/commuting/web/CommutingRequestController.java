@@ -54,7 +54,7 @@ public class CommutingRequestController {
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
 
-	@PostMapping(value="/commuting/editRequest/{id}.do")
+	@PutMapping(value="/commuting/editRequest/{id}.do")
 	public ResponseEntity<String> editRequest(
 			@PathVariable("id") int id ,
 			@RequestBody AdminCommuteRequestViewDTO dto) throws Exception{
@@ -68,9 +68,10 @@ public class CommutingRequestController {
 
 	@DeleteMapping(value="/commuting/deleteRequest/{id}.do")
 	public ResponseEntity<String> deleteRequest(
-			@PathVariable("id") int id) {
+			@PathVariable("id") int id ,
+			@AuthenticationPrincipal PrincipalDetail principal) {
 		try {
-			commutingRequestService.DeleteRequest(id);
+			commutingRequestService.DeleteRequest(id , principal.getMember());
 			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
 		} catch (Exception e) {
 			return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
