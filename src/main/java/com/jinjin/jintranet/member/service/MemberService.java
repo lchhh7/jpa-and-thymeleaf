@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -26,14 +27,10 @@ import com.jinjin.jintranet.model.RoleType;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Service
+@RequiredArgsConstructor
 public class MemberService {
-	
-	@Autowired
-	private MemberRepository memberRepository;
-	
-	@Autowired
-	private MemberDslRepository memberDslRepository;
-	
+	private final MemberRepository memberRepository;
+	private final MemberDslRepository memberDslRepository;
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 	

@@ -38,7 +38,6 @@ import com.jinjin.jintranet.security.auth.PrincipalDetail;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
-
     private final MemberService memberService;
 
     private final ScheduleService scheduleService;

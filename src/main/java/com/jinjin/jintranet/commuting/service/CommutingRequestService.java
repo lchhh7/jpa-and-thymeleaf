@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestViewDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -21,21 +22,14 @@ import com.jinjin.jintranet.model.CommutingRequest;
 import com.jinjin.jintranet.model.Member;
 
 @Service
+@RequiredArgsConstructor
 public class CommutingRequestService {
 	
-	private CommutingRepository commutingRepository; 
+	private final CommutingRepository commutingRepository;
 
-	private CommutingRequestRepository commutingRequestRepository; 
+	private final CommutingRequestRepository commutingRequestRepository;
 	
-	private CommutingRequestDslRepository commutingRequestDslRepository; 
-
-	public CommutingRequestService(CommutingRepository commutingRepository,
-			CommutingRequestRepository commutingRequestRepository,
-			CommutingRequestDslRepository commutingRequestDslRepository) {
-		this.commutingRepository = commutingRepository;
-		this.commutingRequestRepository = commutingRequestRepository;
-		this.commutingRequestDslRepository = commutingRequestDslRepository;
-	}
+	private final CommutingRequestDslRepository commutingRequestDslRepository;
 
 	@Transactional
 	public List<CommutingRequest> findAll(Member member, String strDt , String endDt) {

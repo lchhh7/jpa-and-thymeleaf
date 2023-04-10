@@ -14,7 +14,7 @@ import com.jinjin.jintranet.schedule.repository.ScheduleDslRepository;
 @Component
 @RequiredArgsConstructor
 public class VacationDaysUtils {
-    private ScheduleDslRepository scheduleRepository;
+    private final ScheduleDslRepository scheduleRepository;
 
 	public Member getMemberVacationDays(
             Member member, int year, int month, int date) throws Exception {

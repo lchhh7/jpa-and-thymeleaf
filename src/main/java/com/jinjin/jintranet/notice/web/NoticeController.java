@@ -36,7 +36,6 @@ import com.jinjin.jintranet.security.auth.PrincipalDetail;
 @RequiredArgsConstructor
 public class NoticeController {
     private final ScheduleService scheduleService;
-    
    private final NoticeService noticeService;
 
     @GetMapping(value = "/notice.do")

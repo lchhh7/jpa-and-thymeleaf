@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -24,24 +25,16 @@ import com.jinjin.jintranet.schedule.repository.ScheduleRepository;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Service
+@RequiredArgsConstructor
 public class ScheduleService {
 	
-	private ScheduleRepository scheduleRepository;
+	private final ScheduleRepository scheduleRepository;
 	
-	private ScheduleDslRepository scheduleDslRepository;
+	private final ScheduleDslRepository scheduleDslRepository;
 	
-	private MemberRepository memberRepository;
+	private final MemberRepository memberRepository;
 	
-	private VacationDaysUtils vacationDaysUtils;
-	
-	
-	public ScheduleService(ScheduleRepository scheduleRepository, ScheduleDslRepository scheduleDslRepository,
-			MemberRepository memberRepository , VacationDaysUtils vacationDaysUtils) {
-		this.scheduleRepository = scheduleRepository;
-		this.scheduleDslRepository = scheduleDslRepository;
-		this.memberRepository = memberRepository;
-		this.vacationDaysUtils = vacationDaysUtils;
-	}
+	private final VacationDaysUtils vacationDaysUtils;
 	
 	@Transactional
 	public void write(ScheduleInsertDTO scheduleDTO , Member member , Member approve) {
