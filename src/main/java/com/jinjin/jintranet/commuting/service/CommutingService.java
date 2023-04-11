@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
@@ -20,21 +21,14 @@ import com.jinjin.jintranet.model.CommutingRequest;
 import com.jinjin.jintranet.model.Member;
 
 @Service
+@RequiredArgsConstructor
 public class CommutingService {
 	
-	private MemberRepository memberRepository; 
+	private final MemberRepository memberRepository;
 	
-	private CommutingRepository commutingRepository; 
+	private final CommutingRepository commutingRepository;
 	
-	private CommutingRequestRepository commutingRequestRepository; 
-	
-	
-	public CommutingService(MemberRepository memberRepository , 
-			CommutingRepository commutingRepository, CommutingRequestRepository commutingRequestRepository) {
-		this.memberRepository = memberRepository;
-		this.commutingRepository = commutingRepository;
-		this.commutingRequestRepository = commutingRequestRepository;
-	}
+	private final CommutingRequestRepository commutingRequestRepository;
 
 	@Transactional
 	public void write(Commuting commuting , Member member) {

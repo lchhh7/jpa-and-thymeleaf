@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -32,16 +33,12 @@ import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Controller
+@RequiredArgsConstructor
 public class AdminMemberController {
 	
-	private MemberService memberService;
+	private final MemberService memberService;
 
-	private ScheduleService scheduleService;
-	
-	public AdminMemberController(MemberService memberService, ScheduleService scheduleService) {
-		this.memberService = memberService;
-		this.scheduleService = scheduleService;
-	}
+	private final ScheduleService scheduleService;
 
 	/**
      * 사용자관리 > 목록 페이지로 이동

@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,20 +28,15 @@ import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Controller
+@RequiredArgsConstructor
 public class AdminCommutingController {
 	
-	private MemberService memberService;
+	private final MemberService memberService;
 	
-	private ScheduleService scheduleService;
+	private final ScheduleService scheduleService;
 	
 	private final CommutingRequestService commutingRequestService;
 	
-	public AdminCommutingController(MemberService memberService,ScheduleService scheduleService,CommutingRequestService commutingRequestService) {
-		this.scheduleService = scheduleService;
-		this.memberService = memberService;
-		this.commutingRequestService = commutingRequestService;
-	}
-
 	/**
      * 일정신청관리(관) > 목록 페이지 이동
      */

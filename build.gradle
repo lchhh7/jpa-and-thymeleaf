@@ -6,7 +6,7 @@ plugins {
 
 group = 'com.jinjin.test'
 version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
+sourceCompatibility = "16"
 
 configurations {
 	compileOnly {
@@ -60,11 +60,16 @@ dependencies {
 	implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
     implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
     runtimeOnly 'com.amazonaws:aws-lambda-java-log4j2:1.5.1'
-    
-    //msa - eureka
+
+	// https://mvnrepository.com/artifact/org.springframework/spring-aop
+	implementation 'org.springframework:spring-aop'
+
+
+	//msa - eureka
 	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
+targetCompatibility = JavaVersion.VERSION_16

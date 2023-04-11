@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -28,20 +29,13 @@ import com.jinjin.jintranet.notice.repository.NoticeRepository;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Service
+@RequiredArgsConstructor
 public class NoticeService {
+	private final NoticeDslRepository noticeDslRepository;
 
-	private NoticeDslRepository noticeDslRepository;
+	private final NoticeRepository noticeRepository;
 
-	private NoticeRepository noticeRepository;
-
-	private NoticeAttachRepository noticeAttachRepository;
-
-	public NoticeService(NoticeDslRepository noticeDslRepository, NoticeRepository noticeRepository,
-			NoticeAttachRepository noticeAttachRepository) {
-		this.noticeDslRepository = noticeDslRepository;
-		this.noticeRepository = noticeRepository;
-		this.noticeAttachRepository = noticeAttachRepository;
-	}
+	private final NoticeAttachRepository noticeAttachRepository;
 
 	@Transactional
 	public List<Notice> findAll() {

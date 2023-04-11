@@ -7,6 +7,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -30,18 +31,14 @@ import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Controller
+@RequiredArgsConstructor
 public class AdminScheduleController {
 	
-	
-	private MemberService memberService;
+	private final MemberService memberService;
 	
 	private final ScheduleService scheduleService;
     
-    public AdminScheduleController(MemberService memberService, ScheduleService scheduleService) {
-    	this.memberService = memberService;
-    	this.scheduleService = scheduleService;
-    }
-	
+
 	/**
      * 일정신청관리(관) > 목록 페이지 이동
      */

@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import com.jinjin.jintranet.model.CommutingRequest;
+import lombok.RequiredArgsConstructor;
 import net.bytebuddy.asm.Advice;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -44,30 +45,21 @@ import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 @Controller
+@RequiredArgsConstructor
 public class CommutingController {
 	
-	private CommutingService commutingService;
+	private final CommutingService commutingService;
 	
-	private ScheduleService scheduleService;
+	private final ScheduleService scheduleService;
 	
-	private MemberService memberService;
+	private final MemberService memberService;
 	
-	private HolidayService holidayService;
+	private final HolidayService holidayService;
 	
-	private CommutingRequestService commutingRequestService;
-	
-	
-	public CommutingController(CommutingService commutingService, ScheduleService scheduleService,
-			MemberService memberService, HolidayService holidayService, CommutingRequestService commutingRequestService) {
-		this.commutingService = commutingService;
-		this.scheduleService = scheduleService;
-		this.memberService = memberService;
-		this.holidayService = holidayService;
-		this.commutingRequestService = commutingRequestService;
-	}
+	private final CommutingRequestService commutingRequestService;
 
 	@GetMapping("/commuting.do")
-	public String commuting(Model model , HttpServletRequest request, @AuthenticationPrincipal PrincipalDetail principal) {
+	public String commuting(Model model , HttpServletRequest request, @AuthenticationPrincipal PrincipalDetail principal) throws Exception{
 		model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
 		model.addAttribute("approves", memberService.findApproves());
 		model.addAttribute("principal", principal);
@@ -89,7 +81,6 @@ public class CommutingController {
             @RequestParam(value = "sd") String sd ,
             @RequestParam(value = "ed") String ed, @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         Map<String, Object> map = new HashMap<>();
-        try {
 			int month = currentMonth(sd);
             
             Schedule schedule = Schedule.builder()
@@ -125,10 +116,6 @@ public class CommutingController {
 			map.put("overtimes", overtimes(commute , commuteRequests , month));
 			map.put("nearList" , nearList);
             return new ResponseEntity<>(map, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
     }
 
 	public String overtimes(List<CommutingsInterface> commute , List<CommuteRequestDTO> commuteRequests , int month) {
@@ -163,46 +150,18 @@ public class CommutingController {
      */
     @GetMapping(value = "/commuting/{id}.do")
     public ResponseEntity<CommutingSelectDTO> findById(@PathVariable("id") Integer id) throws Exception {
-
-        try {
-        	CommutingSelectDTO commutingDTO = new CommutingSelectDTO(commutingService.findById(id));
-            return new ResponseEntity<>(commutingDTO, HttpStatus.OK);
-        } catch (Exception e) {
-        	e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+		CommutingSelectDTO commutingDTO = new CommutingSelectDTO(commutingService.findById(id));
+		return new ResponseEntity<>(commutingDTO, HttpStatus.OK);
     }
-    
-  //근태 내용 수정
-   /* @PutMapping(value = "/commuting/{id}.do")
-    public ResponseEntity<String> editCommute(@PathVariable("id") Integer id,@Validated @RequestBody CommuteUpdateDTO commuteDTO, BindingResult bindingResult,
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-    	try {
-    		if (bindingResult.hasErrors()) {
-             	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
-             }
-    		
-    		//commutingService.edit(id, commuteDTO);
-    		return new ResponseEntity<>("근태를 정상적으로 수정했습니다.", HttpStatus.OK);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		return new ResponseEntity<>("근태수정 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-    	}
-    }*/
-    
+
     @PostMapping(value = "/commuting/writeCommute.do")
     public ResponseEntity<String> edit(@Validated @RequestBody CommuteRequestInsertDTO dto, BindingResult bindingResult,
     		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-    	try {
     		if (bindingResult.hasErrors()) {
              	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
              }
     		
     		commutingService.commuteEdit(dto , principal.getMember());
     		return new ResponseEntity<>("근태를 정상적으로 수정했습니다.", HttpStatus.OK);
-    	} catch (Exception e) {
-    		e.printStackTrace();
-    		return new ResponseEntity<>("근태수정 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-    	}
     }
 }

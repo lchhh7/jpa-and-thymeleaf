@@ -11,6 +11,7 @@ import com.jinjin.jintranet.model.CommutingRequest;
 
 import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,33 +24,16 @@ import java.util.List;
 
 
 @Controller
+@RequiredArgsConstructor
 public class CommutingRequestController {
 
-	private CommutingService commutingService;
-
-	private ScheduleService scheduleService;
-
-	private MemberService memberService;
-
-	private HolidayService holidayService;
-
-	private CommutingRequestService commutingRequestService;
-
-
-	public CommutingRequestController(CommutingService commutingService, ScheduleService scheduleService,
-                                      MemberService memberService, HolidayService holidayService, CommutingRequestService commutingRequestService) {
-		this.commutingService = commutingService;
-		this.scheduleService = scheduleService;
-		this.memberService = memberService;
-		this.holidayService = holidayService;
-		this.commutingRequestService = commutingRequestService;
-	}
+	private final CommutingRequestService commutingRequestService;
 
 	@GetMapping("/commuting/searching.do")
-	public ResponseEntity<List<CommuteRequestViewDTO>> searching(
+	public ResponseEntity<List<CommuteRequestViewDTO>> searching (
 			@RequestParam(value ="st", required = false , defaultValue = "") String st,
 			@RequestParam(value ="y", required = false , defaultValue ="") String y,
-			@AuthenticationPrincipal PrincipalDetail principal) {
+			@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
 		List<CommuteRequestViewDTO> list = commutingRequestService.commutingRequestSearching(principal.getMember() , st , y)
 				.stream().map(m -> new CommuteRequestViewDTO(m)).toList();
 		return new ResponseEntity<>(list, HttpStatus.OK);
@@ -57,7 +41,7 @@ public class CommutingRequestController {
 
 	@GetMapping("/commuting/request/{id}.do")
 	public ResponseEntity<AdminCommuteRequestViewDTO> requesting(
-			@PathVariable("id") int id) {
+			@PathVariable("id") int id) throws Exception{
 		AdminCommuteRequestViewDTO dto = commutingRequestService.findById(id);
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
@@ -66,24 +50,20 @@ public class CommutingRequestController {
 	public ResponseEntity<String> editRequest(
 			@PathVariable("id") int id ,
 			@RequestBody AdminCommuteRequestViewDTO dto) throws Exception{
-		try {
 			commutingRequestService.EditRequest(id,dto);
 			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-		}
 	}
 
 	@DeleteMapping(value="/commuting/deleteRequest/{id}.do")
 	public ResponseEntity<String> deleteRequest(
 			@PathVariable("id") int id ,
+<<<<<<< HEAD
 			@AuthenticationPrincipal PrincipalDetail principal) {
 		try {
+=======
+			@AuthenticationPrincipal PrincipalDetail principal) throws Exception{
+>>>>>>> chlee
 			commutingRequestService.DeleteRequest(id , principal.getMember());
 			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-		}
 	}
-
 }

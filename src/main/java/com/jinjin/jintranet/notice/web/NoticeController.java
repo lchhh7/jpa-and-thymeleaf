@@ -5,6 +5,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
@@ -32,46 +33,29 @@ import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
 
 @Controller
+@RequiredArgsConstructor
 public class NoticeController {
-    
-    private ScheduleService scheduleService;
-    
+    private final ScheduleService scheduleService;
    private final NoticeService noticeService;
-    
-    
-    public NoticeController(NoticeService noticeService,ScheduleService scheduleService) {
-    	this.noticeService = noticeService;
-    	this.scheduleService = scheduleService;
-    }
-    
+
     @GetMapping(value = "/notice.do")
-    public String main(Model model, HttpServletRequest request , 
+    public String main(Model model,
     		@RequestParam(value = "searchType" , required = false , defaultValue = "") String searchType ,
     		@RequestParam(value ="keyword", required = false , defaultValue ="") String keyword, 
     		@PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
     		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-        try {
         	model.addAttribute("searchType" , searchType);
         	model.addAttribute("keyword" , keyword);
         	model.addAttribute("noticeList", noticeService.findNotices(pageable , keyword , searchType));
         	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         	model.addAttribute("principal" ,principal);
-        	
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         return "notice/notice";
     }
     
     @GetMapping(value = "/notice/write.do")
-    public String write(Model model, HttpServletRequest request,
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-        try {
+    public String write(Model model) throws Exception {
         	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return "notice/notice-write";
     }
 
@@ -90,10 +74,7 @@ public class NoticeController {
     }
    
     @GetMapping("/notice/view.do")
-    public String view(Model model, @RequestParam("id") Integer id, HttpServletRequest request,
-    		@AuthenticationPrincipal PrincipalDetail principal
-    		) throws Exception {
-        try {
+    public String view(Model model, @RequestParam("id") Integer id) throws Exception {
         	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDeletedBy() == null).toList();
         	Notice notice = noticeService.findById(id);
         	notice.setAttaches(attachList);
@@ -101,9 +82,6 @@ public class NoticeController {
         	model.addAttribute("notice", notice);
         	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
             
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
         return "notice/notice-view";
     }
     
@@ -118,16 +96,12 @@ public class NoticeController {
     @GetMapping(value = "/notice/edit.do")
     public String edit(Model model, @RequestParam("id") Integer id, HttpServletRequest request,
     		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-        try {
         	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDeletedBy() == null).toList();
         	Notice notice = noticeService.findById(id);
         	notice.setAttaches(attachList);
         	
         	model.addAttribute("notice", notice);
         	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
-        } catch (Exception e) {
-        	e.printStackTrace();
-        }
         return "notice/notice-edit";
     }
 
@@ -146,11 +120,7 @@ public class NoticeController {
     
     @PostMapping("/notice/upload.do")
     public ResponseEntity<List<NoticeAttach>> upload(MultipartHttpServletRequest request) throws Exception {
-        try {
-            return new ResponseEntity<>(FileUtils.upload(request, "notice_attach"), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+        return new ResponseEntity<>(FileUtils.upload(request, "notice_attach"), HttpStatus.OK);
     }
     
     @DeleteMapping(value = "/notice/attach.do")
