@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.NoHandlerFoundException;
+import org.thymeleaf.exceptions.TemplateInputException;
 
 import java.nio.file.AccessDeniedException;
 
@@ -28,6 +29,13 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
     }
 
+    //403
+    @ExceptionHandler(TemplateInputException.class)
+    public ResponseEntity<Object> TemplateInputException(final TemplateInputException  e) {
+        log.warn("error" , e);
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
+    }
+
     //404
     @ExceptionHandler(NoHandlerFoundException.class)
     public String noHandlerException(Model model , Exception e) {
@@ -41,12 +49,4 @@ public class ControllerExceptionHandler {
         return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-
-
-
-
-    @ExceptionHandler(Exception.class)
-    public ResponseEntity HandlerException(Exception e) {
-        return new ResponseEntity("처리 중 오류가 발생했습니다. " + e.getMessage() ,HttpStatus.CONFLICT);
-    }
 }
