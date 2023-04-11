@@ -68,15 +68,13 @@ public class MemberController {
         model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         model.addAllAttributes(commutingService.getWorkTime(principal.getMember()));
         return "main/index";
-
     }
 
     @GetMapping(value = "/main/searching.do")
     public ResponseEntity<List<ScheduleViewDTO>> searching(
             @RequestParam(value ="st", required = false , defaultValue ="") String st,
             @RequestParam(value ="y", required = false , defaultValue ="") String y ,
-            @AuthenticationPrincipal PrincipalDetail principal
-    ) throws Exception {
+            @AuthenticationPrincipal PrincipalDetail principal) {
         try {
             List<ScheduleViewDTO> dtoList = new ArrayList<>();
             List<Schedule> mainSchedules = scheduleService.mainSchedules(principal.getMember(), y);
@@ -114,7 +112,7 @@ public class MemberController {
     }
 
     @GetMapping("/member/edit.do")
-    public String edit(Model model, HttpServletRequest request , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    public String edit(Model model , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
         try {
             model.addAttribute("memberInfo" , new MemberSaveDTO(memberService.findById(principal.getMember().getId())));
             model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
@@ -135,12 +133,11 @@ public class MemberController {
 
         memberService.edit(principal, memberDTO);
 
-        return new ResponseEntity<String>("정상적으로 정보가 수정되었습니다.",HttpStatus.OK);
+        return new ResponseEntity<>("정상적으로 정보가 수정되었습니다.",HttpStatus.OK);
     }
 
     @GetMapping("/member/p/edit.do")
-    public String pEdit(Model model, HttpServletRequest request,
-                        @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    public String pEdit(Model model) {
         try {
             model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         } catch (Exception e) {
@@ -152,7 +149,7 @@ public class MemberController {
 
     @PutMapping("/member/p/edit.do")
     public ResponseEntity<String> pEdit(@Validated @RequestBody PasswordEditDTO passwordDTO,BindingResult bindingResult ,
-                                        @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+                                        @AuthenticationPrincipal PrincipalDetail principal) {
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
@@ -160,6 +157,6 @@ public class MemberController {
 
         String msg = memberService.passwordEdit(principal.getMember().getId(), passwordDTO);
 
-        return new ResponseEntity<String>(msg,HttpStatus.OK);
+        return new ResponseEntity<>(msg,HttpStatus.OK);
     }
 }
