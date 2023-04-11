@@ -57,12 +57,7 @@ public class CommutingRequestController {
 	@DeleteMapping(value="/commuting/deleteRequest/{id}.do")
 	public ResponseEntity<String> deleteRequest(
 			@PathVariable("id") int id ,
-<<<<<<< HEAD
-			@AuthenticationPrincipal PrincipalDetail principal) {
-		try {
-=======
 			@AuthenticationPrincipal PrincipalDetail principal) throws Exception{
->>>>>>> chlee
 			commutingRequestService.DeleteRequest(id , principal.getMember());
 			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
 	}
