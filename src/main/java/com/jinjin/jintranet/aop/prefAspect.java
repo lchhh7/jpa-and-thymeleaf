@@ -30,6 +30,6 @@ public class prefAspect {
     //@AfterReturning 어노테이션의 returning 값과 afterReturn 매개변수 obj의 이름이 같아야 함
     @AfterReturning(value = "cut()", returning = "obj")
     public void afterReturn(JoinPoint joinPoint, Object obj) {
-
+        System.out.println("obj = " + obj);
     }
 }
