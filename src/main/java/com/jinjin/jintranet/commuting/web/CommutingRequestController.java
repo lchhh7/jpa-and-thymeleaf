@@ -27,21 +27,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CommutingRequestController {
 
-	private final CommutingService commutingService;
-
-	private final ScheduleService scheduleService;
-
-	private final MemberService memberService;
-
-	private final HolidayService holidayService;
-
 	private final CommutingRequestService commutingRequestService;
 
 	@GetMapping("/commuting/searching.do")
-	public ResponseEntity<List<CommuteRequestViewDTO>> searching(
+	public ResponseEntity<List<CommuteRequestViewDTO>> searching (
 			@RequestParam(value ="st", required = false , defaultValue = "") String st,
 			@RequestParam(value ="y", required = false , defaultValue ="") String y,
-			@AuthenticationPrincipal PrincipalDetail principal) {
+			@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
 		List<CommuteRequestViewDTO> list = commutingRequestService.commutingRequestSearching(principal.getMember() , st , y)
 				.stream().map(m -> new CommuteRequestViewDTO(m)).toList();
 		return new ResponseEntity<>(list, HttpStatus.OK);
@@ -49,7 +41,7 @@ public class CommutingRequestController {
 
 	@GetMapping("/commuting/request/{id}.do")
 	public ResponseEntity<AdminCommuteRequestViewDTO> requesting(
-			@PathVariable("id") int id) {
+			@PathVariable("id") int id) throws Exception{
 		AdminCommuteRequestViewDTO dto = commutingRequestService.findById(id);
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
@@ -58,24 +50,15 @@ public class CommutingRequestController {
 	public ResponseEntity<String> editRequest(
 			@PathVariable("id") int id ,
 			@RequestBody AdminCommuteRequestViewDTO dto) throws Exception{
-		try {
 			commutingRequestService.EditRequest(id,dto);
 			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-		}
 	}
 
 	@DeleteMapping(value="/commuting/deleteRequest/{id}.do")
 	public ResponseEntity<String> deleteRequest(
 			@PathVariable("id") int id ,
-			@AuthenticationPrincipal PrincipalDetail principal) {
-		try {
+			@AuthenticationPrincipal PrincipalDetail principal) throws Exception{
 			commutingRequestService.DeleteRequest(id , principal.getMember());
 			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
-		} catch (Exception e) {
-			return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-		}
 	}
-
 }

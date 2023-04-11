@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -34,6 +35,7 @@ import com.jinjin.jintranet.notice.service.NoticeService;
 import com.jinjin.jintranet.schedule.dto.ScheduleViewDTO;
 import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
+import org.springframework.web.servlet.NoHandlerFoundException;
 
 @Controller
 @RequiredArgsConstructor
@@ -72,31 +74,23 @@ public class MemberController {
 
     @GetMapping(value = "/main/searching.do")
     public ResponseEntity<List<ScheduleViewDTO>> searching(
-            @RequestParam(value ="st", required = false , defaultValue ="") String st,
             @RequestParam(value ="y", required = false , defaultValue ="") String y ,
-            @AuthenticationPrincipal PrincipalDetail principal) {
-        try {
+            @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
             List<ScheduleViewDTO> dtoList = new ArrayList<>();
             List<Schedule> mainSchedules = scheduleService.mainSchedules(principal.getMember(), y);
 
             for(Schedule s : mainSchedules) {
                 dtoList.add(new ScheduleViewDTO(s));
             }
-
-
             return new ResponseEntity<>(dtoList, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
     }
 
     @GetMapping("/join.do")
-    public String joinPage() {
+    public String joinPage() throws Exception{
         return "joinPage";
     }
     @PostMapping("/auth/joinProc")
-    public ResponseEntity<String> save(@Validated @RequestBody MemberSaveDTO memberDTO , BindingResult bindingResult) {
+    public ResponseEntity<String> save(@Validated @RequestBody MemberSaveDTO memberDTO , BindingResult bindingResult) throws Exception{
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -106,20 +100,17 @@ public class MemberController {
     }
 
     @PostMapping("/main/goToWorkButton.do")
-    public ResponseEntity<String> commutingInsert(@RequestBody Commuting commuting , @AuthenticationPrincipal PrincipalDetail principal) {
+    public ResponseEntity<String> commutingInsert(@RequestBody Commuting commuting , @AuthenticationPrincipal PrincipalDetail principal) throws Exception{
         commutingService.write(commuting , principal.getMember());
+
         return new ResponseEntity<String>("",HttpStatus.OK);
     }
 
     @GetMapping("/member/edit.do")
     public String edit(Model model , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-        try {
-            model.addAttribute("memberInfo" , new MemberSaveDTO(memberService.findById(principal.getMember().getId())));
-            model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
+        model.addAttribute("memberInfo" , new MemberSaveDTO(memberService.findById(principal.getMember().getId())));
+        model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         return "member/member-edit";
     }
 
@@ -130,26 +121,19 @@ public class MemberController {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
-
         memberService.edit(principal, memberDTO);
-
         return new ResponseEntity<>("정상적으로 정보가 수정되었습니다.",HttpStatus.OK);
     }
 
     @GetMapping("/member/p/edit.do")
-    public String pEdit(Model model) {
-        try {
-            model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
+    public String pEdit(Model model) throws Exception{
+        model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         return "member/password-edit";
     }
 
     @PutMapping("/member/p/edit.do")
     public ResponseEntity<String> pEdit(@Validated @RequestBody PasswordEditDTO passwordDTO,BindingResult bindingResult ,
-                                        @AuthenticationPrincipal PrincipalDetail principal) {
+                                        @AuthenticationPrincipal PrincipalDetail principal) throws Exception{
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);

@@ -23,7 +23,7 @@ public class prefAspect {
         //실행되는 함수 이름을 가져오고 출력
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Method method = methodSignature.getMethod();
-        System.out.println(method.getName()+" method start========================");
+        System.out.println("========================" + method.getName() + " method start========================");
     }
 
     //cut() 메서드가 종료되는 시점에 afterReturn() 메서드 실행
