@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.transaction.Transactional;
 
+import com.jinjin.jintranet.aop.Trace;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -50,6 +51,7 @@ public class NoticeService {
 	}
 
 	@Transactional
+	@Trace
 	public Page<NoticeSearchDTO> findNotices(Pageable pabeable , String keyword , String searchType) {
 		return noticeDslRepository.findNotices(pabeable , keyword , searchType);
 	}
