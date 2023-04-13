@@ -87,11 +87,29 @@ const setCommutings = function (list) {
     return result;
 }
 
-const setOvertimes = function (overtimes) {
+const setOvertimes = function (list) {
     let result = [];
-    let html = overtimes;
+    let totalHours = 0;
+    let totalMinutes = 0;
 
-    document.getElementById('total-ot').innerHTML = "<p class='todaytotal'>" + html + "</p>";
+    if (list === undefined) return result;
+
+    Array.prototype.forEach.call(list, function (e) {
+            result.push({
+                start: e.requestDt,
+                end: e.requestDt + "T00:00:01",
+                title: '잔업 ' + e.hours + ":" + e.minutes,
+                color: '#2DA400'
+            });
+
+            totalHours += e.hours;
+            totalMinutes += e.minutes;
+    });
+
+    totalHours += parseInt(totalMinutes / 60);
+   totalMinutes = parseInt(totalMinutes % 60);
+
+    document.getElementById('total-ot').innerHTML = "<p class='todaytotal'>" + totalHours + "시간 " + totalMinutes + "분 </p>";
     return result;
 }
 
@@ -125,10 +143,6 @@ const setCommuteRequests = function (list) {
             rendering: 'background', backgroundColor: color,
             overlap: true
         });
-        
-        /* result.push({
-            start: e.requestDt, end: e.requestDt+"T00:00:01", title: e.content, color: e.status === 'Y' ? '#2DA400' : '#452E86'
-        });*/
     });
     return result;
 }
@@ -154,7 +168,6 @@ const setHolidays = function (list) {
 }
 
 const commutings = function (info, successCallback) {
-    console.log(info);
     $.ajax({
         url: contextPath + '/commuting/search.do?' + ('&sd=' + info.startStr.substr(0, 10)) + ('') + ('&ed=' + info.endStr.substr(0, 10)) + (''),
         method: 'get',
@@ -162,6 +175,7 @@ const commutings = function (info, successCallback) {
         contentType: 'application/json; charset=utf-8'
     })
         .done(function (data) {
+            console.log(data);
             let events = [];
             const commutings = setCommutings(data.commute);
             const overtimes = setOvertimes(data.overtimes);

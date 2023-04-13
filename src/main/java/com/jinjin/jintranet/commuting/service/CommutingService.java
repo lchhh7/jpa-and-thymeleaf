@@ -1,13 +1,20 @@
 package com.jinjin.jintranet.commuting.service;
 
+import java.sql.Array;
+import java.time.Duration;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
 import javax.transaction.Transactional;
 
+import com.jinjin.jintranet.commuting.dto.CommuteRequestDTO;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
@@ -20,6 +27,7 @@ import com.jinjin.jintranet.model.Commuting;
 import com.jinjin.jintranet.model.CommutingRequest;
 import com.jinjin.jintranet.model.Member;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CommutingService {
@@ -109,4 +117,37 @@ public class CommutingService {
 		//member.getCommutingRequests().add(commutingRequest);
 		//member.setCommutingRequests(member.getCommutingRequests());
 	}
+
+	@Transactional
+	public List<CommuteRequestDTO> overtimes(List<CommutingsInterface> commute , List<CommuteRequestDTO> commuteRequests , int month) {
+		int year = Integer.parseInt(commuteRequests.get(0).getRequestDt().substring(0,4));
+
+		List<CommuteRequestDTO> timeFlake = new LinkedList<>();
+
+		List<Integer> overtimeDates = commuteRequests.stream()
+				.filter(m -> m.getStatus().equals("Y"))
+				.filter(m -> LocalDate.parse(m.getRequestDt()).getMonthValue() == month)
+				.map(d -> LocalDate.parse(d.getRequestDt() , DateTimeFormatter.ISO_DATE).getDayOfMonth()).sorted().toList();
+
+		for(Integer i : overtimeDates) {
+			List<LocalDateTime> dayOfTime
+					= commute.stream()
+					.filter(c -> c.getCnt() ==1)
+					.filter(d -> d.getCommutingTm().getDayOfMonth() == i ).map(m -> m.getCommutingTm()).toList();
+
+			if(dayOfTime.size() < 2) continue;
+
+			Duration diff = Duration.between(dayOfTime.get(0).toLocalTime(), dayOfTime.get(1).toLocalTime());
+			if(diff.toHours() > 10)  {
+				CommuteRequestDTO ctoFlake = new CommuteRequestDTO();
+				ctoFlake.setRequestDt(LocalDate.of(year , month , i).toString());
+				ctoFlake.setHours(diff.toHours() -10);
+				ctoFlake.setMinutes(diff.toMinutes() - diff.toHours()*60 );
+				timeFlake.add(ctoFlake);
+			}
+		}
+
+		return timeFlake;
+	};
+
 }
