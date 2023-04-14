@@ -61,7 +61,10 @@ public class Schedule extends BaseEntity{
 	private String cancelReason;
 	
 	private String color;
-	
+
+	public Schedule(Integer id) {
+		this.id = id;
+	}
 	public Schedule(ScheduleInsertDTO dto , Member approve) {
 		this.type = dto.getType();
 		this.title = dto.getTitle();

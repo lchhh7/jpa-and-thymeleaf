@@ -64,6 +64,12 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework/spring-aop
 	implementation 'org.springframework:spring-aop'
 
+	//테스트에서 lombok 사용
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
+
+	//테스트에서 시큐리티 사용
+	testCompileOnly 'org.springframework.security:spring-security-test'
 
 	//msa - eureka
 	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
