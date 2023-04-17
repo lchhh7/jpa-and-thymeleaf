@@ -15,7 +15,10 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.jinjin.jintranet.model.CommutingRequest;
 import lombok.RequiredArgsConstructor;
+
+import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.asm.Advice;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -44,18 +47,19 @@ import com.jinjin.jintranet.schedule.dto.ScheduleSearchDTO;
 import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 
+@Slf4j
 @Controller
 @RequiredArgsConstructor
 public class CommutingController {
-	
+
 	private final CommutingService commutingService;
-	
+
 	private final ScheduleService scheduleService;
 	
 	private final MemberService memberService;
 	
 	private final HolidayService holidayService;
-	
+
 	private final CommutingRequestService commutingRequestService;
 
 	@GetMapping("/commuting.do")
@@ -94,6 +98,7 @@ public class CommutingController {
 			List<CommuteRequestDTO> commuteRequests = principal.getMember().getCommutingRequests().stream()
 					.filter(m -> LocalDate.parse(m.getRequestDt()).isAfter(LocalDate.parse(sd)))
 					.filter(m -> LocalDate.parse(m.getRequestDt()).isBefore(LocalDate.parse(ed)))
+					.filter(m -> m.getType().equals("O"))
 					.filter(m -> m.getDeletedBy() == null)
 					.map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
 			CommuteRequestDTO nearList = null;
@@ -113,37 +118,13 @@ public class CommutingController {
             map.put("schedules", schedules);
             map.put("commute" , commute.stream().filter(c -> c.getCnt() ==1).collect(Collectors.toList()));
             map.put("commuteRequests", commuteRequests);
-			map.put("overtimes", overtimes(commute , commuteRequests , month));
+			map.put("overtimes", commutingService.overtimes(commute , commuteRequests , month));
 			map.put("nearList" , nearList);
+
             return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
-	public String overtimes(List<CommutingsInterface> commute , List<CommuteRequestDTO> commuteRequests , int month) {
-		int hour = 0; int minute =0;
-		List<Integer> overtimeDates = commuteRequests.stream()
-				.filter(m -> m.getType().equals("O"))
-				.filter(m -> m.getStatus().equals("Y"))
-				.filter(m -> LocalDate.parse(m.getRequestDt()).getMonthValue() == month)
-				.map(d -> LocalDate.parse(d.getRequestDt() , DateTimeFormatter.ISO_DATE).getDayOfMonth()).sorted().toList();
 
-		for(Integer i : overtimeDates) {
-			List<LocalDateTime> dayOfTime
-					= commute.stream()
-					.filter(c -> c.getCnt() ==1)
-					.filter(d -> d.getCommutingTm().getDayOfMonth() == i ).map(m -> m.getCommutingTm()).toList();
-
-			if(dayOfTime.size() < 2) continue;
-
-			Duration diff = Duration.between(dayOfTime.get(0).toLocalTime(), dayOfTime.get(1).toLocalTime());
-			if(diff.toHours() > 10)  {
-				minute += diff.toMinutes() - 600;
-			}
-		}
-		hour = (minute/60);
-		minute = minute%60;
-
-		return hour+ "시간" + minute +"분";
-	};
 
     /**
      * 일정관리 > 일정 선택

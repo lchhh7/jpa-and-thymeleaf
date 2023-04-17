@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+
 import com.jinjin.jintranet.common.FileUtils;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.Notice;
@@ -27,6 +28,19 @@ import com.jinjin.jintranet.notice.repository.NoticeAttachRepository;
 import com.jinjin.jintranet.notice.repository.NoticeDslRepository;
 import com.jinjin.jintranet.notice.repository.NoticeRepository;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +64,7 @@ public class NoticeService {
 	}
 
 	@Transactional
+	//@Trace
 	public Page<NoticeSearchDTO> findNotices(Pageable pabeable , String keyword , String searchType) {
 		return noticeDslRepository.findNotices(pabeable , keyword , searchType);
 	}

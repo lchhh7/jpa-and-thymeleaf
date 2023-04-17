@@ -21,6 +21,7 @@ repositories {
 dependencies {
 	/*querydsl*/
 	implementation 'com.querydsl:querydsl-jpa'
+	testImplementation 'org.projectlombok:lombok:1.18.22'
 	// Querydsl JPAAnnotationProcessor 사용 지정
 	annotationProcessor "com.querydsl:querydsl-apt:${dependencyManagement.importedProperties['querydsl.version']}:jpa"
 	// java.lang.NoClassDefFoundError(javax.annotation.Entity) 발생 대응
@@ -64,9 +65,15 @@ dependencies {
 	// https://mvnrepository.com/artifact/org.springframework/spring-aop
 	implementation 'org.springframework:spring-aop'
 
+	//테스트에서 lombok 사용
+	testCompileOnly 'org.projectlombok:lombok'
+	testAnnotationProcessor 'org.projectlombok:lombok'
 
-	//msa - eureka
-	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+	//테스트에서 시큐리티 사용
+	testCompileOnly 'org.springframework.security:spring-security-test'
+
+	// https://mvnrepository.com/artifact/com.google.code.gson/gson
+	testCompileOnly 'com.google.code.gson:gson:2.8.5'
 }
 
 tasks.named('test') {

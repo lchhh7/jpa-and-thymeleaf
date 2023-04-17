@@ -1,25 +1,20 @@
 package com.jinjin.jintranet.commuting.repository;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
-import com.jinjin.jintranet.model.Schedule;
-import com.querydsl.core.types.Projections;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Repository;
-
 import com.jinjin.jintranet.model.CommutingRequest;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.Qfile.QCommutingRequest;
 import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -34,7 +29,7 @@ public class CommutingRequestDslRepository {
 						Projections.bean(AdminCommuteRequestViewDTO.class , commutingRequest.id, commutingRequest.member , commutingRequest.type ,
 								commutingRequest.requestDt, commutingRequest.requestTm , commutingRequest.content , commutingRequest.status))
 				.from(commutingRequest)
-				.where(approveEq(member),memberEq2(approveId) ,statusBb(status))
+				.where(approveEq(member),memberEq2(approveId) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
 				.fetch();
@@ -42,7 +37,7 @@ public class CommutingRequestDslRepository {
 		Long count =  jPAQueryFactory
 				.select(commutingRequest.count())
 				.from(commutingRequest)
-				.where(approveEq(member),memberEq2(approveId) ,statusBb(status))
+				.where(approveEq(member),memberEq2(approveId) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
 				.fetchOne();
 		
 		return new PageImpl<>(approvesList , pageable , count);
