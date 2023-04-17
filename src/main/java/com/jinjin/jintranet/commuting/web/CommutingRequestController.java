@@ -4,22 +4,15 @@ package com.jinjin.jintranet.commuting.web;
 import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.service.CommutingRequestService;
-import com.jinjin.jintranet.commuting.service.CommutingService;
-import com.jinjin.jintranet.holiday.service.HolidayService;
-import com.jinjin.jintranet.member.service.MemberService;
-import com.jinjin.jintranet.model.CommutingRequest;
-
-import com.jinjin.jintranet.schedule.service.ScheduleService;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.jsp.tagext.TryCatchFinally;
+import java.util.Comparator;
 import java.util.List;
 
 
@@ -35,7 +28,9 @@ public class CommutingRequestController {
 			@RequestParam(value ="y", required = false , defaultValue ="") String y,
 			@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
 		List<CommuteRequestViewDTO> list = commutingRequestService.commutingRequestSearching(principal.getMember() , st , y)
-				.stream().map(m -> new CommuteRequestViewDTO(m)).toList();
+				.stream().map(m -> new CommuteRequestViewDTO(m))
+				.sorted(Comparator.comparing(CommuteRequestViewDTO::getRequestDt , Comparator.reverseOrder())
+						.thenComparing(CommuteRequestViewDTO::getCrtDt)).toList();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}
 

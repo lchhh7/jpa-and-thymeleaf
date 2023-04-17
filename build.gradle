@@ -71,8 +71,8 @@ dependencies {
 	//테스트에서 시큐리티 사용
 	testCompileOnly 'org.springframework.security:spring-security-test'
 
-	//msa - eureka
-	//implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-server'
+	// https://mvnrepository.com/artifact/com.google.code.gson/gson
+	testCompileOnly 'com.google.code.gson:gson:2.8.5'
 }
 
 tasks.named('test') {

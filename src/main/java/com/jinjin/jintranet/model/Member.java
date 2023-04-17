@@ -1,25 +1,19 @@
 package com.jinjin.jintranet.model;
 
-import javax.persistence.*;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
-
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Getter
-@Setter
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
+@Getter @Setter
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@ToString(of={"id" , "memberId" , "name"})
 public class Member extends BaseEntity implements Serializable {
 	
 	@Id
@@ -75,11 +69,6 @@ public class Member extends BaseEntity implements Serializable {
 		this.department = department;
 		this.useColor = useColor;
 		this.role = role;
-	}
-	
-	public Member update(String name) {
-		this.name = name;
-		return this;
 	}
 
 	public void add(CommutingRequest commutingRequest) {

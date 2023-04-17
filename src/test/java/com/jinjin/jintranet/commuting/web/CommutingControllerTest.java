@@ -12,16 +12,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(CommutingController.class)
@@ -69,14 +68,20 @@ class CommutingControllerTest {
     @DisplayName("commutingController findById method test")
     void findById() throws Exception {
         given(commutingService.findById(54)).willReturn(
-                Commuting.builder().id(54).commutingTm(LocalDateTime.now()).attendYn("Y").build());
+                Commuting.builder().id(54).commutingTm(LocalDateTime.now()).attendYn("Y").build()); 
+        //아래 동작 -> given 으로 return값을줌
 
         int commutingId = 54;
 
         mockMvc.perform(
                         get("/commuting/" + commutingId + ".do"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id").exists())
+                .andExpect(jsonPath("$.commutingTm").exists())
+                .andExpect(jsonPath("$.attendYn").exists())
                 .andDo(print());
+
+        verify(commutingService).findById(54);
     }
 
     @Test
