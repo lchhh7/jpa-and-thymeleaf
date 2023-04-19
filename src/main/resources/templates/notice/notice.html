@@ -81,14 +81,15 @@
                             </div>
 	                            <div class="pagination" th:if="${noticeList.totalPages > 0}">
 	                            	<a role='button' class='pfirst' th:href="@{notice.do(page = 0,searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pfirst.png}' alt='첫페이지'></a>
-	                            	<a role='button' class='pprev' th:href="@{notice.do(page = ${noticeList.number >=1 ? noticeList.number -1 : noticeList.number} ,searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pprev.png}' alt='앞페이지'></a>
-	                            	 <th:block th:each="i : ${#numbers.sequence(0 , noticeList.totalPages-1)}">
+	                            	<a role='button' class='pprev' th:href="@{notice.do(page = ${noticeList.hasPrevious() ? noticeList.number -1 : noticeList.number} ,searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pprev.png}' alt='앞페이지'></a>
+	                            	 <th:block th:each="i : ${#numbers.sequence( (noticeList.number / 10) * 10 ,
+	                            	 (((noticeList.number /10) * 10) + 9 > noticeList.totalPages -1 ? noticeList.totalPages -1 : ((noticeList.number /10) * 10) + 9) ) }">
 			                        	<a role='button' class='pnum' 
 			                        	th:classappend="${noticeList.number == i} ? active : ''"
 			                        	th:href="@{notice.do(page=${i} , searchType=${searchType} , keyword=${keyword})}"
 			                        	th:text ="${i+1}"></a>
 			                        </th:block>
-	                            	<a role='button' class='pnext' th:href="@{notice.do(page =${noticeList.number < noticeList.totalPages -1? noticeList.number +1 : noticeList.number} , searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pnext.png}' alt='뒤페이지'></a>
+	                            	<a role='button' class='pnext' th:href="@{notice.do(page =${noticeList.hasNext() ? noticeList.number +1 : noticeList.number} , searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pnext.png}' alt='뒤페이지'></a>
 	                            	<a role='button' class='plast' th:href="@{notice.do(page =${noticeList.totalPages -1} , searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/plast.png}' alt='마지막페이지'></a>
 	                            </div> 
                         </div>
