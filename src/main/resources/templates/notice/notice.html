@@ -79,11 +79,11 @@
                                     
                                 </table>
                             </div>
-	                            <div class="pagination" th:if="${noticeList.totalPages > 0}">
+	                            <div class="pagination" th:if="${noticeList.totalPages > 0}" th:with="PageNum=${noticeList.number /10 * 10}">
 	                            	<a role='button' class='pfirst' th:href="@{notice.do(page = 0,searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pfirst.png}' alt='첫페이지'></a>
 	                            	<a role='button' class='pprev' th:href="@{notice.do(page = ${noticeList.hasPrevious() ? noticeList.number -1 : noticeList.number} ,searchType=${searchType} , keyword=${keyword})}"><img th:src='@{common/img/pprev.png}' alt='앞페이지'></a>
-	                            	 <th:block th:each="i : ${#numbers.sequence( (noticeList.number / 10) * 10 ,
-	                            	 (((noticeList.number /10) * 10) + 9 > noticeList.totalPages -1 ? noticeList.totalPages -1 : ((noticeList.number /10) * 10) + 9) ) }">
+	                            	 <th:block th:each="i : ${#numbers.sequence( PageNum ,
+	                            	 (PageNum + 9 > noticeList.totalPages -1 ? noticeList.totalPages -1 : PageNum+9 )) }">
 			                        	<a role='button' class='pnum' 
 			                        	th:classappend="${noticeList.number == i} ? active : ''"
 			                        	th:href="@{notice.do(page=${i} , searchType=${searchType} , keyword=${keyword})}"
