@@ -1,13 +1,13 @@
 package com.jinjin.jintranet.member.repository;
 
-import java.util.List;
-import java.util.Optional;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
-
 import com.jinjin.jintranet.member.dto.MemberInterface;
 import com.jinjin.jintranet.model.Member;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Integer>{
 	Optional<Member> findByMemberId(String memberId);
@@ -17,10 +17,10 @@ public interface MemberRepository extends JpaRepository<Member, Integer>{
 	List<MemberInterface> approves();
 
 
-	@Query(value="select * from Member m where deletedBy is null" , nativeQuery = true)
+	@Query(value="select * from Member m where m.deletedBy is null" , nativeQuery = true)
 	List<Member> findWorkers();
 
 
-	@Query(value="select * from Member m where deletedBy is null and memberId= ?1" , nativeQuery = true)
-	Member findOAuthById(String memberId);
+	@Query(value="select * from Member m where m.deletedBy is null and m.memberId= :memberId" , nativeQuery = true)
+	Member findOAuthById(@Param("memberId") String memberId);
 }

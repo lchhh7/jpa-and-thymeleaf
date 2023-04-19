@@ -15,7 +15,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.jinjin.jintranet.model.CommutingRequest;
 import lombok.RequiredArgsConstructor;
-
 import lombok.extern.slf4j.Slf4j;
 import net.bytebuddy.asm.Advice;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,9 +54,9 @@ public class CommutingController {
 	private final CommutingService commutingService;
 
 	private final ScheduleService scheduleService;
-	
+
 	private final MemberService memberService;
-	
+
 	private final HolidayService holidayService;
 
 	private final CommutingRequestService commutingRequestService;
