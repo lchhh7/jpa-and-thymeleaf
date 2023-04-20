@@ -15,4 +15,7 @@ public interface CommutingRequestRepository extends JpaRepository<CommutingReque
 
 	@Query(value="SELECT DISTINCT year(com.requestDt) FROM CommutingRequest com WHERE com.memberId = :memberId" , nativeQuery = true)
 	List<String> yearList(@Param("memberId") Member member);
+
+	@Query("select com from CommutingRequest com left join com.member where com.member.memberId= :memberId ")
+	List<CommutingRequest> findCommute(@Param("memberId") String memberId);
 }

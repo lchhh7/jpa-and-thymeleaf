@@ -1,25 +1,22 @@
 package com.jinjin.jintranet.commuting.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
+import com.jinjin.jintranet.common.DateUtils;
 import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
-import com.jinjin.jintranet.commuting.dto.CommuteRequestViewDTO;
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
-import com.jinjin.jintranet.common.DateUtils;
 import com.jinjin.jintranet.commuting.repository.CommutingRepository;
 import com.jinjin.jintranet.commuting.repository.CommutingRequestDslRepository;
 import com.jinjin.jintranet.commuting.repository.CommutingRequestRepository;
 import com.jinjin.jintranet.model.Commuting;
 import com.jinjin.jintranet.model.CommutingRequest;
 import com.jinjin.jintranet.model.Member;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -110,5 +107,10 @@ public class CommutingRequestService {
 		member.delete(id);
 
 		commutingRequest.setDeletedBy(member.getName());
+	}
+
+	@Transactional
+	public List<CommutingRequest> findCommute(Member member) {
+		return commutingRequestRepository.findCommute(member.getMemberId());
 	}
 }
