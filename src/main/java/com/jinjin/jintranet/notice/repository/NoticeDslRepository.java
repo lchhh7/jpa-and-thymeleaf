@@ -2,6 +2,7 @@ package com.jinjin.jintranet.notice.repository;
 
 import java.util.List;
 
+import com.jinjin.jintranet.model.Qfile.QMember;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -22,14 +23,17 @@ public class NoticeDslRepository {
 	private final JPAQueryFactory jPAQueryFactory;
 	
 	QNotice notice = QNotice.notice;
+
+	QMember qMember = QMember.member;
 	
 	QNoticeAttach noticeAttach = QNoticeAttach.noticeAttach;
 	
 	public Page<NoticeSearchDTO> findNotices(Pageable pageable , String keyword , String searchType) {
 
 
-		List<NoticeSearchDTO> list = jPAQueryFactory.selectFrom(notice).distinct()
-				.leftJoin(notice.attaches , noticeAttach)
+		List<NoticeSearchDTO> list = jPAQueryFactory.selectFrom(notice)
+				.leftJoin(notice.member , qMember)
+				.fetchJoin()
 				.where(notice.deletedBy.isNull() , searchTypeEq(searchType,keyword))
 				.orderBy(notice.id.desc())
 				.offset(pageable.getOffset())

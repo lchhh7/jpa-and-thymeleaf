@@ -56,10 +56,12 @@ public class CommutingRequest extends BaseEntity{
 		this.approveDt = approveDt;
 	}
 
+/*
 	public void changeMember(Member member) {
 		this.member = member;
 		member.getCommutingRequests().add(this);
 	}
+*/
 
 
 	

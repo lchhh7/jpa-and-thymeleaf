@@ -45,9 +45,9 @@ public class Member extends BaseEntity implements Serializable {
 	@Enumerated(EnumType.STRING)
 	private RoleType role;
 
-	@JsonIgnore
+	/*@JsonIgnore
 	@OneToMany(mappedBy = "member" , fetch = FetchType.LAZY)
-	private List<CommutingRequest> commutingRequests;
+	private List<CommutingRequest> commutingRequests;*/
 	@Transient
 	private Double total;
 	
@@ -71,7 +71,7 @@ public class Member extends BaseEntity implements Serializable {
 		this.role = role;
 	}
 
-	public void add(CommutingRequest commutingRequest) {
+	/*public void add(CommutingRequest commutingRequest) {
 		commutingRequest.setMember(this);
 		this.getCommutingRequests().add(commutingRequest);
 	}
@@ -82,5 +82,5 @@ public class Member extends BaseEntity implements Serializable {
 	}
 	public void approve(int id, CommuteApproveDTO approveDTO) {
 		this.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
-	}
+	}*/
 }

@@ -90,8 +90,10 @@ public class CommutingController {
 					.filter(m -> m.getDeletedBy() == null)
 					.map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
 			CommuteRequestDTO nearList = null;
+			List<CommuteRequestDTO> overtimes = null;
 			if(commuteRequests.size() !=0) {
 				 nearList = commuteRequests.stream().sorted(Comparator.comparing(CommuteRequestDTO::getRequestDt).reversed()).toList().get(0);
+				 overtimes = commutingService.overtimes(commute , commuteRequests , month);
 			}
            /* List<CommuteRequestDTO> commuteRequests = commutingRequestService.findAll(principal.getMember() , sd, ed)
             		.stream().map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
@@ -106,7 +108,7 @@ public class CommutingController {
             map.put("schedules", schedules);
             map.put("commute" , commute.stream().filter(c -> c.getCnt() ==1).collect(Collectors.toList()));
             map.put("commuteRequests", commuteRequests);
-			map.put("overtimes", commutingService.overtimes(commute , commuteRequests , month));
+			map.put("overtimes", overtimes);
 			map.put("nearList" , nearList);
 
             return new ResponseEntity<>(map, HttpStatus.OK);

@@ -29,11 +29,6 @@ public class CommutingRequestService {
 	private final CommutingRequestDslRepository commutingRequestDslRepository;
 
 	@Transactional
-	public List<CommutingRequest> findAll(Member member, String strDt , String endDt) {
-		return commutingRequestRepository.findAll(member, strDt , endDt);
-	}
-
-	@Transactional
 	public AdminCommuteRequestViewDTO findById(Integer id) {
 		CommutingRequest commutingRequest = commutingRequestRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("해당 일정을 조회하는중 오류가 발생했습니다");
@@ -60,7 +55,7 @@ public class CommutingRequestService {
 
 		//연관관계 편의성 메소드
 		//member.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
-		member.approve(id , approveDTO);
+		//member.approve(id , approveDTO);
 
 		if(approveDTO.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
 			Commuting commuting = new Commuting();
@@ -104,7 +99,7 @@ public class CommutingRequestService {
 			return new IllegalArgumentException("해당 일정을 삭제하는중 오류가 발생했습니다");
 		});
 
-		member.delete(id);
+		//member.delete(id);
 
 		commutingRequest.setDeletedBy(member.getName());
 	}
