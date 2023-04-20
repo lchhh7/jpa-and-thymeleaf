@@ -21,7 +21,7 @@ public interface ScheduleRepository extends JpaRepository<Schedule, Integer>{
 	
 	@Query(value="select * from Schedule s where s.memberId = :memberId and s.status != 'D' and right(s.type,1) ='V' order by s.strDt desc", nativeQuery = true)
 	List<Schedule> findByMemberId(@Param("memberId") Member member);
-	
+
 	@Query(value="select count(*) from Schedule s where s.memberId = :memberId and (s.status = 'R' or s.status ='C') and right(s.type,1) ='V'", nativeQuery = true)
 	Integer cnt(@Param("memberId") Member member);
 }
