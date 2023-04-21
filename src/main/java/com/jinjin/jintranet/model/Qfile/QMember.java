@@ -1,14 +1,14 @@
 package com.jinjin.jintranet.model.Qfile;
 
-import com.jinjin.jintranet.model.QBaseEntity;
+import static com.querydsl.core.types.PathMetadataFactory.*;
+
 import com.jinjin.jintranet.model.*;
-import com.querydsl.core.types.Path;
-import com.querydsl.core.types.PathMetadata;
+import com.jinjin.jintranet.model.QBaseEntity;
 import com.querydsl.core.types.dsl.*;
 
+import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
-
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
+import com.querydsl.core.types.Path;
 
 
 /**
@@ -22,8 +22,6 @@ public class QMember extends EntityPathBase<Member> {
     public static final QMember member = new QMember("member1");
 
     public final com.jinjin.jintranet.model.QBaseEntity _super = new QBaseEntity(this);
-
-    public final ListPath<CommutingRequest, QCommutingRequest> commutingRequests = this.<CommutingRequest, QCommutingRequest>createList("commutingRequests", CommutingRequest.class, QCommutingRequest.class, PathInits.DIRECT2);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;

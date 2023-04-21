@@ -7,7 +7,6 @@ import com.querydsl.core.types.dsl.*;
 import com.querydsl.core.types.PathMetadata;
 import javax.annotation.processing.Generated;
 import com.querydsl.core.types.Path;
-import com.querydsl.core.types.dsl.PathInits;
 
 
 /**
@@ -21,8 +20,6 @@ public class QMember extends EntityPathBase<Member> {
     public static final QMember member = new QMember("member1");
 
     public final QBaseEntity _super = new QBaseEntity(this);
-
-    public final ListPath<CommutingRequest, QCommutingRequest> commutingRequests = this.<CommutingRequest, QCommutingRequest>createList("commutingRequests", CommutingRequest.class, QCommutingRequest.class, PathInits.DIRECT2);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;

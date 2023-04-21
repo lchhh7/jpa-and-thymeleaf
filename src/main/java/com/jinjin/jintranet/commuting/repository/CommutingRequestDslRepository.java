@@ -43,9 +43,10 @@ public class CommutingRequestDslRepository {
 		
 		return new PageImpl<>(approvesList , pageable , count);
 	}
-	//N+1
+
 	public List<CommutingRequest> commutingRequestSearching(Member member,  String st , String y) {
 		 List<CommutingRequest> approvesList =  jPAQueryFactory.selectFrom(commutingRequest)
+				 .leftJoin(commutingRequest.member).fetchJoin()
 				.where(memberEq(member.getId()) , typeEq(st) , yearEq(y) , commutingRequest.deletedBy.isNull()).fetch();
 		return approvesList;
 	}

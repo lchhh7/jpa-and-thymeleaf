@@ -1,19 +1,18 @@
 package com.jinjin.jintranet.model.Qfile;
 
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
-
-import javax.annotation.processing.Generated;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
 import com.jinjin.jintranet.model.Notice;
 import com.jinjin.jintranet.model.NoticeAttach;
-import com.querydsl.core.types.Path;
+import com.jinjin.jintranet.model.QBaseEntity;
+import com.jinjin.jintranet.model.QMember;
+import com.jinjin.jintranet.model.QNoticeAttach;
+import com.querydsl.core.types.dsl.*;
+
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.ListPath;
-import com.querydsl.core.types.dsl.NumberPath;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import com.querydsl.core.types.dsl.StringPath;
 
 
 /**
@@ -28,7 +27,7 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public static final QNotice notice = new QNotice("notice");
 
-    public final QBaseEntity _super = new QBaseEntity(this);
+    public final com.jinjin.jintranet.model.QBaseEntity _super = new QBaseEntity(this);
 
     public final ListPath<NoticeAttach, QNoticeAttach> attaches = this.<NoticeAttach, QNoticeAttach>createList("attaches", NoticeAttach.class, QNoticeAttach.class, PathInits.DIRECT2);
 
@@ -45,7 +44,7 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public final NumberPath<Integer> id = createNumber("id", Integer.class);
 
-    public final QMember member;
+    public final com.jinjin.jintranet.model.QMember member;
 
     //inherited
     public final StringPath ModifiedBy = _super.ModifiedBy;

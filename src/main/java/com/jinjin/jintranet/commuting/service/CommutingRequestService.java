@@ -3,6 +3,7 @@ package com.jinjin.jintranet.commuting.service;
 import com.jinjin.jintranet.common.DateUtils;
 import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
+import com.jinjin.jintranet.commuting.dto.CommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.repository.CommutingRepository;
 import com.jinjin.jintranet.commuting.repository.CommutingRequestDslRepository;
 import com.jinjin.jintranet.commuting.repository.CommutingRequestRepository;
@@ -74,8 +75,8 @@ public class CommutingRequestService {
 	}
 
 	@Transactional
-	public List<CommutingRequest> commutingRequestSearching(Member member, String st , String y) {
-		return commutingRequestDslRepository.commutingRequestSearching(member , st ,y);
+	public List<CommuteRequestViewDTO> commutingRequestSearching(Member member, String st , String y) {
+		return commutingRequestDslRepository.commutingRequestSearching(member , st ,y).stream().map(m -> new CommuteRequestViewDTO(m)).toList();
 	}
 
 	@Transactional
