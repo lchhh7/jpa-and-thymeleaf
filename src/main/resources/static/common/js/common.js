@@ -1,7 +1,7 @@
 document.addEventListener("DOMContentLoaded", function () {
-	scheduleBadge();
-	commutingBadge();
-    getToday();
+	//scheduleBadge();
+	//commutingBadge();
+    //getToday();
 
     /**
      * 햄버거 메뉴 토글

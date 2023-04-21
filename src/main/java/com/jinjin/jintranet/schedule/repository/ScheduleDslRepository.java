@@ -28,7 +28,7 @@ public class ScheduleDslRepository {
 	
 	QSchedule schedule = QSchedule.schedule;
 	
-	QMember member = QMember.member;
+	QMember qMember = QMember.member;
 	public List<ScheduleSearchDTO> findSchedule(Schedule s) {
 		List<String> ids = Arrays.stream(s.getType().split(",")).collect(Collectors.toList());
 		
@@ -60,8 +60,8 @@ public class ScheduleDslRepository {
 	
 	public Page<Schedule> approvesList(Member member , Integer approveId , List<String> statusList , Pageable pageable) {
 		List<Schedule> approvesList =  jPAQueryFactory.selectFrom(schedule)
-				.where(approveEq(member),
-						memberEq2(approveId) ,
+				.innerJoin(schedule.member , qMember).fetchJoin()
+				.where(approveEq(approveId) ,
 						schedule.status.in(statusList))
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
@@ -70,20 +70,14 @@ public class ScheduleDslRepository {
 		Long count =  jPAQueryFactory
 				.select(schedule.count())
 				.from(schedule)
-				.where(approveEq(member),memberEq2(approveId) ,schedule.status.in(statusList))
+				.where(approveEq(approveId) ,schedule.status.in(statusList))
 				.fetchOne();
 		
 		return new PageImpl<>(approvesList , pageable , count);
 	}
+
 	
-	private BooleanExpression approveEq(Member member) {
-		if(member == null) {
-			return null;
-		}
-		return schedule.approve.eq(member);
-	}
-	
-	private BooleanExpression memberEq2(Integer approveId) {
+	private BooleanExpression approveEq(Integer approveId) {
 		if(approveId == null) {
 			return null;
 		}
