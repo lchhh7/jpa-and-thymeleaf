@@ -82,12 +82,7 @@ public class CommutingController {
             List<ScheduleSearchDTO> schedules = scheduleService.read(schedule);
             List<CommutingsInterface> commute = commutingService.findAll(principal.getMember() ,sd ,ed);
 
-			List<CommuteRequestDTO> commuteRequests = commutingRequestService.findCommute(principal.getMember()).stream()
-					.filter(m -> LocalDate.parse(m.getRequestDt()).isAfter(LocalDate.parse(sd)))
-					.filter(m -> LocalDate.parse(m.getRequestDt()).isBefore(LocalDate.parse(ed)))
-					.filter(m -> m.getType().equals("O"))
-					.filter(m -> m.getDeletedBy() == null)
-					.map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
+			List<CommuteRequestDTO> commuteRequests = commutingRequestService.findCommute(principal.getMember() , sd , ed);
 			CommuteRequestDTO nearList = null;
 			List<CommuteRequestDTO> overtimes = null;
 			if(commuteRequests.size() !=0) {

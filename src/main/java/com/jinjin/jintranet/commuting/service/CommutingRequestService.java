@@ -3,6 +3,7 @@ package com.jinjin.jintranet.commuting.service;
 import com.jinjin.jintranet.common.DateUtils;
 import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
+import com.jinjin.jintranet.commuting.dto.CommuteRequestDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.repository.CommutingRepository;
 import com.jinjin.jintranet.commuting.repository.CommutingRequestDslRepository;
@@ -16,8 +17,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -106,7 +109,15 @@ public class CommutingRequestService {
 	}
 
 	@Transactional
-	public List<CommutingRequest> findCommute(Member member) {
-		return commutingRequestRepository.findCommute(member.getMemberId());
+	public List<CommuteRequestDTO> findCommute(Member member , String sd , String ed) {
+
+		List<CommuteRequestDTO> commuteRequests = commutingRequestRepository.findCommute(member.getMemberId()).stream()
+				.filter(m -> LocalDate.parse(m.getRequestDt()).isAfter(LocalDate.parse(sd)))
+				.filter(m -> LocalDate.parse(m.getRequestDt()).isBefore(LocalDate.parse(ed)))
+				.filter(m -> m.getType().equals("O"))
+				.filter(m -> m.getDeletedBy() == null)
+				.map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
+
+		return commuteRequests;
 	}
 }

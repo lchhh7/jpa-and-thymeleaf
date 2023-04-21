@@ -42,7 +42,7 @@ class CommutingRequestDslRepositoryTest {
 
         List<CommutingRequest> commutingRequests = commutingRequestRepository.findAll();
         for(CommutingRequest c : commutingRequests) {
-            System.out.println("c.getMember().getClass() = " + c.getMember());
+            System.out.println("c.getMember().getClass() = " + c.getMember().getClass());
         }
     }
 }
