@@ -24,12 +24,13 @@ public class CommutingRequestDslRepository {
 	QCommutingRequest commutingRequest = QCommutingRequest.commutingRequest;
 	
 	public Page<AdminCommuteRequestViewDTO> approvesList(Member member , Integer approveId , String status , Pageable pageable) {
+
 		List<AdminCommuteRequestViewDTO> approvesList =  jPAQueryFactory
 				.select(
 						Projections.bean(AdminCommuteRequestViewDTO.class , commutingRequest.id, commutingRequest.member , commutingRequest.type ,
 								commutingRequest.requestDt, commutingRequest.requestTm , commutingRequest.content , commutingRequest.status))
 				.from(commutingRequest)
-				.where(approveEq(member),memberEq2(approveId) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
+				.where(approveEq(member) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
 				.fetch();
@@ -37,7 +38,7 @@ public class CommutingRequestDslRepository {
 		Long count =  jPAQueryFactory
 				.select(commutingRequest.count())
 				.from(commutingRequest)
-				.where(approveEq(member),memberEq2(approveId) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
+				.where(approveEq(member) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
 				.fetchOne();
 		
 		return new PageImpl<>(approvesList , pageable , count);
@@ -45,7 +46,8 @@ public class CommutingRequestDslRepository {
 
 	public List<CommutingRequest> commutingRequestSearching(Member member,  String st , String y) {
 		 List<CommutingRequest> approvesList =  jPAQueryFactory.selectFrom(commutingRequest)
-				.where(memberEq2(member.getId()) , typeEq(st) , yearEq(y) , commutingRequest.deletedBy.isNull()).fetch();
+				 .leftJoin(commutingRequest.member).fetchJoin()
+				.where(memberEq(member.getId()) , typeEq(st) , yearEq(y) , commutingRequest.deletedBy.isNull()).fetch();
 		return approvesList;
 	}
 
@@ -56,7 +58,7 @@ public class CommutingRequestDslRepository {
 		return commutingRequest.approve.eq(member);
 	}
 
-	private BooleanExpression memberEq2(Integer approveId) {
+	private BooleanExpression memberEq(Integer approveId) {
 		if(approveId == null) {
 			return null;
 		}

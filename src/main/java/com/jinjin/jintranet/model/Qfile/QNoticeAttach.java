@@ -1,17 +1,16 @@
 package com.jinjin.jintranet.model.Qfile;
 
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
-
-import javax.annotation.processing.Generated;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
 import com.jinjin.jintranet.model.NoticeAttach;
-import com.querydsl.core.types.Path;
+import com.jinjin.jintranet.model.QBaseEntity;
+import com.jinjin.jintranet.model.QNotice;
+import com.querydsl.core.types.dsl.*;
+
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.NumberPath;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
 import com.querydsl.core.types.dsl.PathInits;
-import com.querydsl.core.types.dsl.StringPath;
 
 
 /**
@@ -26,7 +25,7 @@ public class QNoticeAttach extends EntityPathBase<NoticeAttach> {
 
     public static final QNoticeAttach noticeAttach = new QNoticeAttach("noticeAttach");
 
-    public final QBaseEntity _super = new QBaseEntity(this);
+    public final com.jinjin.jintranet.model.QBaseEntity _super = new QBaseEntity(this);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;
@@ -47,7 +46,7 @@ public class QNoticeAttach extends EntityPathBase<NoticeAttach> {
     //inherited
     public final StringPath modifiedBy = _super.modifiedBy;
 
-    public final QNotice notice;
+    public final com.jinjin.jintranet.model.QNotice notice;
 
     public final StringPath originalFileName = createString("originalFileName");
 

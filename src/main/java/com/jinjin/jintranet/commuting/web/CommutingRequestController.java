@@ -28,8 +28,7 @@ public class CommutingRequestController {
 			@RequestParam(value ="y", required = false , defaultValue ="") String y,
 			@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
 		List<CommuteRequestViewDTO> list = commutingRequestService.commutingRequestSearching(principal.getMember() , st , y)
-				.stream().map(m -> new CommuteRequestViewDTO(m))
-				.sorted(Comparator.comparing(CommuteRequestViewDTO::getRequestDt , Comparator.reverseOrder())
+				.stream().sorted(Comparator.comparing(CommuteRequestViewDTO::getRequestDt , Comparator.reverseOrder())
 						.thenComparing(CommuteRequestViewDTO::getCrtDt)).toList();
 		return new ResponseEntity<>(list, HttpStatus.OK);
 	}

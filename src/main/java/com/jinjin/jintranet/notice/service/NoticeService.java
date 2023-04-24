@@ -1,5 +1,6 @@
 package com.jinjin.jintranet.notice.service;
 
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.time.LocalDate;
@@ -16,7 +17,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
 
 import com.jinjin.jintranet.common.FileUtils;
 import com.jinjin.jintranet.model.Member;
@@ -80,8 +80,8 @@ public class NoticeService {
 		}
 		notice.setMember(member);
 		notice.setCreatedBy(member.getName());
-		notice.setAttaches(dto.getAttaches().stream().map(m -> m.DtotoEntity()).toList());
-		notice.getAttaches().stream().forEach(m -> m.setNotice(notice));
+		//notice.setAttaches(dto.getAttaches().stream().map(m -> m.DtotoEntity()).toList());
+		//notice.getAttaches().stream().forEach(m -> m.setNotice(notice));
 		noticeRepository.save(notice);
 		return String.valueOf(notice.getId());
 	}

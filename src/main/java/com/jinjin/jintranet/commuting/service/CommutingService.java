@@ -109,7 +109,7 @@ public class CommutingService {
 		commutingRequestRepository.save(commutingRequest);
 
 		//연관관계 편의성 메소드
-		member.add(commutingRequest);
+		//member.add(commutingRequest);
 		//member.getCommutingRequests().add(commutingRequest);
 		//member.setCommutingRequests(member.getCommutingRequests());
 	}

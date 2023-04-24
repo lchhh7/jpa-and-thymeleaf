@@ -1,15 +1,13 @@
 package com.jinjin.jintranet.model.Qfile;
 
-import static com.querydsl.core.types.PathMetadataFactory.forVariable;
-
-import javax.annotation.processing.Generated;
+import static com.querydsl.core.types.PathMetadataFactory.*;
 
 import com.jinjin.jintranet.model.BaseEntity;
-import com.querydsl.core.types.Path;
+import com.querydsl.core.types.dsl.*;
+
 import com.querydsl.core.types.PathMetadata;
-import com.querydsl.core.types.dsl.DateTimePath;
-import com.querydsl.core.types.dsl.EntityPathBase;
-import com.querydsl.core.types.dsl.StringPath;
+import javax.annotation.processing.Generated;
+import com.querydsl.core.types.Path;
 
 
 /**
