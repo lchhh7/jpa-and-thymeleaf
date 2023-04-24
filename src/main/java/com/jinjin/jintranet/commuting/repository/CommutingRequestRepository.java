@@ -18,4 +18,5 @@ public interface CommutingRequestRepository extends JpaRepository<CommutingReque
 
 	@Query("select com from CommutingRequest com left join com.member where com.member.memberId= :memberId ")
 	List<CommutingRequest> findCommute(@Param("memberId") String memberId);
+
 }

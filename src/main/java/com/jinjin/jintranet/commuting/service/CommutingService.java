@@ -1,6 +1,24 @@
 package com.jinjin.jintranet.commuting.service;
 
+import java.sql.Array;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
+import javax.transaction.Transactional;
+
 import com.jinjin.jintranet.commuting.dto.CommuteRequestDTO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Service;
+
+
 import com.jinjin.jintranet.commuting.dto.CommuteRequestInsertDTO;
 import com.jinjin.jintranet.commuting.dto.CommutingsInterface;
 import com.jinjin.jintranet.commuting.repository.CommutingRepository;
@@ -12,16 +30,6 @@ import com.jinjin.jintranet.model.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
-import javax.transaction.Transactional;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
