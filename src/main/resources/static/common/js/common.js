@@ -6,6 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
     /**
      * 햄버거 메뉴 토글
      */
+    
+
     document.querySelector(".menu_btn").addEventListener("click", function () {
         var lnb = document.querySelector(".lnb");
         var container = document.querySelector(".container");

@@ -1,21 +1,21 @@
 package com.jinjin.jintranet.common;
 
-import java.util.List;
-
+import com.jinjin.jintranet.model.Member;
+import com.jinjin.jintranet.model.Schedule;
+import com.jinjin.jintranet.schedule.repository.ScheduleDslRepository;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.LocalDate;
 import org.springframework.stereotype.Component;
 
-import com.jinjin.jintranet.holiday.repository.HolidayRepository;
-import com.jinjin.jintranet.model.Member;
-import com.jinjin.jintranet.model.Schedule;
-import com.jinjin.jintranet.schedule.repository.ScheduleDslRepository;
+import javax.transaction.Transactional;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class VacationDaysUtils {
     private final ScheduleDslRepository scheduleRepository;
 
+    @Transactional
 	public Member getMemberVacationDays(
             Member member, int year, int month, int date) throws Exception {
 
@@ -30,6 +30,7 @@ public class VacationDaysUtils {
 
         return member;
     }
+
 
     private double getTotalVacationDays(
             Member member, int curYear, int curMonth, int curDate) {

@@ -178,16 +178,16 @@ const commutings = function (info, successCallback) {
             console.log(data);
             let events = [];
             const commutings = setCommutings(data.commute);
-            const overtimes = setOvertimes(data.overtimes);
             const schedules = setSchedules(data.schedules);
             const holidays = setHolidays(data.holidays);
 			const commuteRequests = setCommuteRequests(data.commuteRequests); //근태요청
+            const overtimes = setOvertimes(data.overtimes);
 			
             Array.prototype.push.apply(events, commutings);
             Array.prototype.push.apply(events, schedules);
-            Array.prototype.push.apply(events, overtimes);
 			Array.prototype.push.apply(events, commuteRequests);
             Array.prototype.push.apply(events, holidays);
+            Array.prototype.push.apply(events, overtimes);
             successCallback(events);
 
             const r = data.nearList;
