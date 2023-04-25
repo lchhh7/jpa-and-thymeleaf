@@ -13,14 +13,14 @@ public interface MemberRepository extends JpaRepository<Member, Integer>{
 	Optional<Member> findByMemberId(String memberId);
 
 
-	@Query(value="SELECT m.id , m.name FROM Member m WHERE role='ADMIN' and m.deletedBy is null", nativeQuery = true)
+	@Query(value="SELECT m.id , m.name FROM Member m WHERE m.role='ADMIN' and m.deletedBy is null", nativeQuery = true)
 	List<MemberInterface> approves();
 
 
-	@Query(value="select * from Member m where m.deletedBy is null" , nativeQuery = true)
+	@Query("select m from Member m where m.deletedBy is null")
 	List<Member> findWorkers();
 
 
-	@Query(value="select * from Member m where m.deletedBy is null and m.memberId= :memberId" , nativeQuery = true)
+	@Query("select m from Member m where m.deletedBy is null and m.memberId= :memberId")
 	Member findOAuthById(@Param("memberId") String memberId);
 }

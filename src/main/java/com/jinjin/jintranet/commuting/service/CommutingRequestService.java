@@ -111,7 +111,7 @@ public class CommutingRequestService {
 	@Transactional
 	public List<CommuteRequestDTO> findCommute(Member member , String sd , String ed) {
 
-		List<CommuteRequestDTO> commuteRequests = commutingRequestRepository.findCommute(member.getMemberId()).stream()
+		List<CommuteRequestDTO> commuteRequests = commutingRequestRepository.findCommute(member).stream()
 				.filter(m -> LocalDate.parse(m.getRequestDt()).isAfter(LocalDate.parse(sd)))
 				.filter(m -> LocalDate.parse(m.getRequestDt()).isBefore(LocalDate.parse(ed)))
 				.filter(m -> m.getType().equals("O"))
