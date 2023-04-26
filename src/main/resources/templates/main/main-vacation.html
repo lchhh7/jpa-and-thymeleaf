@@ -55,7 +55,7 @@
 							<tr class="tbbody" th:each="schedule : ${vacation}">
 								<td th:text="${schedule.type}"/>
 								<td th:if="${not #strings.isEmpty(schedule)}" th:text="|${#strings.substring(schedule.strDt , 0 ,10)} - ${#strings.substring(schedule.endDt , 0 ,10)}|"/>
-								<td th:text=${schedule.approve.memberId}/>
+								<td th:text="${schedule.approve.memberId}"/>
 								<td th:text="${schedule.approveDt}"/>
 								<td th:text="${schedule.status}"/>
 							</tr>

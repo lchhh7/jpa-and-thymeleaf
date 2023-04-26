@@ -25,12 +25,12 @@
                             <div class="restv floatleft">
                                 <div class="midrv">
                                     <p class="restday rd1">나의 남은 연차 일수는</p>
-                                    <p class="restday rd2"><span class="rd" th:text="|${vacationDays.total -vacationDays.use}일|"></span> 입니다.</p>
+                                    <p class="restday rd2"><span class="rd" th:text="|${vacationDays.total -vacationDays.use + vacationDays.add}일|"></span> 입니다.</p>
                                 </div>
                                 <div class="botrv">
                                     <div class="btrest clearfix">
                                         <span class="brtitle">총 휴가</span>
-                                        <span class="brdays"><span class="brcalc" th:text="|${vacationDays.total}일|">
+                                        <span class="brdays"><span class="brcalc" th:text="|${vacationDays.total} + ${vacationDays.add}일|">
                                     </div>
                                     <div class="btrest clearfix">
                                         <span class="brtitle">사용한 휴가</span>

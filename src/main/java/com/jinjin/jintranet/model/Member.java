@@ -1,13 +1,9 @@
 package com.jinjin.jintranet.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Entity
@@ -48,14 +44,7 @@ public class Member extends BaseEntity implements Serializable {
 	/*@JsonIgnore
 	@OneToMany(mappedBy = "member" , fetch = FetchType.LAZY)
 	private List<CommutingRequest> commutingRequests;*/
-	@Transient
-	private Double total;
-	
-	@Transient
-	private Double use;
-	
-	@Transient
-	private Integer add;
+
 	
 	@Builder
 	public Member(String memberId, String password, String name, String phoneNo, String mobileNo,

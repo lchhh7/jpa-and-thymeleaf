@@ -1,23 +1,6 @@
 package com.jinjin.jintranet.commuting.service;
 
-import java.sql.Array;
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-
-import javax.transaction.Transactional;
-
 import com.jinjin.jintranet.commuting.dto.CommuteRequestDTO;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Service;
-
 import com.jinjin.jintranet.commuting.dto.CommuteRequestInsertDTO;
 import com.jinjin.jintranet.commuting.dto.CommutingsInterface;
 import com.jinjin.jintranet.commuting.repository.CommutingRepository;
@@ -26,6 +9,17 @@ import com.jinjin.jintranet.member.repository.MemberRepository;
 import com.jinjin.jintranet.model.Commuting;
 import com.jinjin.jintranet.model.CommutingRequest;
 import com.jinjin.jintranet.model.Member;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -114,8 +108,7 @@ public class CommutingService {
 
 		//연관관계 편의성 메소드
 		//member.add(commutingRequest);
-		//member.getCommutingRequests().add(commutingRequest);
-		//member.setCommutingRequests(member.getCommutingRequests());
+
 	}
 
 	@Transactional
@@ -131,13 +124,12 @@ public class CommutingService {
 
 		for(Integer i : overtimeDates) {
 			List<LocalDateTime> dayOfTime
-					= commute.stream()
-					.filter(c -> c.getCnt() ==1)
-					.filter(d -> d.getCommutingTm().getDayOfMonth() == i ).map(m -> m.getCommutingTm()).toList();
-
+					= commute.stream().filter(c -> c.getCnt() == 1).filter(c -> (c.getCommutingTm().getDayOfMonth() == i && !c.getAttendYn().equals("V")) ||
+					(c.getCommutingTm().minusDays(1).getDayOfMonth() == i && c.getAttendYn().equals("V"))).map(CommutingsInterface::getCommutingTm).collect(Collectors.toList());
+			System.out.println("dayOfTime = " + dayOfTime);
 			if(dayOfTime.size() < 2) continue;
 
-			Duration diff = Duration.between(dayOfTime.get(0).toLocalTime(), dayOfTime.get(1).toLocalTime());
+			Duration diff = Duration.between(dayOfTime.get(0), dayOfTime.get(1));
 			if(diff.toHours() > 10)  {
 				CommuteRequestDTO ctoFlake = new CommuteRequestDTO();
 				ctoFlake.setRequestDt(LocalDate.of(year , month , i).toString());

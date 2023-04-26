@@ -58,7 +58,6 @@ public class CommutingRequestService {
 		commutingRequest.setApproveDt(LocalDateTime.now());
 
 		//연관관계 편의성 메소드
-		//member.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
 		//member.approve(id , approveDTO);
 
 		if(approveDTO.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
