@@ -40,7 +40,7 @@ public class Schedule extends BaseEntity{
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss" , timezone = "Asia/Seoul")
 	private LocalDateTime endDt;
 
-	@OneToOne(optional = false , fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "approveId")
 	private Member approve;
 	

@@ -126,7 +126,7 @@ public class CommutingService {
 			List<LocalDateTime> dayOfTime
 					= commute.stream().filter(c -> c.getCnt() == 1).filter(c -> (c.getCommutingTm().getDayOfMonth() == i && !c.getAttendYn().equals("V")) ||
 					(c.getCommutingTm().minusDays(1).getDayOfMonth() == i && c.getAttendYn().equals("V"))).map(CommutingsInterface::getCommutingTm).collect(Collectors.toList());
-			System.out.println("dayOfTime = " + dayOfTime);
+
 			if(dayOfTime.size() < 2) continue;
 
 			Duration diff = Duration.between(dayOfTime.get(0), dayOfTime.get(1));

@@ -34,8 +34,8 @@ public class VacationDaysUtils {
 
         double total = getTotalVacationDays(member, year, month, date);
         double use = getUseVacationDays(member, year, month, date);
-        int add = getAddVacationDays(member);
-        return new MemberCommuteDTO(member.getName() , total , use , add);
+      //  int add = getAddVacationDays(member);
+        return new MemberCommuteDTO(member.getName() , total , use , 0);
     }
 
 

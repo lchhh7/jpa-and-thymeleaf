@@ -36,7 +36,7 @@ public class CommutingRequest extends BaseEntity{
 	
 	private String content;
 	
-	@OneToOne(optional = false , fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "approveId")
 	private Member approve;
 	
