@@ -5,7 +5,6 @@ import com.jinjin.jintranet.model.CommutingRequest;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.Qfile.QCommutingRequest;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -22,18 +21,16 @@ public class CommutingRequestDslRepository {
 	private final JPAQueryFactory jPAQueryFactory;
 	
 	QCommutingRequest commutingRequest = QCommutingRequest.commutingRequest;
-	
+
 	public Page<AdminCommuteRequestViewDTO> approvesList(Member member , Integer approveId , String status , Pageable pageable) {
 
 		List<AdminCommuteRequestViewDTO> approvesList =  jPAQueryFactory
-				.select(
-						Projections.bean(AdminCommuteRequestViewDTO.class , commutingRequest.id, commutingRequest.member , commutingRequest.type ,
-								commutingRequest.requestDt, commutingRequest.requestTm , commutingRequest.content , commutingRequest.status))
-				.from(commutingRequest)
+				.selectFrom(commutingRequest).leftJoin(commutingRequest.member).fetchJoin()
 				.where(approveEq(member) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
-				.fetch();
+				.fetch()
+				.stream().map(n -> new AdminCommuteRequestViewDTO(n)).toList();
 		
 		Long count =  jPAQueryFactory
 				.select(commutingRequest.count())
