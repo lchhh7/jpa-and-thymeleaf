@@ -11,7 +11,7 @@ import java.util.List;
 
 public interface CommutingRepository extends JpaRepository<Commuting, Integer>{
 	
-	@Query(value="SELECT com.commutingTm FROM Commuting com WHERE com.memberId = :memberId AND com.attendYn ='Y' AND left(com.commutingTm,10) = left(now(),10) order by com.commutingTm desc limit 1", nativeQuery = true)
+	/*@Query(value="SELECT com.commutingTm FROM Commuting com WHERE com.memberId = :memberId AND com.attendYn ='Y' AND left(com.commutingTm,10) = left(now(),10) order by com.commutingTm desc limit 1", nativeQuery = true)
 	String goToWorkTime(@Param("memberId") Member member);
 	
 	@Query(value="SELECT com.commutingTm FROM Commuting com WHERE com.memberId = :memberId AND com.attendYn ='N' AND left(com.commutingTm,10) = left(now(),10) order by com.commutingTm desc limit 1", nativeQuery = true)
@@ -19,7 +19,7 @@ public interface CommutingRepository extends JpaRepository<Commuting, Integer>{
 	
 	@Query(value="select if(com.attendYn = 'Y' , '근무중' , '퇴근') from Commuting com where curdate() = date_format(com.commutingTm,'%Y-%m-%d') AND com.memberId = :memberId order by com.commutingTm desc limit 1", nativeQuery = true)
 	String workingStatus(@Param("memberId") Member member);
-	
+	*/
 	@Query(value="SELECT  com.id , com.commutingTm , com.attendYn ,  count(com.commutingTm) over(partition by date_format(com.commutingTm,'%Y-%m-%d') , com.attendYn order by com.commutingTm rows 1 preceding) as cnt FROM Commuting com WHERE com.memberId = :memberId AND date_format(com.commutingTm,'%Y-%m-%d') >= :strDt AND date_format(com.commutingTm,'%Y-%m-%d') <= :endDt and com.attendYn='Y' order by com.commutingTm desc", nativeQuery = true)
 	List<CommutingsInterface> findCommuteOn(@Param("memberId") Member member , @Param("strDt") String strDt ,@Param("endDt") String endDt);
 	

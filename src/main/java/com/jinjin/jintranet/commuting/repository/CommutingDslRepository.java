@@ -1,6 +1,7 @@
 package com.jinjin.jintranet.commuting.repository;
 
 import com.jinjin.jintranet.model.Commuting;
+import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.QCommuting;
 import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.dsl.Expressions;
@@ -17,22 +18,23 @@ public class CommutingDslRepository {
 	private final JPAQueryFactory jPAQueryFactory;
 	QCommuting commuting = QCommuting.commuting;
 
-	public Commuting goToWorkTime(String memberId) {
+
+	public Commuting goToWorkTime(Member member) {
 		return jPAQueryFactory
 				.selectFrom(commuting)
-				.where(commuting.member.memberId.eq(memberId), onCheck()).orderBy(commuting.commutingTm.desc()).limit(1).fetchOne();
+				.where(commuting.member.eq(member), onCheck()).orderBy(commuting.commutingTm.desc()).limit(1).fetchOne();
 	}
 
-	public Commuting offToWorkTime(String memberId) {
+	public Commuting offToWorkTime(Member member) {
 		return jPAQueryFactory
 				.selectFrom(commuting)
-				.where(commuting.member.memberId.eq(memberId) , offCheck()).orderBy(commuting.commutingTm.desc()).limit(1).fetchOne();
+				.where(commuting.member.eq(member) , offCheck()).orderBy(commuting.commutingTm.desc()).limit(1).fetchOne();
 	}
 
-	public Commuting workingStatus(String memberId) {
+	public Commuting workingStatus(Member member) {
 		return jPAQueryFactory
 				.selectFrom(commuting)
-				.where(commuting.member.memberId.eq(memberId) , datecheck(LocalDate.now())).orderBy(commuting.commutingTm.desc()).limit(1).fetchOne();
+				.where(commuting.member.eq(member) , datecheck(LocalDate.now())).orderBy(commuting.commutingTm.desc()).limit(1).fetchOne();
 	}
 
 	public BooleanBuilder datecheck(LocalDate LastCommute) {

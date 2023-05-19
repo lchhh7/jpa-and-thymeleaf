@@ -3,6 +3,7 @@ package com.jinjin.jintranet.commuting.service;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestInsertDTO;
 import com.jinjin.jintranet.commuting.dto.CommutingsInterface;
+import com.jinjin.jintranet.commuting.repository.CommutingDslRepository;
 import com.jinjin.jintranet.commuting.repository.CommutingRepository;
 import com.jinjin.jintranet.commuting.repository.CommutingRequestRepository;
 import com.jinjin.jintranet.member.repository.MemberRepository;
@@ -18,7 +19,10 @@ import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -29,7 +33,9 @@ public class CommutingService {
 	private final MemberRepository memberRepository;
 	
 	private final CommutingRepository commutingRepository;
-	
+
+	private final CommutingDslRepository commutingDslRepository;
+
 	private final CommutingRequestRepository commutingRequestRepository;
 
 	@Transactional
@@ -52,9 +58,9 @@ public class CommutingService {
 	@Transactional
 	public Map<String, Object> getWorkTime(Member member) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("goToWorkTime", commutingRepository.goToWorkTime(member));
-		map.put("offToWorkTime", commutingRepository.offToWorkTime(member));
-		map.put("workingStatus", commutingRepository.workingStatus(member));
+		map.put("goToWorkTime", commutingDslRepository.goToWorkTime(member).getCommutingTm());
+		map.put("offToWorkTime", commutingDslRepository.offToWorkTime(member).getCommutingTm());
+		map.put("workingStatus", commutingDslRepository.workingStatus(member).getAttendYn().equals("N") ? "퇴근" : "근무중"ㅎ);
 		return map;
 	}
 
