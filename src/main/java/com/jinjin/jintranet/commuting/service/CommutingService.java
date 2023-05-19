@@ -60,7 +60,7 @@ public class CommutingService {
 		Map<String, Object> map = new HashMap<>();
 		map.put("goToWorkTime", commutingDslRepository.goToWorkTime(member).getCommutingTm());
 		map.put("offToWorkTime", commutingDslRepository.offToWorkTime(member).getCommutingTm());
-		map.put("workingStatus", commutingDslRepository.workingStatus(member).getAttendYn().equals("N") ? "퇴근" : "근무중"ㅎ);
+		map.put("workingStatus", commutingDslRepository.workingStatus(member).getAttendYn().equals("N") ? "퇴근" : "근무중");
 		return map;
 	}
 
