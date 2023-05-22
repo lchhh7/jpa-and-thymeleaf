@@ -1,6 +1,5 @@
 package com.jinjin.jintranet.commuting.repository;
 
-import com.jinjin.jintranet.model.Commuting;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.QCommuting;
 import com.querydsl.core.BooleanBuilder;
@@ -11,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Repository
 @RequiredArgsConstructor
@@ -18,22 +18,22 @@ public class CommutingDslRepository {
 	private final JPAQueryFactory jPAQueryFactory;
 	QCommuting commuting = QCommuting.commuting;
 
-
-	public Commuting goToWorkTime(Member member) {
+	public LocalDateTime goToWorkTime(Member member) {
 		return jPAQueryFactory
-				.selectFrom(commuting)
+				.select(commuting.commutingTm).from(commuting)
 				.where(commuting.member.eq(member), onCheck()).orderBy(commuting.commutingTm.desc()).limit(1).fetchOne();
 	}
 
-	public Commuting offToWorkTime(Member member) {
+	public LocalDateTime offToWorkTime(Member member) {
 		return jPAQueryFactory
-				.selectFrom(commuting)
+				.select(commuting.commutingTm).from(commuting)
 				.where(commuting.member.eq(member) , offCheck()).orderBy(commuting.commutingTm.desc()).limit(1).fetchOne();
 	}
 
-	public Commuting workingStatus(Member member) {
+	public String workingStatus(Member member) {
 		return jPAQueryFactory
-				.selectFrom(commuting)
+				.select(commuting.attendYn.when("Y").then("근무중")
+						.otherwise("퇴근")).from(commuting)
 				.where(commuting.member.eq(member) , datecheck(LocalDate.now())).orderBy(commuting.commutingTm.desc()).limit(1).fetchOne();
 	}
 

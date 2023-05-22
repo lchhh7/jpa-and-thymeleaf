@@ -58,9 +58,9 @@ public class CommutingService {
 	@Transactional
 	public Map<String, Object> getWorkTime(Member member) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("goToWorkTime", commutingDslRepository.goToWorkTime(member).getCommutingTm());
-		map.put("offToWorkTime", commutingDslRepository.offToWorkTime(member).getCommutingTm());
-		map.put("workingStatus", commutingDslRepository.workingStatus(member).getAttendYn().equals("N") ? "퇴근" : "근무중");
+		map.put("goToWorkTime", commutingDslRepository.goToWorkTime(member));
+		map.put("offToWorkTime", commutingDslRepository.offToWorkTime(member));
+		map.put("workingStatus", commutingDslRepository.workingStatus(member));
 		return map;
 	}
 
