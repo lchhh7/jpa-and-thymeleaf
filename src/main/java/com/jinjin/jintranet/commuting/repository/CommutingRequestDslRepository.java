@@ -22,11 +22,11 @@ public class CommutingRequestDslRepository {
 	
 	QCommutingRequest commutingRequest = QCommutingRequest.commutingRequest;
 
-	public Page<AdminCommuteRequestViewDTO> approvesList(Member member , Integer approveId , String status , Pageable pageable) {
+	public Page<AdminCommuteRequestViewDTO> approvesList(Member member , Integer approveId ,  List<String> statusList , Pageable pageable) {
 
 		List<AdminCommuteRequestViewDTO> approvesList =  jPAQueryFactory
 				.selectFrom(commutingRequest).leftJoin(commutingRequest.member).fetchJoin()
-				.where(approveEq(member) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
+				.where(approveEq(member) ,statusBb(statusList) ,commutingRequest.deletedBy.isNull())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
 				.fetch()
@@ -35,7 +35,7 @@ public class CommutingRequestDslRepository {
 		Long count =  jPAQueryFactory
 				.select(commutingRequest.count())
 				.from(commutingRequest)
-				.where(approveEq(member) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
+				.where(approveEq(member) ,statusBb(statusList) ,commutingRequest.deletedBy.isNull())
 				.fetchOne();
 		
 		return new PageImpl<>(approvesList , pageable , count);
@@ -76,12 +76,11 @@ public class CommutingRequestDslRepository {
 		return commutingRequest.requestDt.contains(y);
 	}
 	
-	private BooleanBuilder statusBb(String status) {
+	private BooleanBuilder statusBb(List<String> statusList) {
 		BooleanBuilder builder = new BooleanBuilder();
-		String[] typeArr = status.split(",");
 		/*if(typeArr[0] == "R") {
 			return builder.or(schedule.status.eq(typeArr[0])).or(schedule.status.eq(typeArr[1])).or(schedule.status.eq(typeArr[2])).or(schedule.status.eq("R"));
 		}*/
-		return builder.or(commutingRequest.status.eq(typeArr[0])).or(commutingRequest.status.eq(typeArr[1])).or(commutingRequest.status.eq(typeArr[2]));
+		return builder.or(commutingRequest.status.eq(statusList.get(0))).or(commutingRequest.status.eq(statusList.get(1))).or(commutingRequest.status.eq(statusList.get(2)));
 	}
 }

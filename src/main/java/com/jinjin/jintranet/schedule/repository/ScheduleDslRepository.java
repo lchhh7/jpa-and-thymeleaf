@@ -1,24 +1,21 @@
 package com.jinjin.jintranet.schedule.repository;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
+import com.jinjin.jintranet.model.Member;
+import com.jinjin.jintranet.model.Qfile.QMember;
+import com.jinjin.jintranet.model.Qfile.QSchedule;
+import com.jinjin.jintranet.model.Schedule;
+import com.jinjin.jintranet.schedule.dto.ScheduleSearchDTO;
+import com.querydsl.core.types.Projections;
+import com.querydsl.core.types.dsl.BooleanExpression;
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
-import com.jinjin.jintranet.model.Member;
-import com.jinjin.jintranet.model.Schedule;
-import com.jinjin.jintranet.model.Qfile.QMember;
-import com.jinjin.jintranet.model.Qfile.QSchedule;
-import com.jinjin.jintranet.schedule.dto.ScheduleSearchDTO;
-import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.jpa.impl.JPAQueryFactory;
-
-import lombok.RequiredArgsConstructor;
+import java.util.Arrays;
+import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
@@ -29,14 +26,12 @@ public class ScheduleDslRepository {
 	QSchedule schedule = QSchedule.schedule;
 	
 	QMember qMember = QMember.member;
-	public List<ScheduleSearchDTO> findSchedule(Schedule s) {
-		List<String> ids = Arrays.stream(s.getType().split(",")).collect(Collectors.toList());
-		
+	public List<ScheduleSearchDTO> findSchedule(Schedule s , List<String> typeList) {
 		return jPAQueryFactory.select( Projections.constructor(ScheduleSearchDTO.class , schedule.id , schedule.type , schedule.title,
 				schedule.strDt ,schedule.endDt , schedule.status , schedule.color))
 				.from(schedule)
 				.where(memberEq(s.getMember()),
-						schedule.type.in(ids),
+						schedule.type.in(typeList),
 						statusEq(s) , 
 						schedule.endDt.between(s.getStrDt(), s.getEndDt()) , 
 						schedule.status.ne("D")

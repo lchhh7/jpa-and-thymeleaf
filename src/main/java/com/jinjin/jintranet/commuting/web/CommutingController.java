@@ -73,13 +73,15 @@ public class CommutingController {
         Map<String, Object> map = new HashMap<>();
 
 			int month = currentMonth(sd);
-            
+
+			List<String> typeList = List.of("FV","HV");
+
             Schedule schedule = Schedule.builder()
-            		.member(principal.getMember()).type("FV,HV").status("Y")
+            		.member(principal.getMember()).status("Y")
             		.strDt(DateUtils.toLocalDateTime(sd)).endDt(DateUtils.toLocalDateTime(ed)).build();
         	
             List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd), DateUtils.toLocalDateTime(ed));
-            List<ScheduleSearchDTO> schedules = scheduleService.read(schedule);
+            List<ScheduleSearchDTO> schedules = scheduleService.read(schedule , typeList);
             List<CommutingsInterface> commute = commutingService.findAll(principal.getMember() ,sd ,ed);
 
 			List<CommuteRequestDTO> commuteRequests = commutingRequestService.findCommute(principal.getMember() , sd , ed);

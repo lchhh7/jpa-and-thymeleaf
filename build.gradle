@@ -5,7 +5,7 @@ plugins {
 }
 
 group = 'com.jinjin.test'
-version = '0.0.1-SNAPSHOT'
+version = 'ver1'
 sourceCompatibility = "16"
 
 configurations {

@@ -88,13 +88,11 @@ const searching = function() {
  		contentType: 'application/json; charset=utf-8'
  	})
  		.done(function(data) {
-			 console.log("!!!!!!!!!!!");
 
  			alert(data);
  			location.reload();
  		})
  		.fail(function(data) {
-			 console.log("@@@@@@@@@@@@@@");
  			alert(data.responseText);
  			return false;
  		});

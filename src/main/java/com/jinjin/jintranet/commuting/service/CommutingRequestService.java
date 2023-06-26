@@ -43,8 +43,8 @@ public class CommutingRequestService {
 	}
 	
 	@Transactional
-	public Page<AdminCommuteRequestViewDTO> approvesList(Member member, Integer m, String sj , Pageable pageable) {
-		return commutingRequestDslRepository.approvesList(member, m , sj , pageable);
+	public Page<AdminCommuteRequestViewDTO> approvesList(Member member, Integer m, List<String> statusList , Pageable pageable) {
+		return commutingRequestDslRepository.approvesList(member, m , statusList , pageable);
 	}
 	
 	@Transactional

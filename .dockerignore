@@ -1,0 +1,33 @@
+# build/libs/*.jar 를 제외한 모든 jar 파일
+*.jar
+!build/libs/*.jar
+
+# 폴더
+build/
+!build/libs/**
+
+# .git 폴더 무시
+.git
+
+# readme 파일을 제외한 모든 마크다운 파일 제외
+*.md
+!README.md
+
+# Dockerfile ,docker-compose 무시
+Dockerfile
+docker-compose.yml
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.springBeans
+.sts4-cache
+bin/
+
+# IntelliJ 내 project files
+.idea
+.settings
+*.iml
+out

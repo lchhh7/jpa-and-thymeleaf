@@ -97,8 +97,8 @@ public class ScheduleService {
 
 
 	@Transactional
-	public List<ScheduleSearchDTO> read(Schedule schedule) {
-		return scheduleDslRepository.findSchedule(schedule);
+	public List<ScheduleSearchDTO> read(Schedule schedule, List<String> typeList) {
+		return scheduleDslRepository.findSchedule(schedule , typeList);
 	}
 	
 	@Transactional

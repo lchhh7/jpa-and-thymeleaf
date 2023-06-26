@@ -1,13 +1,12 @@
 package com.jinjin.jintranet.admin.commuting.controller;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.StringJoiner;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.jinjin.jintranet.common.PageUtils;
 import com.jinjin.jintranet.commuting.dto.AdminCommuteRequestViewDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
+import com.jinjin.jintranet.commuting.service.CommutingRequestService;
+import com.jinjin.jintranet.member.service.MemberService;
+import com.jinjin.jintranet.schedule.service.ScheduleService;
+import com.jinjin.jintranet.security.auth.PrincipalDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -20,12 +19,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.jinjin.jintranet.common.PageUtils;
-import com.jinjin.jintranet.commuting.service.CommutingRequestService;
-import com.jinjin.jintranet.member.service.MemberService;
-import com.jinjin.jintranet.model.CommutingRequest;
-import com.jinjin.jintranet.schedule.service.ScheduleService;
-import com.jinjin.jintranet.security.auth.PrincipalDetail;
+import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.StringJoiner;
 
 @Controller
 @RequiredArgsConstructor
@@ -65,12 +63,11 @@ public class AdminCommutingController {
             @PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
             HttpServletRequest request) throws Exception {
 
-    	StringJoiner sj = new StringJoiner(",");
-    	sj.add(r); sj.add(y); sj.add(n);
-    	
+        List<String> statusList = List.of( r, y, n);
+
     	Map<String, Object> map = new HashMap<>();
         try {
-            Page<AdminCommuteRequestViewDTO> approvesList = commutingRequestService.approvesList(principal.getMember(), m , sj.toString() , pageable);
+            Page<AdminCommuteRequestViewDTO> approvesList = commutingRequestService.approvesList(principal.getMember(), m , statusList , pageable);
             String page = PageUtils.page(approvesList, "commutings" , request);
             
             map.put("list" , approvesList);
