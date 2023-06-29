@@ -1,16 +1,16 @@
 package com.jinjin.jintranet.schedule.web;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.StringJoiner;
-
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
+import com.jinjin.jintranet.common.DateUtils;
+import com.jinjin.jintranet.common.VacationDaysUtils;
+import com.jinjin.jintranet.holiday.service.HolidayService;
+import com.jinjin.jintranet.member.dto.VacationDaysDTO;
+import com.jinjin.jintranet.member.service.MemberService;
+import com.jinjin.jintranet.model.Holiday;
+import com.jinjin.jintranet.model.Member;
+import com.jinjin.jintranet.model.Schedule;
+import com.jinjin.jintranet.schedule.dto.*;
+import com.jinjin.jintranet.schedule.service.ScheduleService;
+import com.jinjin.jintranet.security.auth.PrincipalDetail;
 import lombok.RequiredArgsConstructor;
 import org.joda.time.LocalDate;
 import org.springframework.http.HttpStatus;
@@ -20,29 +20,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import com.jinjin.jintranet.common.DateUtils;
-import com.jinjin.jintranet.common.VacationDaysUtils;
-import com.jinjin.jintranet.holiday.service.HolidayService;
-import com.jinjin.jintranet.member.dto.VacationDaysDTO;
-import com.jinjin.jintranet.member.service.MemberService;
-import com.jinjin.jintranet.model.Holiday;
-import com.jinjin.jintranet.model.Member;
-import com.jinjin.jintranet.model.Schedule;
-import com.jinjin.jintranet.schedule.dto.ScheduleCancelDTO;
-import com.jinjin.jintranet.schedule.dto.ScheduleInsertDTO;
-import com.jinjin.jintranet.schedule.dto.ScheduleSearchDTO;
-import com.jinjin.jintranet.schedule.dto.ScheduleUpdateDTO;
-import com.jinjin.jintranet.schedule.dto.ScheduleViewDTO;
-import com.jinjin.jintranet.schedule.service.ScheduleService;
-import com.jinjin.jintranet.security.auth.PrincipalDetail;
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import java.time.LocalDateTime;
+import java.util.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -91,15 +74,14 @@ public class ScheduleController {
 
 		Map<String, Object> map = new HashMap<>();
 
-		StringJoiner sj = new StringJoiner(",");
-		sj.add(sc); sj.add(fv); sj.add(hv); sj.add(ow);
+		List<String> typeList = List.of(sc , fv , hv , ow);
 
-		Schedule schedule = Schedule.builder().type(sj.toString()).strDt(DateUtils.toLocalDateTime(sd))
-				.endDt(DateUtils.toLocalDateTime(ed)).build();
+		Schedule schedule = Schedule.builder().strDt(DateUtils.toLocalDateTime(sd)).endDt(DateUtils.toLocalDateTime(ed)).build();
+
 		if ("m".equals(m))
 			schedule.setMember(principal.getMember());
 
-			List<ScheduleSearchDTO> list = scheduleService.read(schedule);
+			List<ScheduleSearchDTO> list = scheduleService.read(schedule , typeList);
 			List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd),
 					DateUtils.toLocalDateTime(ed));
 			map.put("list", list);

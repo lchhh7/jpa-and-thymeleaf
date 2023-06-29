@@ -25,7 +25,7 @@ public class QCommutingRequest extends EntityPathBase<CommutingRequest> {
 
     public static final QCommutingRequest commutingRequest = new QCommutingRequest("commutingRequest");
 
-    public final com.jinjin.jintranet.model.QBaseEntity _super = new QBaseEntity(this);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
     public final QMember approve;
 

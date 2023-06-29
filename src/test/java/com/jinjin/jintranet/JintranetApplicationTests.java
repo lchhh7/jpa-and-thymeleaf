@@ -6,6 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 @SpringBootTest
 class JintranetApplicationTests {
 
+
 	@Test
 	void contextLoads() {
 	}

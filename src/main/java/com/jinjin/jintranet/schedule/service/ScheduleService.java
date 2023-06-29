@@ -1,19 +1,7 @@
 package com.jinjin.jintranet.schedule.service;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.transaction.Transactional;
-
-import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import com.jinjin.jintranet.common.VacationDaysUtils;
+import com.jinjin.jintranet.member.dto.MemberCommuteDTO;
 import com.jinjin.jintranet.member.repository.MemberRepository;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.Schedule;
@@ -23,6 +11,16 @@ import com.jinjin.jintranet.schedule.dto.todaySchedulesDTO;
 import com.jinjin.jintranet.schedule.repository.ScheduleDslRepository;
 import com.jinjin.jintranet.schedule.repository.ScheduleRepository;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
+import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import javax.transaction.Transactional;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -99,8 +97,8 @@ public class ScheduleService {
 
 
 	@Transactional
-	public List<ScheduleSearchDTO> read(Schedule schedule) {
-		return scheduleDslRepository.findSchedule(schedule);
+	public List<ScheduleSearchDTO> read(Schedule schedule, List<String> typeList) {
+		return scheduleDslRepository.findSchedule(schedule , typeList);
 	}
 	
 	@Transactional
@@ -146,8 +144,8 @@ public class ScheduleService {
 	}
 	
 	@Transactional
-	public List<Member> vacationDays() throws Exception {
-		List<Member> list = new ArrayList<>();
+	public List<MemberCommuteDTO> vacationDays() throws Exception {
+		List<MemberCommuteDTO> list = new ArrayList<>();
 		
 		LocalDate now = LocalDate.now();
 		

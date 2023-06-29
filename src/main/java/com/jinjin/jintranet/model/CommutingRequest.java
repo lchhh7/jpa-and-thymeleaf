@@ -36,7 +36,7 @@ public class CommutingRequest extends BaseEntity{
 	
 	private String content;
 	
-	@OneToOne
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "approveId")
 	private Member approve;
 	
@@ -55,4 +55,14 @@ public class CommutingRequest extends BaseEntity{
 		this.approve = approve;
 		this.approveDt = approveDt;
 	}
+
+/*
+	public void changeMember(Member member) {
+		this.member = member;
+		member.getCommutingRequests().add(this);
+	}
+*/
+
+
+	
 }

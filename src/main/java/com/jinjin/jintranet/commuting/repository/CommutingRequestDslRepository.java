@@ -5,7 +5,6 @@ import com.jinjin.jintranet.model.CommutingRequest;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.Qfile.QCommutingRequest;
 import com.querydsl.core.BooleanBuilder;
-import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import lombok.RequiredArgsConstructor;
@@ -22,23 +21,21 @@ public class CommutingRequestDslRepository {
 	private final JPAQueryFactory jPAQueryFactory;
 	
 	QCommutingRequest commutingRequest = QCommutingRequest.commutingRequest;
-	
-	public Page<AdminCommuteRequestViewDTO> approvesList(Member member , Integer approveId , String status , Pageable pageable) {
+
+	public Page<AdminCommuteRequestViewDTO> approvesList(Member member , Integer approveId ,  List<String> statusList , Pageable pageable) {
 
 		List<AdminCommuteRequestViewDTO> approvesList =  jPAQueryFactory
-				.select(
-						Projections.bean(AdminCommuteRequestViewDTO.class , commutingRequest.id, commutingRequest.member , commutingRequest.type ,
-								commutingRequest.requestDt, commutingRequest.requestTm , commutingRequest.content , commutingRequest.status))
-				.from(commutingRequest)
-				.where(approveEq(member) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
+				.selectFrom(commutingRequest).leftJoin(commutingRequest.member).fetchJoin()
+				.where(approveEq(member) ,statusBb(statusList) ,commutingRequest.deletedBy.isNull())
 				.offset(pageable.getOffset())
 				.limit(pageable.getPageSize())
-				.fetch();
+				.fetch()
+				.stream().map(n -> new AdminCommuteRequestViewDTO(n)).toList();
 		
 		Long count =  jPAQueryFactory
 				.select(commutingRequest.count())
 				.from(commutingRequest)
-				.where(approveEq(member) ,statusBb(status) ,commutingRequest.deletedBy.isNull())
+				.where(approveEq(member) ,statusBb(statusList) ,commutingRequest.deletedBy.isNull())
 				.fetchOne();
 		
 		return new PageImpl<>(approvesList , pageable , count);
@@ -79,12 +76,11 @@ public class CommutingRequestDslRepository {
 		return commutingRequest.requestDt.contains(y);
 	}
 	
-	private BooleanBuilder statusBb(String status) {
+	private BooleanBuilder statusBb(List<String> statusList) {
 		BooleanBuilder builder = new BooleanBuilder();
-		String[] typeArr = status.split(",");
 		/*if(typeArr[0] == "R") {
 			return builder.or(schedule.status.eq(typeArr[0])).or(schedule.status.eq(typeArr[1])).or(schedule.status.eq(typeArr[2])).or(schedule.status.eq("R"));
 		}*/
-		return builder.or(commutingRequest.status.eq(typeArr[0])).or(commutingRequest.status.eq(typeArr[1])).or(commutingRequest.status.eq(typeArr[2]));
+		return builder.or(commutingRequest.status.eq(statusList.get(0))).or(commutingRequest.status.eq(statusList.get(1))).or(commutingRequest.status.eq(statusList.get(2)));
 	}
 }

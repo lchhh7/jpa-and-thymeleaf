@@ -21,7 +21,7 @@ public class QMember extends EntityPathBase<Member> {
 
     public static final QMember member = new QMember("member1");
 
-    public final com.jinjin.jintranet.model.QBaseEntity _super = new QBaseEntity(this);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;

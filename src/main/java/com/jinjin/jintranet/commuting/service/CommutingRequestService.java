@@ -33,12 +33,6 @@ public class CommutingRequestService {
 	private final CommutingRequestDslRepository commutingRequestDslRepository;
 
 	@Transactional
-	public List<CommutingRequest> findAll(Member member, String strDt , String endDt) {
-		return commutingRequestRepository.findAll(member, strDt , endDt);
-	}
-
-
-	@Transactional
 	public AdminCommuteRequestViewDTO findById(Integer id) {
 		CommutingRequest commutingRequest = commutingRequestRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("해당 일정을 조회하는중 오류가 발생했습니다");
@@ -49,8 +43,8 @@ public class CommutingRequestService {
 	}
 	
 	@Transactional
-	public Page<AdminCommuteRequestViewDTO> approvesList(Member member, Integer m, String sj , Pageable pageable) {
-		return commutingRequestDslRepository.approvesList(member, m , sj , pageable);
+	public Page<AdminCommuteRequestViewDTO> approvesList(Member member, Integer m, List<String> statusList , Pageable pageable) {
+		return commutingRequestDslRepository.approvesList(member, m , statusList , pageable);
 	}
 	
 	@Transactional
@@ -64,7 +58,6 @@ public class CommutingRequestService {
 		commutingRequest.setApproveDt(LocalDateTime.now());
 
 		//연관관계 편의성 메소드
-		//member.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
 		//member.approve(id , approveDTO);
 
 		if(approveDTO.getStatus().equals("Y") &&!commutingRequest.getType().equals("O") ) {
@@ -108,14 +101,16 @@ public class CommutingRequestService {
 		CommutingRequest commutingRequest = commutingRequestRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("해당 일정을 삭제하는중 오류가 발생했습니다");
 		});
+
 		//member.delete(id);
+
 		commutingRequest.setDeletedBy(member.getName());
 	}
 
 	@Transactional
 	public List<CommuteRequestDTO> findCommute(Member member , String sd , String ed) {
 
-		List<CommuteRequestDTO> commuteRequests = commutingRequestRepository.findCommute(member.getMemberId()).stream()
+		List<CommuteRequestDTO> commuteRequests = commutingRequestRepository.findCommute(member).stream()
 				.filter(m -> LocalDate.parse(m.getRequestDt()).isAfter(LocalDate.parse(sd)))
 				.filter(m -> LocalDate.parse(m.getRequestDt()).isBefore(LocalDate.parse(ed)))
 				.filter(m -> m.getType().equals("O"))
@@ -123,6 +118,5 @@ public class CommutingRequestService {
 				.map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
 
 		return commuteRequests;
-
 	}
 }

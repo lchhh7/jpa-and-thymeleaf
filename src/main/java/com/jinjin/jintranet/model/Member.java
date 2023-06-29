@@ -1,13 +1,9 @@
 package com.jinjin.jintranet.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.jinjin.jintranet.commuting.dto.CommuteApproveDTO;
 import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Entity
@@ -48,14 +44,7 @@ public class Member extends BaseEntity implements Serializable {
 	/*@JsonIgnore
 	@OneToMany(mappedBy = "member" , fetch = FetchType.LAZY)
 	private List<CommutingRequest> commutingRequests;*/
-	@Transient
-	private Double total;
-	
-	@Transient
-	private Double use;
-	
-	@Transient
-	private Integer add;
+
 	
 	@Builder
 	public Member(String memberId, String password, String name, String phoneNo, String mobileNo,
@@ -79,12 +68,6 @@ public class Member extends BaseEntity implements Serializable {
 		this.getCommutingRequests().stream().filter(m ->m.getId() ==id)
 				.collect(Collectors.toList())
 				.forEach(li -> this.getCommutingRequests().remove(li));
-<<<<<<< HEAD
-	}
-	public void approve(int id, CommuteApproveDTO approveDTO) {
-		this.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));
-=======
->>>>>>> chlee
 	}
 	public void approve(int id, CommuteApproveDTO approveDTO) {
 		this.getCommutingRequests().stream().filter(m -> m.getId() == id).forEach(m -> m.setStatus(approveDTO.getStatus()));

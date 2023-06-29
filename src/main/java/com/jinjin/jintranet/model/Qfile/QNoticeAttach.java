@@ -25,7 +25,7 @@ public class QNoticeAttach extends EntityPathBase<NoticeAttach> {
 
     public static final QNoticeAttach noticeAttach = new QNoticeAttach("noticeAttach");
 
-    public final com.jinjin.jintranet.model.QBaseEntity _super = new QBaseEntity(this);
+    public final QBaseEntity _super = new QBaseEntity(this);
 
     //inherited
     public final StringPath createdBy = _super.createdBy;

@@ -175,7 +175,7 @@ const vacationDays = function () {
 
             Array.prototype.forEach.call(data, function (e) {
                 tr += '<tr>';
-                tr += '<td>' + e.name  + '</td>';
+                tr += '<td>' + e.memberName  + '</td>';
                 tr += '<td>' + (e.total) + '(' + e.total +  '-' + e.use +')'  + '</td>';
                 tr += '<td>' + (e.total-e.use)  + '</td>';
                 tr += '</tr>';

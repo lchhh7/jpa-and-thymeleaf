@@ -1,12 +1,11 @@
 package com.jinjin.jintranet.admin.schedule.controller;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.jinjin.jintranet.common.PageUtils;
+import com.jinjin.jintranet.member.dto.MemberCommuteDTO;
+import com.jinjin.jintranet.member.service.MemberService;
+import com.jinjin.jintranet.model.Schedule;
+import com.jinjin.jintranet.schedule.service.ScheduleService;
+import com.jinjin.jintranet.security.auth.PrincipalDetail;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,18 +16,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import com.jinjin.jintranet.common.PageUtils;
-import com.jinjin.jintranet.member.service.MemberService;
-import com.jinjin.jintranet.model.Member;
-import com.jinjin.jintranet.model.Schedule;
-import com.jinjin.jintranet.schedule.service.ScheduleService;
-import com.jinjin.jintranet.security.auth.PrincipalDetail;
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequiredArgsConstructor
@@ -132,9 +126,9 @@ public class AdminScheduleController {
      * 일정신청관리(관) > 휴가일수조회
      */
     @GetMapping(value = "/admin/schedule/vacationDays.do")
-    public ResponseEntity<List<Member>> vacationDays() throws Exception {
+    public ResponseEntity<List<MemberCommuteDTO>> vacationDays() throws Exception {
         try {
-            List<Member> list = scheduleService.vacationDays();
+            List<MemberCommuteDTO> list = scheduleService.vacationDays();
 
             return new ResponseEntity<>(list, HttpStatus.OK);
         } catch (Exception e) {

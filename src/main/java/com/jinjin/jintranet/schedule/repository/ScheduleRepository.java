@@ -9,19 +9,16 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer>{
-	
-	@Query(value="select * from Schedule s where s.memberId=:memberId and date_format(s.strDt,'%Y') = :curYear and date_format(s.endDt,'%Y') = :curYear  and s.type in('FV' , 'HV') order by s.strDt desc" , nativeQuery = true)
-	List<Schedule> vacations(@Param("memberId") Member member ,@Param("curYear") int curYear);
-	
-	@Query(value="select distinct left(s.strDt,4) from Schedule s where s.memberId =:memberId", nativeQuery = true)
+
+	@Query("select distinct substring(s.strDt,0,4) from Schedule s where s.member =:memberId")
 	List<String> yearList(@Param("memberId") Member member);
 	
-	@Query(value="select * from Schedule s where left(now(),10) >= left(s.strDt,10) and left(now(),10) <=left(s.endDt,10)", nativeQuery = true)
+	@Query("select s from Schedule s where current_date >= substring(s.strDt , 0,10) and current_date <=substring(s.endDt,0,10) ")
 	List<Schedule> todaySchedules();
 	
-	@Query(value="select * from Schedule s where s.memberId = :memberId and s.status != 'D' and right(s.type,1) ='V' order by s.strDt desc", nativeQuery = true)
+	@Query("select s from Schedule s where s.member = :memberId and s.status <> 'D' and substring(s.type,1) ='V' order by s.strDt desc")
 	List<Schedule> findByMemberId(@Param("memberId") Member member);
 
-	@Query(value="select count(*) from Schedule s where s.memberId = :memberId and (s.status = 'R' or s.status ='C') and right(s.type,1) ='V'", nativeQuery = true)
+	@Query("select count(s.id) from Schedule s where s.member = :memberId and (s.status = 'R' or s.status ='C') and substring(s.type,1) ='V'")
 	Integer cnt(@Param("memberId") Member member);
 }
