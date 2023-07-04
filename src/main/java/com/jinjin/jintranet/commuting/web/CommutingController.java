@@ -79,7 +79,7 @@ public class CommutingController {
             Schedule schedule = Schedule.builder()
             		.member(principal.getMember()).status("Y")
             		.strDt(DateUtils.toLocalDateTime(sd)).endDt(DateUtils.toLocalDateTime(ed)).build();
-        	
+
             List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd), DateUtils.toLocalDateTime(ed));
             List<ScheduleSearchDTO> schedules = scheduleService.read(schedule , typeList);
             List<CommutingsInterface> commute = commutingService.findAll(principal.getMember() ,sd ,ed);

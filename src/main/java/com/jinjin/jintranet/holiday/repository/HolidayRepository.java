@@ -1,15 +1,18 @@
 package com.jinjin.jintranet.holiday.repository;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
+import com.jinjin.jintranet.model.Holiday;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
-import com.jinjin.jintranet.model.Holiday;
+import java.time.LocalDateTime;
+import java.util.List;
 
 public interface HolidayRepository extends JpaRepository<Holiday, Integer>{
 
 	@Query(value="SELECT * FROM Holiday h WHERE holidayDt between ?1 and ?2", nativeQuery = true)
 	List<Holiday> findByMonth(LocalDateTime sdt , LocalDateTime edt);
+
+	@Query("SELECT COUNT(h) FROM Holiday h WHERE year(h.holidayDt) =:year")
+	int countHolidayBy(@Param("year") int year);
 }

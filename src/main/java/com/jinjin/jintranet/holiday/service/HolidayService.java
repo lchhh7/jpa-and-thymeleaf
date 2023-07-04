@@ -1,15 +1,13 @@
 package com.jinjin.jintranet.holiday.service;
 
-import java.time.LocalDateTime;
-import java.util.List;
-
-import javax.transaction.Transactional;
-
+import com.jinjin.jintranet.holiday.repository.HolidayRepository;
+import com.jinjin.jintranet.model.Holiday;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.jinjin.jintranet.holiday.repository.HolidayRepository;
-import com.jinjin.jintranet.model.Holiday;
+import javax.transaction.Transactional;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class HolidayService {
@@ -20,5 +18,21 @@ public class HolidayService {
 	@Transactional
 	public List<Holiday> findByMonth(LocalDateTime sdt , LocalDateTime edt) {
 		return holidayRepository.findByMonth(sdt , edt);
+	}
+
+	@Transactional
+	public int countHolidayBy(int year) {
+		return holidayRepository.countHolidayBy(year);
+	}
+
+	@Transactional
+	public int write(Holiday holiday) {
+		try {
+			holidayRepository.save(holiday);
+			return 1;
+		} catch(Exception e) {
+			e.printStackTrace();
+			return -1;
+		}
 	}
 }
