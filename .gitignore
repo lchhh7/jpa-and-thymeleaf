@@ -47,3 +47,6 @@ out/
 *.iml
 out
 gen
+
+### mount folder
+db_data/
