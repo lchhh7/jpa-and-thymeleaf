@@ -27,7 +27,7 @@ public class QNotice extends EntityPathBase<Notice> {
 
     public static final QNotice notice = new QNotice("notice");
 
-    public final QBaseEntity _super = new QBaseEntity(this);
+    public final com.jinjin.jintranet.model.QBaseEntity _super = new QBaseEntity(this);
 
     public final ListPath<NoticeAttach, QNoticeAttach> attaches = this.<NoticeAttach, QNoticeAttach>createList("attaches", NoticeAttach.class, QNoticeAttach.class, PathInits.DIRECT2);
 

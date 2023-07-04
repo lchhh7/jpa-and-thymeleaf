@@ -106,8 +106,9 @@ public class VacationDaysUtils {
             list.addAll(commutingRepository.findCommuteOvertime(member, strDt, endDt));
 
             List<CommuteRequestDTO> commuteRequests = commutingRequestRepository.findCommute(member).stream()
-                    .filter(m -> LocalDate.parse(m.getRequestDt()).isAfter(LocalDate.parse(strDt)))
-                    .filter(m -> LocalDate.parse(m.getRequestDt()).isBefore(LocalDate.parse(endDt)))
+                    .filter(m -> java.time.LocalDate.parse(m.getRequestDt()).isAfter(java.time.LocalDate.parse(strDt)))
+                    .filter(m -> java.time.LocalDate.parse(m.getRequestDt()).isBefore(java.time.LocalDate.parse(endDt)))
+
                     .filter(m -> m.getType().equals("O"))
                     .filter(m -> m.getDeletedBy() == null)
                     .map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());

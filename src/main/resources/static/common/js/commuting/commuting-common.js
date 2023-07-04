@@ -92,7 +92,7 @@ const setOvertimes = function (list) {
     let totalHours = 0;
     let totalMinutes = 0;
 
-    if (list === undefined) return result;
+    if (list === undefined || list === null) return result;
 
     Array.prototype.forEach.call(list, function (e) {
             result.push({

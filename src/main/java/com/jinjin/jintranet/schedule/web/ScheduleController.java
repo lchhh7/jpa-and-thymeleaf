@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -82,8 +83,11 @@ public class ScheduleController {
 			schedule.setMember(principal.getMember());
 
 			List<ScheduleSearchDTO> list = scheduleService.read(schedule , typeList);
-			List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd),
-					DateUtils.toLocalDateTime(ed));
+
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+			sdf.parse(sd);
+			List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd), DateUtils.toLocalDateTime(ed));
+
 			map.put("list", list);
 			map.put("holidays", holidays);
 

@@ -58,8 +58,13 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
 	implementation 'com.amazonaws:aws-lambda-java-core:1.2.1'
+<<<<<<< HEAD
 	implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
 	runtimeOnly 'com.amazonaws:aws-lambda-java-log4j2:1.5.1'
+=======
+    implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
+    runtimeOnly 'com.amazonaws:aws-lambda-java-log4j2:1.5.1'
+>>>>>>> chlee
 
 	// https://mvnrepository.com/artifact/org.springframework/spring-aop
 	implementation 'org.springframework:spring-aop'

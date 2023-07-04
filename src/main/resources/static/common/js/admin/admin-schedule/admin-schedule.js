@@ -190,7 +190,24 @@ const vacationDays = function () {
         });
 };
 
+const holidayAPI = function () {
+    $.ajax({
+        url: contextPath + '/admin/holidayInfoAPI.do',
+        method: 'post',
+        contentType: "application/json; charset=utf-8"
+    })
+        .done(function (data) {
+            alert(data);
+        })
+        .fail(function (data) {
+            alert(data);
+            return false;
+        });
+};
+
 document.getElementById('vacation-days-btn').addEventListener('click', vacationDays, true)
+
+document.getElementById('holiday-api-btn').addEventListener('click', holidayAPI, true)
 
 document.getElementById('vacation-days-close-btn').addEventListener('click', function () {
     closeModal('vacation-days-modal');

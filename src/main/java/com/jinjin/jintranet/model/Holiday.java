@@ -1,19 +1,13 @@
 package com.jinjin.jintranet.model;
 
-import java.time.LocalDate;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -28,7 +22,11 @@ public class Holiday {
 	
 	@JsonFormat(pattern = "yyyy-MM-dd")
 	private LocalDate holidayDt;
-	
+
+	public Holiday(String title, LocalDate holidayDt) {
+		this.title = title;
+		this.holidayDt = holidayDt;
+	}
 	@Builder
 	public Holiday(Integer id, String title, LocalDate holidayDt) {
 		this.id = id;
