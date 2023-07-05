@@ -49,4 +49,8 @@ out
 gen
 
 ### mount folder
+<<<<<<< HEAD
 db_data/
+=======
+db_data/
+>>>>>>> chlee

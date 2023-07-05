@@ -64,6 +64,9 @@ dependencies {
 =======
     implementation 'com.amazonaws:aws-lambda-java-events:3.11.0'
     runtimeOnly 'com.amazonaws:aws-lambda-java-log4j2:1.5.1'
+<<<<<<< HEAD
+>>>>>>> chlee
+=======
 >>>>>>> chlee
 
 	// https://mvnrepository.com/artifact/org.springframework/spring-aop
