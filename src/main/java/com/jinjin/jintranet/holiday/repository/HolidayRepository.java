@@ -13,6 +13,6 @@ public interface HolidayRepository extends JpaRepository<Holiday, Integer>{
 	@Query(value="SELECT * FROM Holiday h WHERE holidayDt between ?1 and ?2", nativeQuery = true)
 	List<Holiday> findByMonth(LocalDateTime sdt , LocalDateTime edt);
 
-	@Query("SELECT COUNT(h) FROM Holiday h WHERE year(h.holidayDt) =:year")
-	int countHolidayBy(@Param("year") int year);
+	@Query("SELECT h FROM Holiday h WHERE year(h.holidayDt) =:year ORDER BY h.holidayDt")
+	List<Holiday> countHolidayBy(@Param("year") int year);
 }

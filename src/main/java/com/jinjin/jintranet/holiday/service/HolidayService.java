@@ -21,7 +21,7 @@ public class HolidayService {
 	}
 
 	@Transactional
-	public int countHolidayBy(int year) {
+	public List<Holiday> countHolidayBy(int year) {
 		return holidayRepository.countHolidayBy(year);
 	}
 
