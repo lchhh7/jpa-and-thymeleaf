@@ -3,6 +3,7 @@ package com.jinjin.jintranet;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,6 +55,7 @@ class tempVO {
 				'}';
 	}
 }
+
 public class AlgoTest {
 
 	/*@Value(value="${local.server.port}")
@@ -65,7 +67,7 @@ public class AlgoTest {
 	private ScheduleService scheduleService;
 */
 
-	@Test
+@Test
 	public void test() {
 
 		List<tempVO> voList = new ArrayList<>();
@@ -87,5 +89,170 @@ public class AlgoTest {
 
 		System.out.println("test.toString() = " + test.toString());
 	}
+
+	public void swap(int[] a, int i,int j) {
+		int temp = a[i];
+		a[i]  = a[j];
+		a[j] = temp;
+	}
+
+	@Test
+	public void selectSort() {
+		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
+		int b;
+
+		for(int i=0; i < a.length-1 ; i++) {
+			int minIdx = i;
+			for(int j = i+1 ; j < a.length ; j++) {
+				if(a[j] < a[minIdx]) {
+					minIdx = j;
+				}
+			}
+			swap(a,minIdx,i);
+		}
+
+		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
+	}
+
+	@Test
+	public void bubbleSort() {
+		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
+		int b;
+
+		for(int i=0; i < a.length; i++) {
+			for(int j=0; j < a.length-1-i; j++) {
+				if(a[j] > a[j+1]) {
+					swap(a , j , j+1);
+				}
+			}
+		}
+
+		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
+	}
+
+	@Test
+	public void selectTest(){
+		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
+		for(int i=0; i < a.length -1; i++) {
+			int minIdx = i;
+			for(int j=i+1 ; j< a.length ; j++) {
+				if(a[minIdx] > a[j]) {
+					minIdx = j;
+				}
+			}
+			swap(a , minIdx ,i);
+		}
+		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
+	}
+
+	@Test
+	public void bubbleTest() {
+		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
+		for(int i=0; i < a.length ; i++) {
+			for(int j= 0 ; j < a.length-1 -i; j++) {
+				if(a[j+1] < a[j]) {
+					swap(a , j+1 , j);
+				}
+			}
+		}
+		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
+	}
+
+	@Test
+	public void quickTest() {
+		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
+		quickSort(a ,0, a.length-1);
+		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
+	}
+	public void quickSort(int[] a , int start , int end) {
+		int idx1 = start;
+		int idx2 = end;
+		int pivot = a[idx1];
+
+		while(idx1<=idx2) {
+			if(pivot > a[idx1]) idx1++;
+			else {
+				int temp = a[idx1];
+				if(pivot < a[idx2]) {
+					idx2--;
+				}else {
+					a[idx1] = a[idx2];
+					a[idx2] = temp;
+					idx1++;
+					idx2--;
+				}
+			}
+		}
+		if(start<idx2) {
+			quickSort(a,start,idx2);
+		}
+		if(end > idx1) {
+			quickSort(a,idx1 , end);
+		}
+	}
+
+	@Test
+	public void bt() {
+		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
+
+		for(int i=0 ; i < a.length -1; i++) {
+			for(int j=0 ; j< a.length -1 - j ; j++) {
+				if(a[j] > a[j+1]) {
+					swap(a , j , j+1);
+				}
+			}
+		}
+
+		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
+	}
+
+	@Test
+	public void st() {
+		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
+
+		for(int i=0 ; i < a.length-1; i++) {
+			int minIdx = i;
+			for(int j = i+1 ; j< a.length ; j++) {
+				if(a[j] < a[minIdx]) {
+					minIdx = j;
+				}
+			}
+			swap(a , minIdx , i);
+		}
+
+		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
+	}
+
+	@Test
+	public void qt() {
+		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
+		qs(a , 0 , a.length-1);
+		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
+	}
+
+	public void qs(int[] a , int start, int end) {
+		int idx1 = start;
+		int idx2 = end;
+		int pivot = a[idx1];
+
+		while(idx1 <= idx2) {
+			if(pivot > a[idx1]) idx1++;
+			else {
+				int temp = a[idx1];
+				if(pivot < a[idx2]) idx2--;
+				else {
+					a[idx1] = a[idx2];
+					a[idx2] = temp;
+					idx1++; idx2--;
+				}
+			}
+		}
+
+		if(start < idx2) qs(a , start, idx2);
+		if(idx1 < end) qs(a, idx1, end);
+	}
+
+
+
 
 }

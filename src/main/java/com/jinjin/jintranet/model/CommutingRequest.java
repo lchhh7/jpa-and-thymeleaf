@@ -1,6 +1,5 @@
 package com.jinjin.jintranet.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,7 +22,6 @@ public class CommutingRequest extends BaseEntity{
 	
 	private String status;
 
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "memberId")
 	private Member member;

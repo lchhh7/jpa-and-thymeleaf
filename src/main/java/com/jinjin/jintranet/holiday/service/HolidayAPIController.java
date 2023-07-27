@@ -38,11 +38,12 @@ public class HolidayAPIController {
             ArrayList<HashMap<String, Object>> item = (ArrayList<HashMap<String, Object>>) items.get("item");
             if(lh.size() == item.size()) return ResponseEntity.ok().body("추가할 공휴일이 없습니다.");
 
+            List<String> dateList = lh.stream().map(h -> h.getHolidayDt().toString().replaceAll("-", "")).collect(Collectors.toList());
+
             for (HashMap<String, Object> itemMap : item) {
                 String locdate = String.valueOf((Integer) itemMap.get("locdate"));
                 LocalDate dateTime =LocalDate.of(Integer.parseInt(locdate.substring(0,4)) , Integer.parseInt(locdate.substring(4,6)) , Integer.parseInt(locdate.substring(6,8)));
 
-                List<String> dateList = lh.stream().map(h -> h.getHolidayDt().toString().replaceAll("-", "")).collect(Collectors.toList());
                 if(dateList.contains(locdate)) continue;
                 holidayService.write(new Holiday((String) itemMap.get("dateName") , dateTime));
             }
@@ -52,3 +53,4 @@ public class HolidayAPIController {
         return ResponseEntity.ok().body("공휴일 추가가 완료되었습니다.");
     }
 }
+

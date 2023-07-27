@@ -3,7 +3,7 @@ const writeForm = document.getElementById('write-form');
 const writeNotice = function () {
     if (!confirm('공지사항을 등록하시겠습니까?')) return false;
 
-    oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
+   // oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
 
     const data = confirmNotice(writeForm);
     if (data === false) return false;

@@ -3,7 +3,7 @@ const editForm = document.getElementById('edit-form');
 const editNotice = function () {
     if (!confirm('공지사항을 수정하시겠습니까?')) return false;
 
-    oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
+    //oEditors.getById["ir1"].exec("UPDATE_CONTENTS_FIELD", []);
 
     const data = confirmNotice(editForm);
     if (data === false) return false;
