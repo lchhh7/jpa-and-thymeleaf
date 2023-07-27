@@ -15,5 +15,4 @@ public interface HolidayRepository extends JpaRepository<Holiday, Integer>{
 
 	@Query("SELECT h FROM Holiday h WHERE year(h.holidayDt) =:year ORDER BY h.holidayDt")
 	List<Holiday> countHolidayBy(@Param("year") int year);
-
 }

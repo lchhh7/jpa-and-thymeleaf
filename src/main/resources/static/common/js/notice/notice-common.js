@@ -1,4 +1,4 @@
-let oEditors = [];
+//let oEditors = [];
 
 const confirmNotice = function (form) {
     const requiredFields = [
@@ -9,14 +9,13 @@ const confirmNotice = function (form) {
 
     let data = {
         title: form.title.value,
-        content: form.ir1.value,
-        attaches: attaches
+        content: form.ir1.value
     }
-	console.log(data);
+    console.log(data);
 
     return isEditForm(data, form);
 }
-/*
+
 const upload = function (form) {
     let formData = new FormData(form);
 
@@ -48,8 +47,7 @@ const upload = function (form) {
             return false;
         });
 };
-*/
-
+/*
 nhn.husky.EZCreator.createInIFrame({
     oAppRef: oEditors,
     elPlaceHolder: "ir1",
@@ -85,4 +83,4 @@ document.getElementById('upload-modal-btn').addEventListener('click', function (
     }
 
     openModal('upload-modal');
-});
+});*/

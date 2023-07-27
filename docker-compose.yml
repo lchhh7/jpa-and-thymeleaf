@@ -1,0 +1,38 @@
+version: "3" # docker verison 3사용
+services:
+  db: #service 이름 ( 사용자 정의)
+    image: mysql
+    container_name: intra_db
+    environment:
+      - MYSQL_DATABASE=blog #해당이름으로 db생성
+      - MYSQL_USER=cos
+      - MYSQL_PASSWORD=cos1234
+      - MYSQL_ROOT_PASSWORD=root #root password 지정
+    restart: always
+    ports:
+      - "3306:3306" # 3306 포트로 접속하면 3306 포트로 리스닝하고 있는 mysql서버가 접속을 받을수 있음(우분투 기본포트 3306를 변경하려면 /etc/mysql/mysql.conf.d/mysqld.cnf 파일에서 변경이 필요함)
+    volumes:
+      - ./db_data:/var/lib/mysql #컨테이너가 사라져도 db는 사라지면 안되기 때문에 꼭 마운트 해줘야함
+    networks:
+      - intra_network
+
+  app:
+    build:
+      context: . # .만쓰면 DockerFile이 있는 디렉토리
+      dockerfile: Dockerfile #기존에 설정해둔 DockerFile을 지정히여 build 된 jar 파일을 container에 올린다.
+    container_name: intra_app
+    links:
+      - db
+    restart: always
+    ports:
+      - "8082:8080" # 8082 포트로 접속하면 8080 포트로 리스닝하고 있는 웹서버가 접속을 받을수 있게 설정(8080포트는 application.yml에서 설정해놨음)
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://db:3306/blog?characterEncoding=UTF-8&serverTimezone=UTC&&allowPublicKeyRetrieval=true&useSSL=false
+      SPRING_DATASOURCE_USERNAME: cos
+      SPRING_DATASOURCE_PASSWORD: cos1234
+    networks:
+      - intra_network
+networks:
+  intra_network:

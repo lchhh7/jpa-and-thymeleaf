@@ -3,8 +3,8 @@ package com.jinjin.jintranet;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 /*@Slf4j
@@ -54,38 +54,43 @@ class tempVO {
 				'}';
 	}
 }
+
 public class AlgoTest {
 
-	/*@Value(value="${local.server.port}")
-	private int port;
-
-	@Autowired
-	private TestRestTemplate restTemplate;
-	@Autowired
-	private ScheduleService scheduleService;
-*/
-
 	@Test
-	public void test() {
-
-		List<tempVO> voList = new ArrayList<>();
-		voList.add(new tempVO("이창훈","이창정보","정보화팀1"));
-		voList.add(new tempVO("홍길동","길동정보","정보화팀1"));
-		voList.add(new tempVO("이승언","승언정보","정보화팀2"));
-		voList.add(new tempVO("한대현","대현정보","정보화팀2"));
-		voList.add(new tempVO("한동윤","동윤정보","정보화팀3"));
-
-		List<String> answer = voList.stream().map(m -> m.getTeamNm()).distinct().collect(Collectors.toList());
-		System.out.println("answer = " + answer);
-
-		List<List<tempVO>> test = voList.stream().map(m -> m.getTeamNm()).distinct().
-				map(teamNm -> {
-					return voList.stream()
-						.filter(it -> it.getTeamNm().equals(teamNm))
-							.collect(Collectors.toList());
-				}).collect(Collectors.toList());
-
-		System.out.println("test.toString() = " + test.toString());
+	public void test1() {
+		List<Integer> list = new ArrayList<>();
+		List<Integer> list2 = new ArrayList<>();
+		list.add(3);
+		list.add(1);
+		list.add(2);
+		list.add(2);
+		list.add(3);
+		list.add(4);
+		
+		list2.add(3);
+		list2.add(1);
+		list2.add(2);
+		list2.add(2);
+		list2.add(3);
+		list2.add(4);
+		
+		System.out.println(list);
+		
+		list.remove(3);
+		
+		System.out.println(list);
+		
+		System.out.println(list2);
+		
+		list2.remove((Integer) 3);
+		
+		System.out.println(list2);
+		
+		int a = Collections.frequency(list, 3);
+		System.out.println(a);
+		
+		Integer[] b = list.toArray(new Integer[0]);
+	
 	}
-
 }

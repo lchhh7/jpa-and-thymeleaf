@@ -83,11 +83,9 @@ public class ScheduleController {
 			schedule.setMember(principal.getMember());
 
 			List<ScheduleSearchDTO> list = scheduleService.read(schedule , typeList);
-
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
 			sdf.parse(sd);
 			List<Holiday> holidays = holidayService.findByMonth(DateUtils.toLocalDateTime(sd), DateUtils.toLocalDateTime(ed));
-
 			map.put("list", list);
 			map.put("holidays", holidays);
 

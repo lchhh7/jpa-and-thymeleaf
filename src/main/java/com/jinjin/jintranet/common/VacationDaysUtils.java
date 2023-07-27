@@ -44,7 +44,7 @@ public class VacationDaysUtils {
 
         double total = 0;
 
-        
+
         LocalDate doe = LocalDate.of(member.getCrtDt().getYear() , member.getCrtDt().getMonthValue(), member.getCrtDt().getDayOfMonth());
         int yearsOfService = doe.getYear();
         
@@ -108,7 +108,6 @@ public class VacationDaysUtils {
             List<CommuteRequestDTO> commuteRequests = commutingRequestRepository.findCommute(member).stream()
                     .filter(m -> java.time.LocalDate.parse(m.getRequestDt()).isAfter(java.time.LocalDate.parse(strDt)))
                     .filter(m -> java.time.LocalDate.parse(m.getRequestDt()).isBefore(java.time.LocalDate.parse(endDt)))
-
                     .filter(m -> m.getType().equals("O"))
                     .filter(m -> m.getDeletedBy() == null)
                     .map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
