@@ -195,10 +195,10 @@ public class AlgoTest {
 	public void bt() {
 		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
 
-		for(int i=0 ; i < a.length -1; i++) {
-			for(int j=0 ; j< a.length -1 - j ; j++) {
+		for(int i=0; i < a.length -1 ; i++) {
+			for(int j=0; j < a.length -1 -i; j++) {
 				if(a[j] > a[j+1]) {
-					swap(a , j , j+1);
+					swap(a , j, j+1);
 				}
 			}
 		}
@@ -210,15 +210,17 @@ public class AlgoTest {
 	public void st() {
 		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
 
-		for(int i=0 ; i < a.length-1; i++) {
+		for(int i=0; i < a.length-1 ; i++) {
 			int minIdx = i;
-			for(int j = i+1 ; j< a.length ; j++) {
-				if(a[j] < a[minIdx]) {
+			for(int j= i+1 ; j < a.length ; j++) {
+				if(a[minIdx] > a[j]) {
 					minIdx = j;
 				}
 			}
+
 			swap(a , minIdx , i);
 		}
+
 
 		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
 	}
@@ -226,7 +228,7 @@ public class AlgoTest {
 	@Test
 	public void qt() {
 		int[] a = {254,3,213,64,75,56,4,324,65,78,9,5,76,3410,8,342,76};
-		qs(a , 0 , a.length-1);
+		qs(a , 0, a.length-1);
 		Arrays.stream(a).mapToObj(j -> j + " ").forEach(System.out::print);
 	}
 
@@ -237,22 +239,17 @@ public class AlgoTest {
 
 		while(idx1 <= idx2) {
 			if(pivot > a[idx1]) idx1++;
-			else {
+			else{
 				int temp = a[idx1];
 				if(pivot < a[idx2]) idx2--;
 				else {
 					a[idx1] = a[idx2];
 					a[idx2] = temp;
-					idx1++; idx2--;
+					idx1++; idx2 --;
 				}
 			}
 		}
-
-		if(start < idx2) qs(a , start, idx2);
-		if(idx1 < end) qs(a, idx1, end);
+		if(start <idx2) qs(a , start, idx2);
+		if(idx1 < end) qs(a , idx1 , end);
 	}
-
-
-
-
 }
