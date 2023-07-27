@@ -55,7 +55,6 @@ class tempVO {
 				'}';
 	}
 }
-
 public class AlgoTest {
 
 	/*@Value(value="${local.server.port}")
@@ -67,7 +66,7 @@ public class AlgoTest {
 	private ScheduleService scheduleService;
 */
 
-@Test
+	@Test
 	public void test() {
 
 		List<tempVO> voList = new ArrayList<>();

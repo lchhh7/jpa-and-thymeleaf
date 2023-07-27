@@ -53,4 +53,3 @@ public class HolidayAPIController {
         return ResponseEntity.ok().body("공휴일 추가가 완료되었습니다.");
     }
 }
-
