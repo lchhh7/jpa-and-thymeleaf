@@ -26,7 +26,7 @@ public class CommutingRequestController {
 	public ResponseEntity<List<CommuteRequestViewDTO>> searching (
 			@RequestParam(value ="st", required = false , defaultValue = "") String st,
 			@RequestParam(value ="y", required = false , defaultValue ="") String y,
-			@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+			@AuthenticationPrincipal PrincipalDetail principal) {
 		List<CommuteRequestViewDTO> list = commutingRequestService.commutingRequestSearching(principal.getMember() , st , y)
 				.stream().sorted(Comparator.comparing(CommuteRequestViewDTO::getRequestDt , Comparator.reverseOrder())
 						.thenComparing(CommuteRequestViewDTO::getCrtDt)).toList();
@@ -35,7 +35,7 @@ public class CommutingRequestController {
 
 	@GetMapping("/commuting/request/{id}.do")
 	public ResponseEntity<AdminCommuteRequestViewDTO> requesting(
-			@PathVariable("id") int id) throws Exception{
+			@PathVariable("id") int id) {
 		AdminCommuteRequestViewDTO dto = commutingRequestService.findById(id);
 		return new ResponseEntity<>(dto, HttpStatus.OK);
 	}
@@ -43,7 +43,7 @@ public class CommutingRequestController {
 	@PutMapping(value="/commuting/editRequest/{id}.do")
 	public ResponseEntity<String> editRequest(
 			@PathVariable("id") int id ,
-			@RequestBody AdminCommuteRequestViewDTO dto) throws Exception{
+			@RequestBody AdminCommuteRequestViewDTO dto) {
 			commutingRequestService.EditRequest(id,dto);
 			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
 	}
@@ -51,7 +51,7 @@ public class CommutingRequestController {
 	@DeleteMapping(value="/commuting/deleteRequest/{id}.do")
 	public ResponseEntity<String> deleteRequest(
 			@PathVariable("id") int id ,
-			@AuthenticationPrincipal PrincipalDetail principal) throws Exception{
+			@AuthenticationPrincipal PrincipalDetail principal) {
 			commutingRequestService.DeleteRequest(id , principal.getMember());
 			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
 	}

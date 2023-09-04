@@ -13,16 +13,18 @@ const searching = function() {
 		method: 'get'
 	})
 		.done(function(data) {
-			let tr = '';
+			let tr = ``;
 			if (data.length > 0) {
 				data.forEach(function(e) {
-					tr += '<tr class="tbbody" onclick="commuteRequest(' + e.id + ')">';
-					tr += '<td>' + koreanType(e.type) + '</td>';
-					tr += '<td>' + formatDate(new Date(e.requestDt)).replaceAll('-', '.') + '</td>';
-					tr += '<td>' + formatDate(new Date(e.crtDt)).replaceAll('-', '.') + '</td>';
-					tr += '<td>' + e.approveName + '</td>';
-					tr += '<td><span>' + koreanStatus(e.status) + '</span></td>';
-					tr += '</tr>';
+					tr += `
+						<tr class="tbbody" onclick="commuteRequest(${e.id})">
+							<td>${koreanStatus(e.status)}</td>
+							<td>${e.requestDt}</td>
+							<td>${formatDate(new Date(e.crtDt)).replaceAll('-', '.')}</td>
+							<td>${e.approveName}</td>
+							<td>${koreanType(e.type)}</td>
+						</tr>
+					`
 				});
 
 			} else {

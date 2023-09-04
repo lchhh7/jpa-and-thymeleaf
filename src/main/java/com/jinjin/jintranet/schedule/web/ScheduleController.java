@@ -44,8 +44,7 @@ public class ScheduleController {
 	 * 일정관리 > 메인화면
 	 */
 	@GetMapping(value = "/schedule.do")
-	public String main(Model model, HttpServletRequest request, @AuthenticationPrincipal PrincipalDetail principal)
-			throws Exception {
+	public String main(Model model, HttpServletRequest request, @AuthenticationPrincipal PrincipalDetail principal) {
 			Member member = principal.getMember();
 			LocalDate now = LocalDate.now();
 
@@ -97,7 +96,7 @@ public class ScheduleController {
 	 */
 	@PostMapping(value = "/schedule.do")
 	public ResponseEntity<String> write(@Valid @RequestBody ScheduleInsertDTO scheduleDTO, BindingResult bindingResult,
-			@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+			@AuthenticationPrincipal PrincipalDetail principal) {
 			if (bindingResult.hasErrors()) {
 				return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(),
 						HttpStatus.BAD_REQUEST);
@@ -139,7 +138,7 @@ public class ScheduleController {
 	// 일정관리 > 일정 선택
 
 	@GetMapping(value = "/schedule/{id}.do")
-	public ResponseEntity<ScheduleViewDTO> findById(@PathVariable("id") Integer id) throws Exception {
+	public ResponseEntity<ScheduleViewDTO> findById(@PathVariable("id") Integer id) {
 			Schedule schedule = scheduleService.findById(id);
 			return new ResponseEntity<>(new ScheduleViewDTO(schedule), HttpStatus.OK);
 	}
@@ -148,7 +147,7 @@ public class ScheduleController {
 	@PutMapping(value = "/schedule/{id}.do")
 	public ResponseEntity<String> edit(@PathVariable("id") Integer id,
 			@Validated @RequestBody ScheduleUpdateDTO scheduleDTO, @AuthenticationPrincipal PrincipalDetail principal,
-			BindingResult bindingResult) throws Exception {
+			BindingResult bindingResult) {
 			if (bindingResult.hasErrors()) {
 				return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(),
 						HttpStatus.BAD_REQUEST);
@@ -165,7 +164,7 @@ public class ScheduleController {
 
 	@PutMapping(value = "/schedule/cancel/{id}.do")
 	public ResponseEntity<String> cancel(@PathVariable("id") Integer id, @RequestBody ScheduleCancelDTO scheduleDTO,
-			@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+			@AuthenticationPrincipal PrincipalDetail principal) {
 			Schedule schedule = scheduleService.findById(id);
 			if (schedule == null) {
 				return new ResponseEntity<>("유효하지 않은 일정입니다.", HttpStatus.BAD_REQUEST);
@@ -187,7 +186,7 @@ public class ScheduleController {
 	// 일정관리 > 일정 삭제
 	@DeleteMapping(value = "/schedule/{id}.do")
 	public ResponseEntity<String> delete(@PathVariable("id") Integer id,
-			@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+			@AuthenticationPrincipal PrincipalDetail principal) {
 			scheduleService.delete(id, principal);
 			return new ResponseEntity<>("일정을 정상적으로 삭제했습니다.", HttpStatus.OK);
 	}

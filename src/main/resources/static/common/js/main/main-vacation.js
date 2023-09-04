@@ -37,20 +37,23 @@ const searching = function () {
         method: 'get'
     })
         .done(function (data) {
-            let tr = '';
+            let tr = ``;
             if (data.length > 0) {
                 data.forEach(function (e) {
-                    tr += '<tr class="tbbody">';
-                    tr += '<td>' + koreanType(e.type) + '</td>';
-                    tr += '<td>' + e.strDt.replaceAll('-','').split("T")[0] + '~' + e.endDt.replaceAll('-','').split("T")[0] + '</td>';
-                    tr += '<td>' + e.approve.name + '</td>';
-                    tr += '<td>' + (e.approveDt == null ? '' : e.approveDt)+ '</td>'; 
-                    tr += '<td><span>' + koreanStatus(e.status) + '</span></td>';
-                    tr += '</tr>';
+
+                    tr += `
+                    <tr class="tbbody">
+                    <td>${koreanType(e.type)}</td>
+                    <td>${e.strDt.replaceAll('-','').split("T")[0] + '~' + e.endDt.replaceAll('-','').split("T")[0]}</td>
+                    <td>${e.approve.name}</td>
+                    <td>${(e.approveDt == null ? '' : e.approveDt)}</td>
+                    <td><span>${koreanStatus(e.status)}</span></td>
+                    </tr>
+                    `;
                 });
 
             } else {
-                tr += '<tr><td colspan="5">신청한 휴가가 없습니다.</td></tr>'
+                tr += `<tr><td colspan="5">신청한 휴가가 없습니다.</td></tr>`
             }
 
             document.getElementById('vacation-tbody').innerHTML = tr;

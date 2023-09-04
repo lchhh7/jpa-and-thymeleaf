@@ -1,12 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
-	scheduleBadge();
-	commutingBadge();
+    scheduleBadge();
+    commutingBadge();
     getToday();
 
     /**
      * 햄버거 메뉴 토글
      */
-    
+
 
     document.querySelector(".menu_btn").addEventListener("click", function () {
         var lnb = document.querySelector(".lnb");
@@ -81,12 +81,12 @@ function formatUnixDate(date) {
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
-	let hour = date.getHours();
+    let hour = date.getHours();
     let minute = date.getMinutes();
 
-	month = month >= 10 ? month : '0' + month;
+    month = month >= 10 ? month : '0' + month;
     day = day >= 10 ? day : '0' + day;
-	hour = hour >= 10 ? hour : '0' + hour;
+    hour = hour >= 10 ? hour : '0' + hour;
     minute = minute >= 10 ? minute : '0' + minute;
 
     return year + "-" + month + "-" + day +" "+hour + ':' + minute;
@@ -146,35 +146,35 @@ const downloadAttach = function (id) {
 }
 
 const _timeFormat = function (e) {
-   console.log(e);
+    console.log(e);
 };
 
 const scheduleBadge  = function () {
-	$.ajax({
+    $.ajax({
         url: contextPath + '/admin/schedule/search.do?r=R',
         type: 'get',
         dataType: "json",
         contentType: "application/json; charset=utf-8"
     }).done(function (data) {
-		if(data.list.content.length > 0) {
-			m7_content = document.getElementById('m_icon7').innerHTML;
-			document.getElementById('m_icon7').innerHTML = m7_content + '&nbsp;<span class="badge">'+data.list.content.length+'건 </span>';
-		}
-});
+        if(data.list.content.length > 0) {
+            m7_content = document.getElementById('m_icon7').innerHTML;
+            document.getElementById('m_icon7').innerHTML = m7_content + '&nbsp;<span class="badge">'+data.list.content.length+'건 </span>';
+        }
+    });
 }
 
 const commutingBadge  = function () {
-	$.ajax({
+    $.ajax({
         url: contextPath + '/admin/commuting/search.do?r=R',
         type: 'get',
         dataType: "json",
         contentType: "application/json; charset=utf-8"
     }).done(function (data) {
-		if(data.list.content.length > 0) {
-			m8_content = document.getElementById('m_icon8').innerHTML;
-			document.getElementById('m_icon8').innerHTML = m8_content + '&nbsp;<span class="badge">'+data.list.content.length+'건 </span>';
-		}
-});
+        if(data.list.content.length > 0) {
+            m8_content = document.getElementById('m_icon8').innerHTML;
+            document.getElementById('m_icon8').innerHTML = m8_content + '&nbsp;<span class="badge">'+data.list.content.length+'건 </span>';
+        }
+    });
 }
 
 document.addEventListener('DOMContentLoaded', function () {
@@ -187,22 +187,22 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 const koreanType = function(str) {
-	var koreanType = '';
-	if(str == 'FV') koreanType = '휴가';
-	if(str == 'HV') koreanType = '반차';
-	if(str == 'SC') koreanType = '일정';
-	if(str == 'OW') koreanType = '외근';
-	if(str =='Y') koreanType = '출근수정';
-	if(str =='N' || str == 'V') koreanType = '퇴근수정';
-	if(str =='O') koreanType = '야근신청';
-	return koreanType;
+    var koreanType = '';
+    if(str === 'FV') koreanType = '휴가';
+    if(str === 'HV') koreanType = '반차';
+    if(str === 'SC') koreanType = '일정';
+    if(str === 'OW') koreanType = '외근';
+    if(str ==='Y') koreanType = '출근수정';
+    if(str ==='N' || str == 'V') koreanType = '퇴근수정';
+    if(str ==='O') koreanType = '야근신청';
+    return koreanType;
 };
 
 const koreanStatus = function(str) {
-	var koreanStatus = '';
-	if(str == 'R') koreanStatus = '대기';
-	if(str == 'Y') koreanStatus = '승인';
-	if(str == 'N') koreanStatus = '미승인';
-	if(str == 'C') koreanStatus = '취소요청';
-	return koreanStatus;
+    var koreanStatus = '';
+    if(str === 'R') koreanStatus = '대기';
+    if(str === 'Y') koreanStatus = '승인';
+    if(str === 'N') koreanStatus = '미승인';
+    if(str === 'C') koreanStatus = '취소요청';
+    return koreanStatus;
 }

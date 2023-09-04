@@ -43,7 +43,7 @@ public class NoticeController {
     		@RequestParam(value = "searchType" , required = false , defaultValue = "") String searchType ,
     		@RequestParam(value ="keyword", required = false , defaultValue ="") String keyword, 
     		@PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    		@AuthenticationPrincipal PrincipalDetail principal) {
         	model.addAttribute("searchType" , searchType);
         	model.addAttribute("keyword" , keyword);
         	model.addAttribute("noticeList", noticeService.findNotices(pageable , keyword , searchType));
@@ -54,14 +54,14 @@ public class NoticeController {
     }
     
     @GetMapping(value = "/notice/write.do")
-    public String write(Model model) throws Exception {
+    public String write(Model model) {
         	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         return "notice/notice-write";
     }
 
     @PostMapping(value = "/notice/write.do")
     public ResponseEntity<String> write(@Validated @RequestBody NoticeSaveDTO dto, BindingResult bindingResult , 
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    		@AuthenticationPrincipal PrincipalDetail principal) {
         
         if (bindingResult.hasErrors()) {
         	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
@@ -74,7 +74,7 @@ public class NoticeController {
     }
    
     @GetMapping("/notice/view.do")
-    public String view(Model model, @RequestParam("id") Integer id) throws Exception {
+    public String view(Model model, @RequestParam("id") Integer id) {
         	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDeletedBy() == null).toList();
         	Notice notice = noticeService.findById(id);
         	notice.setAttaches(attachList);
@@ -87,15 +87,14 @@ public class NoticeController {
     
     @DeleteMapping(value = "/notice.do")
     public ResponseEntity<String> delete(@RequestBody NoticeSaveDTO dto , 
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    		@AuthenticationPrincipal PrincipalDetail principal) {
     	noticeService.delete(dto , principal.getMember());
         return new ResponseEntity<>("공지사항 삭제가 완료되었습니다." , HttpStatus.OK);
     }
 	
     
     @GetMapping(value = "/notice/edit.do")
-    public String edit(Model model, @RequestParam("id") Integer id, HttpServletRequest request,
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    public String edit(Model model, @RequestParam("id") Integer id) {
         	List<NoticeAttach> attachList = noticeService.findById(id).getAttaches().stream().filter(m -> m.getDeletedBy() == null).toList();
         	Notice notice = noticeService.findById(id);
         	notice.setAttaches(attachList);
@@ -107,7 +106,7 @@ public class NoticeController {
 
     @PostMapping("/notice/edit.do")
     public ResponseEntity<String> edit(@Validated @RequestBody NoticeSaveDTO dto,
-    		@AuthenticationPrincipal PrincipalDetail principal, BindingResult bindingResult) throws Exception {
+    		@AuthenticationPrincipal PrincipalDetail principal, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
         	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -130,9 +129,7 @@ public class NoticeController {
     }
 	
     @PostMapping("/notice/download.do")
-    public void download(@RequestParam int id,
-                         HttpServletRequest request,
-                         HttpServletResponse response) throws Exception {
+    public void download(@RequestParam int id, HttpServletRequest request,HttpServletResponse response) throws Exception {
         noticeService.download(id, request, response);
     }
 }

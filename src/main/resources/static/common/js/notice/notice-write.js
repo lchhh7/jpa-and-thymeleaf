@@ -28,9 +28,9 @@ const writeNotice = function () {
 document.getElementById('write-btn').addEventListener('click', writeNotice, true);
 
 $("#postYN").change(function() {
-	var currentDate = new Date();
-	var postStrDt = document.getElementsByName('postStrDt')[0];
-	var postEndDt = document.getElementsByName('postEndDt')[0];
+	let currentDate = new Date();
+    let postStrDt = document.getElementsByName('postStrDt')[0];
+    let postEndDt = document.getElementsByName('postEndDt')[0];
 		if(this.checked) {
 			document.getElementsByName('postStrDt')[0].value = currentDate.toISOString().substring(0,10);
 			document.getElementsByName('postEndDt')[0].value = new Date(currentDate.setDate(currentDate.getDate() + 3)).toISOString().substring(0,10);

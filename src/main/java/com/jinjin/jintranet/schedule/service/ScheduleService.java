@@ -144,7 +144,7 @@ public class ScheduleService {
 	}
 	
 	@Transactional
-	public List<MemberCommuteDTO> vacationDays() throws Exception {
+	public List<MemberCommuteDTO> vacationDays() {
 		List<MemberCommuteDTO> list = new ArrayList<>();
 		
 		LocalDate now = LocalDate.now();

@@ -102,7 +102,7 @@ public class NoticeService {
 	}
 
 	@Transactional
-	public ResponseEntity<String> deleteAttach(int id , Member member) throws Exception {
+	public ResponseEntity<String> deleteAttach(int id , Member member) {
 		try {
 			NoticeAttach attach = noticeAttachRepository.findById(id).orElseThrow(() -> {
 				return new IllegalArgumentException("공지사항을 찾을 수 없습니다.");

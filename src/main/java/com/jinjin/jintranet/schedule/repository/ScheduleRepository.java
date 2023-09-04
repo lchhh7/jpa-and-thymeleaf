@@ -10,7 +10,7 @@ import java.util.List;
 
 public interface ScheduleRepository extends JpaRepository<Schedule, Integer>{
 
-	@Query("select distinct substring(s.strDt,0,4) from Schedule s where s.member =:memberId")
+	@Query("select distinct substring(s.strDt,1,4) from Schedule s where s.member =:memberId")
 	List<String> yearList(@Param("memberId") Member member);
 	
 	@Query("select s from Schedule s where current_date >= substring(s.strDt , 0,10) and current_date <=substring(s.endDt,0,10) ")

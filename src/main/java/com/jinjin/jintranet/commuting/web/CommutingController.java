@@ -49,7 +49,7 @@ public class CommutingController {
 	private final CommutingRequestService commutingRequestService;
 
 	@GetMapping("/commuting.do")
-	public String commuting(Model model , HttpServletRequest request, @AuthenticationPrincipal PrincipalDetail principal) throws Exception{
+	public String commuting(Model model , HttpServletRequest request, @AuthenticationPrincipal PrincipalDetail principal) {
 		model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
 		model.addAttribute("approves", memberService.findApproves());
 		model.addAttribute("principal", principal);
@@ -69,7 +69,7 @@ public class CommutingController {
     @GetMapping(value = "/commuting/search.do")
     public ResponseEntity<Map<String, Object>> findScheduleAll(
             @RequestParam(value = "sd") String sd ,
-            @RequestParam(value = "ed") String ed, @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+            @RequestParam(value = "ed") String ed, @AuthenticationPrincipal PrincipalDetail principal) {
         Map<String, Object> map = new HashMap<>();
 
 			int month = currentMonth(sd);
@@ -91,14 +91,6 @@ public class CommutingController {
 				 nearList = commuteRequests.stream().sorted(Comparator.comparing(CommuteRequestDTO::getRequestDt).reversed()).toList().get(0);
 				 overtimes = commutingService.overtimes(commute , commuteRequests , month);
 			}
-           /* List<CommuteRequestDTO> commuteRequests = commutingRequestService.findAll(principal.getMember() , sd, ed)
-            		.stream().map(m -> new CommuteRequestDTO(m)).collect(Collectors.toList());
-
-			List<CommutingRequest> list = commutingRequestService.commutingRequestSearching(principal.getMember() , null , null);
-			CommutingRequest nearList = null;
-			if(list.size() !=0) {
-				nearList = list.stream().sorted(Comparator.comparing(CommutingRequest::getRequestDt).reversed()).toList().get(0);
-			}*/
 
             map.put("holidays" , holidays);
             map.put("schedules", schedules);
@@ -116,14 +108,14 @@ public class CommutingController {
      * 일정관리 > 일정 선택
      */
     @GetMapping(value = "/commuting/{id}.do")
-    public ResponseEntity<CommutingSelectDTO> findById(@PathVariable("id") Integer id) throws Exception {
+    public ResponseEntity<CommutingSelectDTO> findById(@PathVariable("id") Integer id) {
 		CommutingSelectDTO commutingDTO = new CommutingSelectDTO(commutingService.findById(id));
 		return new ResponseEntity<>(commutingDTO, HttpStatus.OK);
     }
 
     @PostMapping(value = "/commuting/writeCommute.do")
     public ResponseEntity<String> edit(@Validated @RequestBody CommuteRequestInsertDTO dto, BindingResult bindingResult,
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    		@AuthenticationPrincipal PrincipalDetail principal) {
     		if (bindingResult.hasErrors()) {
              	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
              }

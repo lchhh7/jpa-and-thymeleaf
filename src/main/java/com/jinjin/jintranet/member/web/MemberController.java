@@ -56,7 +56,7 @@ public class MemberController {
     @GetMapping(value = "/main.do")
     public String main(Model model, HttpServletRequest request,
                        @PageableDefault(size=6, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
-                       @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+                       @AuthenticationPrincipal PrincipalDetail principal) {
 
         List<String> yearList = scheduleService.yearList(principal.getMember());
         List<Schedule> vacation = scheduleService.findByMemberId(principal.getMember());
@@ -75,7 +75,7 @@ public class MemberController {
     @GetMapping(value = "/main/searching.do")
     public ResponseEntity<List<ScheduleViewDTO>> searching(
             @RequestParam(value ="y", required = false , defaultValue ="") String y ,
-            @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+            @AuthenticationPrincipal PrincipalDetail principal) {
             List<ScheduleViewDTO> dtoList = new ArrayList<>();
             List<Schedule> mainSchedules = scheduleService.mainSchedules(principal.getMember(), y);
 
@@ -86,11 +86,11 @@ public class MemberController {
     }
 
     @GetMapping("/join.do")
-    public String joinPage() throws Exception{
+    public String joinPage() {
         return "joinPage";
     }
     @PostMapping("/auth/joinProc")
-    public ResponseEntity<String> save(@Validated @RequestBody MemberSaveDTO memberDTO , BindingResult bindingResult) throws Exception{
+    public ResponseEntity<String> save(@Validated @RequestBody MemberSaveDTO memberDTO , BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
         }
@@ -100,14 +100,14 @@ public class MemberController {
     }
 
     @PostMapping("/main/goToWorkButton.do")
-    public ResponseEntity<String> commutingInsert(@RequestBody Commuting commuting , @AuthenticationPrincipal PrincipalDetail principal) throws Exception{
+    public ResponseEntity<String> commutingInsert(@RequestBody Commuting commuting , @AuthenticationPrincipal PrincipalDetail principal) {
         commutingService.write(commuting , principal.getMember());
 
         return new ResponseEntity<String>("",HttpStatus.OK);
     }
 
     @GetMapping("/member/edit.do")
-    public String edit(Model model , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    public String edit(Model model , @AuthenticationPrincipal PrincipalDetail principal) {
 
         model.addAttribute("memberInfo" , new MemberSaveDTO(memberService.findById(principal.getMember().getId())));
         model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
@@ -116,7 +116,7 @@ public class MemberController {
 
     @PutMapping("/member/edit.do")
     public ResponseEntity<String> edit(@Validated @RequestBody MemberEditDTO memberDTO,BindingResult bindingResult ,
-                                       @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+                                       @AuthenticationPrincipal PrincipalDetail principal) {
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
@@ -126,14 +126,14 @@ public class MemberController {
     }
 
     @GetMapping("/member/p/edit.do")
-    public String pEdit(Model model) throws Exception{
+    public String pEdit(Model model) {
         model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         return "member/password-edit";
     }
 
     @PutMapping("/member/p/edit.do")
     public ResponseEntity<String> pEdit(@Validated @RequestBody PasswordEditDTO passwordDTO,BindingResult bindingResult ,
-                                        @AuthenticationPrincipal PrincipalDetail principal) throws Exception{
+                                        @AuthenticationPrincipal PrincipalDetail principal) {
 
         if (bindingResult.hasErrors()) {
             return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);

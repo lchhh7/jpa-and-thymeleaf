@@ -1,15 +1,18 @@
 const viewForm = document.getElementById('view-form');
 
+console.log(viewForm.id);
+
 const approve = function (status) {
     if (!confirm ('요청을 처리하시겠습니까?')) return false;
 
     $.ajax({
         url: contextPath + '/admin/schedule/' + viewForm.id.value + '.do',
         method: 'put',
-        data: JSON.stringify({id: viewForm.id.value, status: status}),
+        data: JSON.stringify({id: viewForm.id.value , status: status}),
         contentType: "application/json; charset=utf-8"
     })
         .done(function (data) {
+            alert(data.responseText);
             location.reload();
         })
         .fail(function (data) {
@@ -118,25 +121,28 @@ const schedules = function (p) {
     })
         .done(function (data) {
             const list = data.list.content;
-            let tr = "";
+            let tr = ``;
 			
             if (list.length > 0) {
                 list.forEach(function (el) {
-                    tr += '<tr class="tbbody" onclick="schedule(' + el.id + ')">';
-                    tr += '<td>' + el.member.name + '</td>';
-                    tr += '<td>' + koreanType(el.type) + '</td>';
-                    tr += '<td>' + el.title + '</td>';
+                    tr += `
+                    <tr class="tbbody" onclick="schedule(${el.id})">
+                    <td>${el.member.name}</td>
+                    <td>${koreanType(el.type)}</td>
+                    <td>${el.title}</td>
+                    `
                     if (el.strDt === el.endDt) {
-                        tr += '<td>' + el.strDt.replaceAll('-', '').split(" ")[0] + '</td>';
+                        tr += `<td>${el.strDt.replaceAll('-', '').split(" ")[0]}</td>`
                     } else {
-                        tr += '<td>' + el.strDt.replaceAll('-', '').split(" ")[0] + '~' + el.endDt.replaceAll('-', '').split(" ")[0] + '</td>';
+                        tr += `<td>${el.strDt.replaceAll('-', '').split(" ")[0] + '~' + el.endDt.replaceAll('-', '').split(" ")[0]}</td>`
                     }
-
-                    tr += '<td id="status">' + koreanStatus(el.status) + '</td>';
-                    tr += '</tr>';
+                    tr += `
+                    <td id="status">${koreanStatus(el.status)}</td>
+                    </tr>
+                    `
                 });
             } else {
-                tr += '<tr class="tbbody"><td colspan="6">등록된 일정신청내역이 없습니다.</td></tr>';
+                tr += `<tr class="tbbody"><td colspan="6">등록된 일정신청내역이 없습니다.</td></tr>`
             }
             document.getElementById('totalSchedule').innerText = '총 게시물' + data.list.totalElements + '건';
             document.getElementById('schedules').innerHTML = tr;
@@ -171,14 +177,15 @@ const vacationDays = function () {
         type: 'get'
     })
         .done(function (data) {
-            let tr = "";
+            let tr = ``;
 
             Array.prototype.forEach.call(data, function (e) {
-                tr += '<tr>';
-                tr += '<td>' + e.memberName  + '</td>';
-                tr += '<td>' + (e.total) + '(' + e.total +  '-' + e.use +')'  + '</td>';
-                tr += '<td>' + (e.total-e.use)  + '</td>';
-                tr += '</tr>';
+                tr += `<tr>
+                <td>${e.memberName}</td>
+                <td>${(e.total)}(${e.total}-${e.use})</td>
+                <td>${(e.total-e.use)}</td>
+                </tr>
+                `
             });
 
             document.getElementById('vacation-days').innerHTML = tr;
