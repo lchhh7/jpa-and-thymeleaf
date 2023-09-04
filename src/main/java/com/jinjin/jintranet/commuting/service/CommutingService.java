@@ -54,7 +54,7 @@ public class CommutingService {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Transactional
 	public Map<String, Object> getWorkTime(Member member) {
 		Map<String, Object> map = new HashMap<>();
