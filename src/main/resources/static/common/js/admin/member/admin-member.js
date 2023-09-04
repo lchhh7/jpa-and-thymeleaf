@@ -122,21 +122,23 @@ const members = function (p) {
     })
         .done(function (data) {
             const list = data.list.content;
-            let tr = "";
+            let tr = ``;
             if (list.length > 0) {
                 list.forEach(function (e) {
-                    tr += '<tr class="tbbody">';
-                    tr += '<td>' + e.name + '</td>';
-                    tr += '<td>' + e.memberId + '</td>';
-                    tr += '<td>' + e.position + '</td>';
-                    tr += '<td>' + nullStr(e.department) + '</td>';
-                    tr += '<td>' + nullStr(e.mobileNo) + '</td>';
-                    tr += '<td>' + nullStr(e.phoneNo) + '</td>';
-                    tr += '<td>';
-                    tr += '<a role="button" class="btn jjgray" onclick="member(\'' + e.id + '\')">수정</a>';
-                    tr += '<a role="button" class="btn jjred ml5" onclick="deleteMember(\'' + e.id + '\', \'' + e.memberId + '\')">삭제</a>';
-                    tr += '</td>';
-                    tr += '</tr>';
+                    tr += `
+                    <tr class="tbbody">
+                    <td>${e.name}</td>
+                    <td>${e.memberId}</td>
+                    <td>${e.position}</td>
+                    <td>${nullStr(e.department)}</td>
+                    <td>${nullStr(e.mobileNo)}</td>
+                    <td>${nullStr(e.phoneNo)}</td>
+                    <td>
+                    <a role="button" class="btn jjgray" onclick="member(${e.id})">수정</a>
+                    <a role="button" class="btn jjred ml5" onclick="deleteMember(${e.id}, ${e.memberId})">삭제</a>
+                    </td>
+                    </tr>
+                    `
                 });
             } else {
                 tr += "<tr><td colspan='7'>등록된 사용자가 없습니다.</td></tr>";
