@@ -8,20 +8,20 @@ import lombok.Getter;
 public enum ErrorCode {
 
     //400 BAD_REQUEST 잘못된 요청
-    INVALID_PARAMETER(400, "파라미터 값을 확인해주세요."),
+    INVALID_SCHEDULE_PARAMETER(400, "올바른 휴가종류를 선택해주세요."),
+    INVALID_APPROVER_PARAMETER(400, "결제자를 선택해주세요."),
+    //INVALID_DATE_PARAMETER(400, "일정 종료일과 시작일을 올바르게 입력해주세요."),
+    INVALID_DATE_PARAMETER(400, "유효하지 않은 일정입니다."),
+    INVALID_CANCEL_PARAMETER(400, "승인 상태인 일정만 취소요청 할 수 있습니다."),
+    INVALID_DELETE_PARAMETER(400, "지난 일정은 취소요청 할 수 없습니다."),
+
+    INVALID_CONTENT_PARAMETER(400, "내용을 입력해주세요."),
 
     //404 NOT_FOUND 잘못된 리소스 접근
-    DISPLAY_NOT_FOUND(404, "존재하지 않는 전시회 ID 입니다."),
-    FAIR_NOT_FOUND(404, "존재하지 않는 박람회 ID 박람회입니다."),
-    FESTIVAL_NOT_FOUND(404, "존재하지 않는 페스티벌 ID 페스티벌입니다."),
-    SAVED_DISPLAY_NOT_FOUND(404, "저장하지 않은 전시회입니다."),
-    SAVED_FAIR_NOT_FOUND(404, "저장하지 않은 박람회입니다."),
-    SAVED_FESTIVAL_NOT_FOUND(404, "저장하지 않은 페스티벌입니다."),
+    DISPLAY_NOT_FOUND(404, "공지사항을 찾을 수 없습니다."),
 
     //409 CONFLICT 중복된 리소스
-    ALREADY_SAVED_DISPLAY(409, "이미 저장한 전시회입니다."),
-    ALREADY_SAVED_FAIR(409, "이미 저장한 박람회입니다."),
-    ALREADY_SAVED_FESTIVAL(409, "이미 저장한 페스티벌입니다."),
+    ATTACH_DELETE_ERROR(409, "첨부파일 삭제 중 오류가 발생했습니다."),
 
     //500 INTERNAL SERVER ERROR
     INTERNAL_SERVER_ERROR(500, "서버 에러입니다.");

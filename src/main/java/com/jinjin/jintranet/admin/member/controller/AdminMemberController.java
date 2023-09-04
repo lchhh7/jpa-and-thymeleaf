@@ -44,14 +44,8 @@ public class AdminMemberController {
      * 사용자관리 > 목록 페이지로 이동
      */
     @GetMapping(value = "/admin/member.do")
-    public String main(Model model, HttpServletRequest request,
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-        try {
-        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
-        } catch (Exception e) {
-        	e.printStackTrace();
-        }
-
+    public String main(Model model)  {
+        model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         return "admin-member/admin-member";
     }
     
@@ -65,36 +59,23 @@ public class AdminMemberController {
             @RequestParam(value = "po", required = false, defaultValue = "") String p,
             @RequestParam(value = "d", required = false, defaultValue = "") String d,
             @PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
-            HttpServletRequest request) throws Exception {
+            HttpServletRequest request) {
 
-    	Map<String, Object> map = new HashMap<>();
-        try {
+    	    Map<String, Object> map = new HashMap<>();
         	Page<MemberSearchDTO> list = memberService.findMembers(principal.getMember() , pageable, n, p, d);
-       
             String page = PageUtils.page(list, "", request);
             
             map.put("list", list);
             map.put("page", page);
-            return new ResponseEntity<>(map, HttpStatus.OK);
-        } catch (Exception e) {
-        	e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+            return ResponseEntity.ok().body(map);
     }
     
     /**
      * 사용자관리 > 사용자 조회
      */
     @GetMapping(value = "/admin/member/{id}.do")
-    public ResponseEntity<MemberShowDTO> findById(@PathVariable("id") int id) throws Exception {
-        try {
-        	MemberShowDTO member = new MemberShowDTO(memberService.findById(id));
-
-            return new ResponseEntity<>(member, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+    public ResponseEntity<MemberShowDTO> findById(@PathVariable("id") int id) {
+            return ResponseEntity.ok().body(new MemberShowDTO(memberService.findById(id)));
     }
 
     /**
@@ -102,30 +83,21 @@ public class AdminMemberController {
      */
     @PutMapping(value = "/admin/member/{id}.do")
     public ResponseEntity<String> edit(@PathVariable("id") int id,@Validated @RequestBody EditByAdminDTO memberDTO ,
-    		@AuthenticationPrincipal PrincipalDetail principal, BindingResult bindingResult) throws Exception {
-        try {
+    		@AuthenticationPrincipal PrincipalDetail principal, BindingResult bindingResult) {
+
         	if (bindingResult.hasErrors()) {
-             	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+                return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
              }
             memberService.adminEdit(id , memberDTO ,principal);
-            return new ResponseEntity<>("사용자 정보를 정상적으로 수정했습니다.", HttpStatus.OK);
-        } catch (Exception e) {
-        	e.printStackTrace();
-            return new ResponseEntity<>("사용자 정보 수정 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-        }
+            return ResponseEntity.ok().body("사용자 정보를 정상적으로 수정했습니다.");
     }
 
     /**
      * 사용자관리 > 사용자 삭제
      */
     @DeleteMapping(value = "/admin/member/{id}.do")
-    public ResponseEntity<String> delete(@PathVariable("id") int id , @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-        try {
-            memberService.delete(id, principal);
-            return new ResponseEntity<>("사용자 정보를 정상적으로 삭제했습니다.", HttpStatus.OK);
-        } catch (Exception e) {
-        	e.printStackTrace();
-            return new ResponseEntity<>("사용자 정보를 삭제하는 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-        }
+    public ResponseEntity<String> delete(@PathVariable("id") int id , @AuthenticationPrincipal PrincipalDetail principal) {
+        memberService.delete(id, principal);
+        return ResponseEntity.ok().body("사용자 정보를 정상적으로 삭제했습니다.");
     }
 }

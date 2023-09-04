@@ -99,7 +99,7 @@ public class CommutingController {
 			map.put("overtimes", overtimes);
 			map.put("nearList" , nearList);
 
-            return new ResponseEntity<>(map, HttpStatus.OK);
+            return ResponseEntity.ok().body(map);
     }
 
 
@@ -109,18 +109,17 @@ public class CommutingController {
      */
     @GetMapping(value = "/commuting/{id}.do")
     public ResponseEntity<CommutingSelectDTO> findById(@PathVariable("id") Integer id) {
-		CommutingSelectDTO commutingDTO = new CommutingSelectDTO(commutingService.findById(id));
-		return new ResponseEntity<>(commutingDTO, HttpStatus.OK);
+		return ResponseEntity.ok().body(new CommutingSelectDTO(commutingService.findById(id)));
     }
 
     @PostMapping(value = "/commuting/writeCommute.do")
     public ResponseEntity<String> edit(@Validated @RequestBody CommuteRequestInsertDTO dto, BindingResult bindingResult,
     		@AuthenticationPrincipal PrincipalDetail principal) {
     		if (bindingResult.hasErrors()) {
-             	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+				return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
              }
     		
     		commutingService.commuteEdit(dto , principal.getMember());
-    		return new ResponseEntity<>("근태를 정상적으로 수정했습니다.", HttpStatus.OK);
+		return ResponseEntity.ok().body("근태를 정상적으로 수정했습니다.");
     }
 }

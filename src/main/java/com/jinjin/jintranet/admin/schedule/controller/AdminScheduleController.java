@@ -37,14 +37,9 @@ public class AdminScheduleController {
      * 일정신청관리(관) > 목록 페이지 이동
      */
     @GetMapping(value = "/admin/schedule.do")
-    public String main(Model model, HttpServletRequest request,
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-       // loggingCurrentMethod(LOGGER);
-        try {
-        	model.addAttribute("members", memberService.findAll());
-        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
-        } catch (Exception e) {
-        }
+    public String main(Model model) {
+        model.addAttribute("members", memberService.findAll());
+        model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
         return "admin-schedule/admin-schedule";
     }
 
@@ -59,28 +54,22 @@ public class AdminScheduleController {
             @RequestParam(value = "y", required = false, defaultValue = "''") String y,
             @RequestParam(value = "n", required = false, defaultValue = "''") String n,
             @PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
-            HttpServletRequest request) throws Exception {
+            HttpServletRequest request) {
 
-    	List<String> statusList = new ArrayList<>();
-    	if(!"".equals(r)) {
-    		statusList.add(r);
-    		statusList.add("C");
-    	}
+            List<String> statusList = new ArrayList<>();
+            if(!"".equals(r)) {
+                statusList.add(r);
+                statusList.add("C");
+            }
     	
-    	statusList.add(y); statusList.add(n);
-    	
-    	Map<String, Object> map = new HashMap<>();
-        try {
+            statusList.add(y); statusList.add(n);
+            Map<String, Object> map = new HashMap<>();
             Page<Schedule> approvesList = scheduleService.approvesList(principal.getMember(), m , statusList , pageable);
             String page = PageUtils.page(approvesList, "schedules" , request);
             
             map.put("list" , approvesList);
             map.put("page" , page);
-            return new ResponseEntity<>(map, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+            return ResponseEntity.ok().body(map);
     }
     
 
@@ -88,13 +77,9 @@ public class AdminScheduleController {
      * 일정신청관리(관) > 신청내역 조회
      */
     @GetMapping(value = "/admin/schedule/{id}.do")
-    public ResponseEntity<Schedule> findById(@PathVariable("id") int id) throws Exception {
-        try {
-            Schedule vo = scheduleService.findById(id);
-            return new ResponseEntity<>(vo, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+    public ResponseEntity<Schedule> findById(@PathVariable("id") int id) {
+        Schedule vo = scheduleService.findById(id);
+        return ResponseEntity.ok().body(vo);
     }
     
 
@@ -112,13 +97,10 @@ public class AdminScheduleController {
     public ResponseEntity<String> approve(
             @PathVariable("id") int id,
             @RequestBody Schedule schedule,
-            @AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-        try {
+            @AuthenticationPrincipal PrincipalDetail principal) {
+
             scheduleService.approves(id, schedule , principal.getMember());
-            return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-        }
+            return ResponseEntity.ok().body("정상적으로 처리되었습니다.");
     }
     
 
@@ -126,15 +108,7 @@ public class AdminScheduleController {
      * 일정신청관리(관) > 휴가일수조회
      */
     @GetMapping(value = "/admin/schedule/vacationDays.do")
-    public ResponseEntity<List<MemberCommuteDTO>> vacationDays() throws Exception {
-        try {
-            List<MemberCommuteDTO> list = scheduleService.vacationDays();
-
-            return new ResponseEntity<>(list, HttpStatus.OK);
-        } catch (Exception e) {
-        	e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+    public ResponseEntity<List<MemberCommuteDTO>> vacationDays() {
+        return ResponseEntity.ok().body(scheduleService.vacationDays());
     }
-    
 }

@@ -39,14 +39,10 @@ public class AdminCommutingController {
      * 일정신청관리(관) > 목록 페이지 이동
      */
     @GetMapping(value = "/admin/commuting.do")
-    public String main(Model model, HttpServletRequest request,
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
-       // loggingCurrentMethod(LOGGER);
-        try {
-        	model.addAttribute("members", memberService.findAll());
-        	model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
-        } catch (Exception e) {
-        }
+    public String main(Model model) {
+        model.addAttribute("members", memberService.findAll());
+        model.addAttribute("todaySchedules" , scheduleService.todaySchedules());
+
         return "admin-commuting/admin-commuting";
     }
 
@@ -61,22 +57,18 @@ public class AdminCommutingController {
             @RequestParam(value = "y", required = false, defaultValue = "''") String y,
             @RequestParam(value = "n", required = false, defaultValue = "''") String n,
             @PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
-            HttpServletRequest request) throws Exception {
+            HttpServletRequest request) {
 
         List<String> statusList = List.of( r, y, n);
 
     	Map<String, Object> map = new HashMap<>();
-        try {
+
             Page<AdminCommuteRequestViewDTO> approvesList = commutingRequestService.approvesList(principal.getMember(), m , statusList , pageable);
             String page = PageUtils.page(approvesList, "commutings" , request);
             
             map.put("list" , approvesList);
             map.put("page" , page);
-            return new ResponseEntity<>(map, HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+            return ResponseEntity.ok().body(map);
     }
     
 
@@ -84,13 +76,10 @@ public class AdminCommutingController {
      * 일정신청관리(관) > 신청내역 조회
      */
     @GetMapping(value = "/admin/commuting/{id}.do")
-    public ResponseEntity<AdminCommuteRequestViewDTO> findById(@PathVariable("id") int id) throws Exception {
-        try {
+    public ResponseEntity<AdminCommuteRequestViewDTO> findById(@PathVariable("id") int id) {
+
             AdminCommuteRequestViewDTO commutingRequest = commutingRequestService.findById(id);
-            return new ResponseEntity<>(commutingRequest, HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.CONFLICT);
-        }
+            return ResponseEntity.ok().body(commutingRequest);
     }
     
 
@@ -108,13 +97,10 @@ public class AdminCommutingController {
     public ResponseEntity<String> approve(
             @PathVariable("id") int id,
             @RequestBody CommuteApproveDTO approveDTO ,
-            @AuthenticationPrincipal PrincipalDetail principal
-            ) throws Exception {
-        try {
+            @AuthenticationPrincipal PrincipalDetail principal) {
+
             commutingRequestService.approves(id, approveDTO , principal.getMember());
-            return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>("처리 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
-        }
+            return ResponseEntity.ok().body("정상적으로 처리되었습니다.");
+
     }
 }

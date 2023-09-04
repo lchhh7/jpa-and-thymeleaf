@@ -109,7 +109,7 @@ public class NoticeService {
 			}); // 영속화
 			
 			attach.setDeletedBy(member.getName());
-			return new ResponseEntity<>("첨부파일이 정상적으로 삭제되었습니다." ,HttpStatus.OK);
+			return ResponseEntity.ok().body("첨부파일이 정상적으로 삭제되었습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
 			return new ResponseEntity<>("첨부파일 삭제 중 오류가 발생했습니다.", HttpStatus.CONFLICT);

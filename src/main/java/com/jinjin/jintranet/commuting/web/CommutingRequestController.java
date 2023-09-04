@@ -30,14 +30,13 @@ public class CommutingRequestController {
 		List<CommuteRequestViewDTO> list = commutingRequestService.commutingRequestSearching(principal.getMember() , st , y)
 				.stream().sorted(Comparator.comparing(CommuteRequestViewDTO::getRequestDt , Comparator.reverseOrder())
 						.thenComparing(CommuteRequestViewDTO::getCrtDt)).toList();
-		return new ResponseEntity<>(list, HttpStatus.OK);
+
+		return ResponseEntity.ok().body(list);
 	}
 
 	@GetMapping("/commuting/request/{id}.do")
-	public ResponseEntity<AdminCommuteRequestViewDTO> requesting(
-			@PathVariable("id") int id) {
-		AdminCommuteRequestViewDTO dto = commutingRequestService.findById(id);
-		return new ResponseEntity<>(dto, HttpStatus.OK);
+	public ResponseEntity<AdminCommuteRequestViewDTO> requesting(@PathVariable("id") int id) {
+		return ResponseEntity.ok().body(commutingRequestService.findById(id));
 	}
 
 	@PutMapping(value="/commuting/editRequest/{id}.do")
@@ -45,7 +44,7 @@ public class CommutingRequestController {
 			@PathVariable("id") int id ,
 			@RequestBody AdminCommuteRequestViewDTO dto) {
 			commutingRequestService.EditRequest(id,dto);
-			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
+			return ResponseEntity.ok().body("정상적으로 처리되었습니다.");
 	}
 
 	@DeleteMapping(value="/commuting/deleteRequest/{id}.do")
@@ -53,6 +52,6 @@ public class CommutingRequestController {
 			@PathVariable("id") int id ,
 			@AuthenticationPrincipal PrincipalDetail principal) {
 			commutingRequestService.DeleteRequest(id , principal.getMember());
-			return new ResponseEntity<>("정상적으로 처리되었습니다.", HttpStatus.OK);
+			return ResponseEntity.ok().body("정상적으로 처리되었습니다.");
 	}
 }

@@ -82,7 +82,7 @@ public class MemberController {
             for(Schedule s : mainSchedules) {
                 dtoList.add(new ScheduleViewDTO(s));
             }
-            return new ResponseEntity<>(dtoList, HttpStatus.OK);
+            return ResponseEntity.ok().body(dtoList);
     }
 
     @GetMapping("/join.do")
@@ -92,18 +92,17 @@ public class MemberController {
     @PostMapping("/auth/joinProc")
     public ResponseEntity<String> save(@Validated @RequestBody MemberSaveDTO memberDTO , BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
 
         memberService.write(memberDTO);
-        return new ResponseEntity<String>("회원가입이 완료되었습니다.",HttpStatus.OK);
+        return ResponseEntity.ok().body("회원가입이 완료되었습니다.");
     }
 
     @PostMapping("/main/goToWorkButton.do")
     public ResponseEntity<String> commutingInsert(@RequestBody Commuting commuting , @AuthenticationPrincipal PrincipalDetail principal) {
         commutingService.write(commuting , principal.getMember());
-
-        return new ResponseEntity<String>("",HttpStatus.OK);
+        return ResponseEntity.ok().body("");
     }
 
     @GetMapping("/member/edit.do")
@@ -119,10 +118,10 @@ public class MemberController {
                                        @AuthenticationPrincipal PrincipalDetail principal) {
 
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
         memberService.edit(principal, memberDTO);
-        return new ResponseEntity<>("정상적으로 정보가 수정되었습니다.",HttpStatus.OK);
+        return ResponseEntity.ok().body("정상적으로 정보가 수정되었습니다.");
     }
 
     @GetMapping("/member/p/edit.do")
@@ -136,11 +135,9 @@ public class MemberController {
                                         @AuthenticationPrincipal PrincipalDetail principal) {
 
         if (bindingResult.hasErrors()) {
-            return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
 
-        String msg = memberService.passwordEdit(principal.getMember().getId(), passwordDTO);
-
-        return new ResponseEntity<>(msg,HttpStatus.OK);
+        return ResponseEntity.ok().body(memberService.passwordEdit(principal.getMember().getId(), passwordDTO));
     }
 }

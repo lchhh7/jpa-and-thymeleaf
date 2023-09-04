@@ -88,7 +88,7 @@ public class ScheduleController {
 			map.put("list", list);
 			map.put("holidays", holidays);
 
-			return new ResponseEntity<>(map, HttpStatus.OK);
+			return ResponseEntity.ok().body(map);
 	}
 
 	/**
@@ -98,8 +98,7 @@ public class ScheduleController {
 	public ResponseEntity<String> write(@Valid @RequestBody ScheduleInsertDTO scheduleDTO, BindingResult bindingResult,
 			@AuthenticationPrincipal PrincipalDetail principal) {
 			if (bindingResult.hasErrors()) {
-				return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(),
-						HttpStatus.BAD_REQUEST);
+				return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
 			}
 
 			if ("VA".equals(scheduleDTO.getType())) {
@@ -132,7 +131,7 @@ public class ScheduleController {
 					: memberService.findById(scheduleDTO.getApproveId());
 			scheduleService.write(scheduleDTO, principal.getMember(), approve);
 
-			return new ResponseEntity<>("일정을 정상적으로 등록했습니다.", HttpStatus.OK);
+		return ResponseEntity.ok().body("일정을 정상적으로 등록했습니다.");
 	}
 
 	// 일정관리 > 일정 선택
@@ -140,7 +139,7 @@ public class ScheduleController {
 	@GetMapping(value = "/schedule/{id}.do")
 	public ResponseEntity<ScheduleViewDTO> findById(@PathVariable("id") Integer id) {
 			Schedule schedule = scheduleService.findById(id);
-			return new ResponseEntity<>(new ScheduleViewDTO(schedule), HttpStatus.OK);
+		return ResponseEntity.ok().body(new ScheduleViewDTO(schedule));
 	}
 
 	// 일정관리 > 일정 수정
@@ -149,8 +148,7 @@ public class ScheduleController {
 			@Validated @RequestBody ScheduleUpdateDTO scheduleDTO, @AuthenticationPrincipal PrincipalDetail principal,
 			BindingResult bindingResult) {
 			if (bindingResult.hasErrors()) {
-				return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(),
-						HttpStatus.BAD_REQUEST);
+				return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
 			}
 
 			if (!isValidDate(new LocalDate(scheduleDTO.getStrDt()), new LocalDate(scheduleDTO.getEndDt()))) {
@@ -158,7 +156,7 @@ public class ScheduleController {
 			}
 
 			scheduleService.edit(id, scheduleDTO.DTOtoEntity(), principal);
-			return new ResponseEntity<>("일정을 정상적으로 수정했습니다.", HttpStatus.OK);
+		return ResponseEntity.ok().body("일정을 정상적으로 수정했습니다.");
 	}
 	// 일정관리 > 일정 취소요청
 
@@ -180,7 +178,7 @@ public class ScheduleController {
 			}
 
 			scheduleService.cancel(id, scheduleDTO.DTOtoEntity(), principal);
-			return new ResponseEntity<>("일정을 정상적으로 취소 요청했습니다.", HttpStatus.OK);
+			return ResponseEntity.ok().body("일정을 정상적으로 취소 요청했습니다.");
 	}
 
 	// 일정관리 > 일정 삭제
@@ -188,7 +186,7 @@ public class ScheduleController {
 	public ResponseEntity<String> delete(@PathVariable("id") Integer id,
 			@AuthenticationPrincipal PrincipalDetail principal) {
 			scheduleService.delete(id, principal);
-			return new ResponseEntity<>("일정을 정상적으로 삭제했습니다.", HttpStatus.OK);
+		return ResponseEntity.ok().body("일정을 정상적으로 삭제했습니다.");
 	}
 
 	private boolean isValidDate(LocalDate strDt, LocalDate endDt) {

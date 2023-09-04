@@ -64,13 +64,13 @@ public class NoticeController {
     		@AuthenticationPrincipal PrincipalDetail principal) {
         
         if (bindingResult.hasErrors()) {
-        	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
 
         if ("<p>&nbsp;</p>".equals(dto.getContent())) {
             return new ResponseEntity<>("내용을 입력해주세요.", HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(noticeService.write(dto , principal.getMember()) , HttpStatus.OK);
+        return ResponseEntity.ok().body(noticeService.write(dto , principal.getMember()));
     }
    
     @GetMapping("/notice/view.do")
@@ -89,7 +89,7 @@ public class NoticeController {
     public ResponseEntity<String> delete(@RequestBody NoticeSaveDTO dto , 
     		@AuthenticationPrincipal PrincipalDetail principal) {
     	noticeService.delete(dto , principal.getMember());
-        return new ResponseEntity<>("공지사항 삭제가 완료되었습니다." , HttpStatus.OK);
+        return ResponseEntity.ok().body("공지사항 삭제가 완료되었습니다.");
     }
 	
     
@@ -108,23 +108,23 @@ public class NoticeController {
     public ResponseEntity<String> edit(@Validated @RequestBody NoticeSaveDTO dto,
     		@AuthenticationPrincipal PrincipalDetail principal, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-        	return new ResponseEntity<>(bindingResult.getFieldErrors().get(0).getDefaultMessage(), HttpStatus.BAD_REQUEST);
+            return ResponseEntity.badRequest().body(bindingResult.getFieldErrors().get(0).getDefaultMessage());
         }
 
         if ("<p>&nbsp;</p>".equals(dto.getContent())) {
-            return new ResponseEntity<>("내용을 입력해주세요.", HttpStatus.BAD_REQUEST);
+            return ResponseEntity.ok().body("내용을 입력해주세요.");
         }
-        return new ResponseEntity<>(noticeService.edit(dto,principal) , HttpStatus.OK);
+        return ResponseEntity.ok().body(noticeService.edit(dto,principal));
     }
     
     @PostMapping("/notice/upload.do")
     public ResponseEntity<List<NoticeAttach>> upload(MultipartHttpServletRequest request) throws Exception {
-        return new ResponseEntity<>(FileUtils.upload(request, "notice_attach"), HttpStatus.OK);
+        return ResponseEntity.ok().body(FileUtils.upload(request, "notice_attach"));
     }
     
     @DeleteMapping(value = "/notice/attach.do")
     public ResponseEntity<String> deleteAttach(@RequestParam("id") Integer id , 
-    		@AuthenticationPrincipal PrincipalDetail principal) throws Exception {
+    		@AuthenticationPrincipal PrincipalDetail principal) {
         return noticeService.deleteAttach(id , principal.getMember());
     }
 	
