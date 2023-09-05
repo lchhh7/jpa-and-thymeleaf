@@ -1,8 +1,12 @@
 package com.jinjin.jintranet.holiday.service;
 
 import com.jinjin.jintranet.common.HolidayUtils;
+import com.jinjin.jintranet.member.service.MemberService;
 import com.jinjin.jintranet.model.Holiday;
 import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,10 +19,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@AllArgsConstructor
 @Controller
+@RequiredArgsConstructor
 public class HolidayAPIController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HolidayAPIController.class);
     private final HolidayService holidayService;
 
     @PostMapping(value ="/admin/holidayInfoAPI.do")
@@ -48,7 +53,7 @@ public class HolidayAPIController {
                 holidayService.write(new Holiday((String) itemMap.get("dateName") , dateTime));
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("holiday openapi error : "+ e);
         }
         return ResponseEntity.ok().body("공휴일 추가가 완료되었습니다.");
     }

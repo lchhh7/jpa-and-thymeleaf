@@ -1,6 +1,9 @@
 package com.jinjin.jintranet.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jinjin.jintranet.holiday.service.HolidayAPIController;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,6 +15,7 @@ import java.util.Map;
 
 public class HolidayUtils {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(HolidayUtils.class);
     public static Map<String, Object> holidayInfoAPI(String year) throws IOException {
         StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo");
         urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + "temp"); /*Service Key*/
@@ -41,7 +45,6 @@ public class HolidayUtils {
         }
         rd.close();
         conn.disconnect();
-        // System.out.println(sb.toString());
 
         return string2Map(sb.toString());
     }
@@ -59,9 +62,10 @@ public class HolidayUtils {
         try {
             map = mapper.readValue(json, Map.class);
             System.out.println(map);
+            LOGGER.info("string2Map : "+ map);
 
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("string2Map error : "+ e);
         }
 
         return map;

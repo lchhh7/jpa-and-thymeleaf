@@ -30,7 +30,7 @@ public class FileUtils {
     private static final String FILE_PATH = "/files/";
 
 
-    public static List<NoticeAttach> upload(MultipartHttpServletRequest request, String dirName) throws Exception {
+    public static List<NoticeAttach> upload(MultipartHttpServletRequest request, String dirName) {
         List<NoticeAttach> list = new ArrayList<>();
         try {
             LocalDateTime now = LocalDateTime.now();
@@ -79,12 +79,12 @@ public class FileUtils {
 
             return list;
         } catch (Exception e) {
-            e.printStackTrace();
-            throw e;
+            LOGGER.info("upload error : " + e);
         }
+        return list;
     }
 
-    public static void download(NoticeAttach attach, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public static void download(NoticeAttach attach, HttpServletRequest request, HttpServletResponse response) {
         try {
             String fileName = attach.getOriginalFileName();
             String browser = getBrowser(request);
@@ -109,7 +109,7 @@ public class FileUtils {
             response.getOutputStream().close();
 
         } catch (Exception e) {
-            e.printStackTrace();
+            LOGGER.info("download error : " + e);
         }
     }
 
@@ -153,6 +153,7 @@ public class FileUtils {
                 if (browser.equals("Safari") || browser.equals("Firefox")) reFileNm = URLDecoder.decode(reFileNm);
             }
         } catch (Exception e) {
+            LOGGER.info("fileName NotFound : " + e);
         }
         return reFileNm;
     }

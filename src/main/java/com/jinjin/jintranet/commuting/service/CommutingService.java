@@ -1,5 +1,6 @@
 package com.jinjin.jintranet.commuting.service;
 
+import com.jinjin.jintranet.common.FileUtils;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestDTO;
 import com.jinjin.jintranet.commuting.dto.CommuteRequestInsertDTO;
 import com.jinjin.jintranet.commuting.dto.CommutingsInterface;
@@ -12,6 +13,8 @@ import com.jinjin.jintranet.model.CommutingRequest;
 import com.jinjin.jintranet.model.Member;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
@@ -29,7 +32,8 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class CommutingService {
-	
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(CommutingService.class);
 	private final MemberRepository memberRepository;
 	
 	private final CommutingRepository commutingRepository;
@@ -51,7 +55,7 @@ public class CommutingService {
 			}
 			commutingRepository.save(commuting);
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOGGER.info("commuting write error : " + e);
 		}
 	}
 

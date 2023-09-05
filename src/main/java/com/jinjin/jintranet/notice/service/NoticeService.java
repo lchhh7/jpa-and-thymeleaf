@@ -4,6 +4,7 @@ import com.jinjin.jintranet.common.FileUtils;
 import com.jinjin.jintranet.handler.CustomException;
 import com.jinjin.jintranet.handler.ErrorCode;
 import com.jinjin.jintranet.handler.ErrorDto;
+import com.jinjin.jintranet.holiday.service.HolidayAPIController;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.Notice;
 import com.jinjin.jintranet.model.NoticeAttach;
@@ -14,6 +15,8 @@ import com.jinjin.jintranet.notice.repository.NoticeDslRepository;
 import com.jinjin.jintranet.notice.repository.NoticeRepository;
 import com.jinjin.jintranet.security.auth.PrincipalDetail;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -32,6 +35,8 @@ import static com.jinjin.jintranet.handler.ErrorCode.INTERNAL_SERVER_ERROR;
 @Service
 @RequiredArgsConstructor
 public class NoticeService {
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(HolidayAPIController.class);
 	private final NoticeDslRepository noticeDslRepository;
 
 	private final NoticeRepository noticeRepository;
@@ -63,7 +68,7 @@ public class NoticeService {
 			notice.setContent(URLDecoder.decode(dto.getContent(), "UTF-8"));
 			notice.setTitle(URLDecoder.decode(dto.getTitle(), "UTF-8"));
 		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
+			LOGGER.info("notice write encode error : "+e);
 		}
 		notice.setMember(member);
 		notice.setCreatedBy(member.getName());
@@ -96,7 +101,7 @@ public class NoticeService {
 	}
 
 	@Transactional
-	public void download(int id, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void download(int id, HttpServletRequest request, HttpServletResponse response) {
 		NoticeAttach attach = noticeAttachRepository.findById(id).orElseThrow(() -> {
 			return new IllegalArgumentException("공지사항을 찾을 수 없습니다.");
 		}); // 영속화
@@ -116,7 +121,7 @@ public class NoticeService {
 			attach.setDeletedBy(member.getName());
 			return ResponseEntity.ok().body("첨부파일이 정상적으로 삭제되었습니다.");
 		} catch (Exception e) {
-			e.printStackTrace();
+			LOGGER.info("notice deleteAttach error : "+ e);
 			throw new CustomException(ErrorCode.ATTACH_DELETE_ERROR);
 		}
 	}

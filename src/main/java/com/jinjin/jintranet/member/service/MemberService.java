@@ -5,7 +5,10 @@ import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
+import com.jinjin.jintranet.holiday.service.HolidayService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -29,6 +32,7 @@ import com.jinjin.jintranet.security.auth.PrincipalDetail;
 @Service
 @RequiredArgsConstructor
 public class MemberService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(MemberService.class);
 	private final MemberRepository memberRepository;
 	private final MemberDslRepository memberDslRepository;
 	@Autowired
@@ -46,7 +50,7 @@ public class MemberService {
 			memberRepository.save(member);
 			return 1;
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOGGER.info("member write error : "+e);
 			return -1;
 		}
 	}

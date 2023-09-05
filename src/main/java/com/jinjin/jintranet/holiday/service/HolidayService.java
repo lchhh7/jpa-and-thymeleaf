@@ -1,7 +1,12 @@
 package com.jinjin.jintranet.holiday.service;
 
+import com.jinjin.jintranet.commuting.service.CommutingService;
 import com.jinjin.jintranet.holiday.repository.HolidayRepository;
 import com.jinjin.jintranet.model.Holiday;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +15,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class HolidayService {
+	private static final Logger LOGGER = LoggerFactory.getLogger(HolidayService.class);
 
-	@Autowired
-	private HolidayRepository holidayRepository;
+	private final HolidayRepository holidayRepository;
 
 	@Transactional
 	public List<Holiday> findByMonth(LocalDateTime sdt , LocalDateTime edt) {
@@ -31,7 +37,7 @@ public class HolidayService {
 			holidayRepository.save(holiday);
 			return 1;
 		} catch(Exception e) {
-			e.printStackTrace();
+			LOGGER.info("holiday write error : "+e);
 			return -1;
 		}
 	}

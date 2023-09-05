@@ -120,7 +120,7 @@ public class NoticeController {
     }
     
     @PostMapping("/notice/upload.do")
-    public ResponseEntity<List<NoticeAttach>> upload(MultipartHttpServletRequest request) throws Exception {
+    public ResponseEntity<List<NoticeAttach>> upload(MultipartHttpServletRequest request) {
         return ResponseEntity.ok().body(FileUtils.upload(request, "notice_attach"));
     }
     
@@ -131,7 +131,7 @@ public class NoticeController {
     }
 	
     @PostMapping("/notice/download.do")
-    public void download(@RequestParam int id, HttpServletRequest request,HttpServletResponse response) throws Exception {
+    public void download(@RequestParam int id, HttpServletRequest request,HttpServletResponse response) {
         noticeService.download(id, request, response);
     }
 }
