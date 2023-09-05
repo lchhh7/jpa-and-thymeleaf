@@ -7,6 +7,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.NoHandlerFoundException;
 import org.thymeleaf.exceptions.TemplateInputException;
 
@@ -20,11 +21,13 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler({ CustomException.class })
     protected ResponseEntity handleCustomException(CustomException exception) {
-        return new ResponseEntity(new ErrorDto(exception.getErrorCode().getStatus(), exception.getErrorCode().getMessage()), HttpStatus.valueOf(exception.getErrorCode().getStatus()));
+        log.warn(exception.getMessage());
+        return new ResponseEntity(new ErrorDto(exception.getStatus(), exception.getMessage()), HttpStatus.valueOf(exception.getStatus()));
     }
 
     @ExceptionHandler({ Exception.class })
     protected ResponseEntity handleServerException(Exception exception) {
+        log.warn(exception.getMessage());
         return new ResponseEntity(new ErrorDto(INTERNAL_SERVER_ERROR.getStatus(), INTERNAL_SERVER_ERROR.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
