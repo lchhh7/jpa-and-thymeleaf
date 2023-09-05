@@ -1,6 +1,8 @@
 package com.jinjin.jintranet.common;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.jinjin.jintranet.handler.CustomException;
+import com.jinjin.jintranet.handler.ErrorCode;
 import com.jinjin.jintranet.holiday.service.HolidayAPIController;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,37 +18,41 @@ import java.util.Map;
 public class HolidayUtils {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(HolidayUtils.class);
-    public static Map<String, Object> holidayInfoAPI(String year) throws IOException {
-        StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo");
-        urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + "temp"); /*Service Key*/
-        urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
-        urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("25", "UTF-8")); /*한 페이지 결과 수*/
-        urlBuilder.append("&" + URLEncoder.encode("solYear", "UTF-8") + "=" + URLEncoder.encode(year, "UTF-8")); /*연 */
-        urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /* json으로 요청 */
+    public static Map<String, Object> holidayInfoAPI(String year) {
+        try {
+            StringBuilder urlBuilder = new StringBuilder("http://apis.data.go.kr/B090041/openapi/service/SpcdeInfoService/getRestDeInfo");
+            urlBuilder.append("?" + URLEncoder.encode("serviceKey", "UTF-8") + "=" + "temp"); /*Service Key*/
+            urlBuilder.append("&" + URLEncoder.encode("pageNo", "UTF-8") + "=" + URLEncoder.encode("1", "UTF-8")); /*페이지번호*/
+            urlBuilder.append("&" + URLEncoder.encode("numOfRows", "UTF-8") + "=" + URLEncoder.encode("25", "UTF-8")); /*한 페이지 결과 수*/
+            urlBuilder.append("&" + URLEncoder.encode("solYear", "UTF-8") + "=" + URLEncoder.encode(year, "UTF-8")); /*연 */
+            urlBuilder.append("&" + URLEncoder.encode("_type", "UTF-8") + "=" + URLEncoder.encode("json", "UTF-8")); /* json으로 요청 */
 
-        URL url = new URL(urlBuilder.toString());
-        System.out.println("요청URL = " + urlBuilder);
+            URL url = new URL(urlBuilder.toString());
+            LOGGER.info("요청URL = " + urlBuilder);
 
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-        conn.setRequestMethod("GET");
-        conn.setRequestProperty("Content-type", "application/json");
-        System.out.println("Response code: " + conn.getResponseCode());
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+            conn.setRequestProperty("Content-type", "application/json");
+            LOGGER.info("Response code: " + conn.getResponseCode());
 
-        BufferedReader rd;
-        if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
-            rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        } else {
-            rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            BufferedReader rd;
+            if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+                rd = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            } else {
+                rd = new BufferedReader(new InputStreamReader(conn.getErrorStream()));
+            }
+            StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = rd.readLine()) != null) {
+                sb.append(line);
+            }
+            rd.close();
+            conn.disconnect();
+            return string2Map(sb.toString());
+        } catch(Exception e) {
+            LOGGER.info("holidayInfoAPI error : " + e);
+            throw new CustomException(ErrorCode.OPEN_API_ERROR);
         }
-        StringBuilder sb = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            sb.append(line);
-        }
-        rd.close();
-        conn.disconnect();
-
-        return string2Map(sb.toString());
     }
 
     /**
@@ -63,9 +69,9 @@ public class HolidayUtils {
             map = mapper.readValue(json, Map.class);
             System.out.println(map);
             LOGGER.info("string2Map : "+ map);
-
         } catch (IOException e) {
             LOGGER.info("string2Map error : "+ e);
+            throw new CustomException(ErrorCode.DATA_CONVERSION_ERROR);
         }
 
         return map;

@@ -1,6 +1,8 @@
 package com.jinjin.jintranet.holiday.service;
 
 import com.jinjin.jintranet.common.HolidayUtils;
+import com.jinjin.jintranet.handler.CustomException;
+import com.jinjin.jintranet.handler.ErrorCode;
 import com.jinjin.jintranet.member.service.MemberService;
 import com.jinjin.jintranet.model.Holiday;
 import lombok.AllArgsConstructor;
@@ -52,7 +54,7 @@ public class HolidayAPIController {
                 if(dateList.contains(locdate)) continue;
                 holidayService.write(new Holiday((String) itemMap.get("dateName") , dateTime));
             }
-        } catch (IOException e) {
+        } catch (Exception e) {
             LOGGER.info("holiday openapi error : "+ e);
         }
         return ResponseEntity.ok().body("공휴일 추가가 완료되었습니다.");

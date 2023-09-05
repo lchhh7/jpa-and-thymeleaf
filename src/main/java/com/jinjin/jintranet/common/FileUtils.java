@@ -12,6 +12,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jinjin.jintranet.handler.CustomException;
+import com.jinjin.jintranet.handler.ErrorCode;
 import org.joda.time.LocalDateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -80,8 +82,8 @@ public class FileUtils {
             return list;
         } catch (Exception e) {
             LOGGER.info("upload error : " + e);
+            throw new CustomException(ErrorCode.ATTACH_FILE_MANAGEMENT_ERROR);
         }
-        return list;
     }
 
     public static void download(NoticeAttach attach, HttpServletRequest request, HttpServletResponse response) {
@@ -110,6 +112,7 @@ public class FileUtils {
 
         } catch (Exception e) {
             LOGGER.info("download error : " + e);
+            throw new CustomException(ErrorCode.ATTACH_FILE_MANAGEMENT_ERROR);
         }
     }
 
@@ -154,6 +157,7 @@ public class FileUtils {
             }
         } catch (Exception e) {
             LOGGER.info("fileName NotFound : " + e);
+            throw new CustomException(ErrorCode.ATTACH_FILE_MANAGEMENT_ERROR);
         }
         return reFileNm;
     }

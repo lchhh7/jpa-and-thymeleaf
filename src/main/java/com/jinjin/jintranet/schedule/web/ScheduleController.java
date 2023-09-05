@@ -129,8 +129,7 @@ public class ScheduleController {
 					: scheduleDTO.getType();
 			scheduleDTO.setType(typeCorrection);
 
-			Member approve = (scheduleDTO.getApproveId() == null) ? null
-					: memberService.findById(scheduleDTO.getApproveId());
+			Member approve = (scheduleDTO.getApproveId() == null) ? null : memberService.findById(scheduleDTO.getApproveId());
 			scheduleService.write(scheduleDTO, principal.getMember(), approve);
 
 		return ResponseEntity.ok().body("일정을 정상적으로 등록했습니다.");
