@@ -15,7 +15,7 @@ import java.nio.file.AccessDeniedException;
 
 import static com.jinjin.jintranet.handler.ErrorCode.INTERNAL_SERVER_ERROR;
 
-@ControllerAdvice
+@RestControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
 
