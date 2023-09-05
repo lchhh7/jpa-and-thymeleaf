@@ -5,6 +5,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.jinjin.jintranet.handler.CustomException;
+import com.jinjin.jintranet.handler.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -68,7 +70,7 @@ public class NoticeController {
         }
 
         if ("<p>&nbsp;</p>".equals(dto.getContent())) {
-            return new ResponseEntity<>("내용을 입력해주세요.", HttpStatus.BAD_REQUEST);
+            throw new CustomException(ErrorCode.INVALID_CONTENT_PARAMETER);
         }
         return ResponseEntity.ok().body(noticeService.write(dto , principal.getMember()));
     }

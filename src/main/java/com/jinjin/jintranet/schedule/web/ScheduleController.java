@@ -2,6 +2,8 @@ package com.jinjin.jintranet.schedule.web;
 
 import com.jinjin.jintranet.common.DateUtils;
 import com.jinjin.jintranet.common.VacationDaysUtils;
+import com.jinjin.jintranet.handler.CustomException;
+import com.jinjin.jintranet.handler.ErrorCode;
 import com.jinjin.jintranet.holiday.service.HolidayService;
 import com.jinjin.jintranet.member.dto.VacationDaysDTO;
 import com.jinjin.jintranet.member.service.MemberService;
@@ -44,7 +46,7 @@ public class ScheduleController {
 	 * 일정관리 > 메인화면
 	 */
 	@GetMapping(value = "/schedule.do")
-	public String main(Model model, HttpServletRequest request, @AuthenticationPrincipal PrincipalDetail principal) {
+	public String main(Model model, @AuthenticationPrincipal PrincipalDetail principal) {
 			Member member = principal.getMember();
 			LocalDate now = LocalDate.now();
 
@@ -104,22 +106,22 @@ public class ScheduleController {
 			if ("VA".equals(scheduleDTO.getType())) {
 				String vacationType = scheduleDTO.getVacationType();
 				if (!("1".equals(vacationType) || "2".equals(vacationType) || "3".equals(vacationType))) {
-					return new ResponseEntity<>("올바른 휴가 종류를 선택해주세요.", HttpStatus.BAD_REQUEST);
+					throw new CustomException(ErrorCode.INVALID_SCHEDULE_PARAMETER);
 				}
 
 				if (scheduleDTO.getApproveId() == null) {
-					return new ResponseEntity<>("결제자를 선택해주세요.", HttpStatus.BAD_REQUEST);
+					throw new CustomException(ErrorCode.INVALID_APPROVER_PARAMETER);
 				}
 			}
 
 			if ("OT".equals(scheduleDTO.getType())) {
 				if (scheduleDTO.getApproveId() == null) {
-					return new ResponseEntity<>("결제자를 선택해주세요.", HttpStatus.BAD_REQUEST);
+					throw new CustomException(ErrorCode.INVALID_APPROVER_PARAMETER);
 				}
 			}
 
 			if (!isValidDate(new LocalDate(scheduleDTO.getStrDt()), new LocalDate(scheduleDTO.getEndDt()))) {
-				return new ResponseEntity<>("일정 종료일과 시작일을 올바르게 입력해주세요.", HttpStatus.BAD_REQUEST);
+				throw new CustomException(ErrorCode.INVALID_DATE_PARAMETER);
 			}
 
 			String typeCorrection = "VA".equals(scheduleDTO.getType())
@@ -152,7 +154,7 @@ public class ScheduleController {
 			}
 
 			if (!isValidDate(new LocalDate(scheduleDTO.getStrDt()), new LocalDate(scheduleDTO.getEndDt()))) {
-				return new ResponseEntity<>("일정 종료일과 시작일을 올바르게 입력해주세요.", HttpStatus.BAD_REQUEST);
+				throw new CustomException(ErrorCode.INVALID_DATE_PARAMETER);
 			}
 
 			scheduleService.edit(id, scheduleDTO.DTOtoEntity(), principal);
@@ -165,16 +167,16 @@ public class ScheduleController {
 			@AuthenticationPrincipal PrincipalDetail principal) {
 			Schedule schedule = scheduleService.findById(id);
 			if (schedule == null) {
-				return new ResponseEntity<>("유효하지 않은 일정입니다.", HttpStatus.BAD_REQUEST);
+				throw new CustomException(ErrorCode.INVALID_DATE_PARAMETER);
 			}
 			if (!"Y".equals(schedule.getStatus())) {
-				return new ResponseEntity<>("승인 상태인 일정만 취소요청 할 수 있습니다.", HttpStatus.BAD_REQUEST);
+				throw new CustomException(ErrorCode.INVALID_CANCEL_PARAMETER);
 			}
 
 			LocalDateTime startDt = schedule.getStrDt();
 			LocalDateTime now = LocalDateTime.now();
 			if (now.isAfter(startDt)) {
-				return new ResponseEntity<>("지난 일정은 취소요청 할 수 없습니다.", HttpStatus.BAD_REQUEST);
+				throw new CustomException(ErrorCode.INVALID_DELETE_PARAMETER);
 			}
 
 			scheduleService.cancel(id, scheduleDTO.DTOtoEntity(), principal);

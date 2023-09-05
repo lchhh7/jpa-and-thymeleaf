@@ -8,8 +8,8 @@ import lombok.Getter;
 public enum ErrorCode {
 
     //400 BAD_REQUEST 잘못된 요청
-    INVALID_SCHEDULE_PARAMETER(400, "올바른 휴가종류를 선택해주세요."),
-    INVALID_APPROVER_PARAMETER(400, "결제자를 선택해주세요."),
+    INVALID_SCHEDULE_PARAMETER(400, "올바른 휴가 종류를 선택해주세요."),
+    INVALID_APPROVER_PARAMETER(400, "결재자를 선택해주세요."),
     //INVALID_DATE_PARAMETER(400, "일정 종료일과 시작일을 올바르게 입력해주세요."),
     INVALID_DATE_PARAMETER(400, "유효하지 않은 일정입니다."),
     INVALID_CANCEL_PARAMETER(400, "승인 상태인 일정만 취소요청 할 수 있습니다."),

@@ -1,6 +1,9 @@
 package com.jinjin.jintranet.notice.service;
 
 import com.jinjin.jintranet.common.FileUtils;
+import com.jinjin.jintranet.handler.CustomException;
+import com.jinjin.jintranet.handler.ErrorCode;
+import com.jinjin.jintranet.handler.ErrorDto;
 import com.jinjin.jintranet.model.Member;
 import com.jinjin.jintranet.model.Notice;
 import com.jinjin.jintranet.model.NoticeAttach;
@@ -23,6 +26,8 @@ import javax.transaction.Transactional;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
+
+import static com.jinjin.jintranet.handler.ErrorCode.INTERNAL_SERVER_ERROR;
 
 @Service
 @RequiredArgsConstructor
@@ -112,7 +117,7 @@ public class NoticeService {
 			return ResponseEntity.ok().body("첨부파일이 정상적으로 삭제되었습니다.");
 		} catch (Exception e) {
 			e.printStackTrace();
-			return new ResponseEntity<>("첨부파일 삭제 중 오류가 발생했습니다.", HttpStatus.CONFLICT);
+			throw new CustomException(ErrorCode.ATTACH_DELETE_ERROR);
 		}
 	}
 
