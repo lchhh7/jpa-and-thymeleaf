@@ -106,27 +106,26 @@ public class ScheduleController {
 			if ("VA".equals(scheduleDTO.getType())) {
 				String vacationType = scheduleDTO.getVacationType();
 				if (!("1".equals(vacationType) || "2".equals(vacationType) || "3".equals(vacationType))) {
-					throw new CustomException(ErrorCode.INVALID_SCHEDULE_PARAMETER);
+					return ResponseEntity.badRequest().body("올바른 휴가 종류를 선택해주세요.");
 				}
 
 				if (scheduleDTO.getApproveId() == null) {
-					throw new CustomException(ErrorCode.INVALID_APPROVER_PARAMETER);
+					return ResponseEntity.badRequest().body("결재자를 선택해주세요.");
 				}
 			}
 
 			if ("OT".equals(scheduleDTO.getType())) {
 				if (scheduleDTO.getApproveId() == null) {
-					throw new CustomException(ErrorCode.INVALID_APPROVER_PARAMETER);
+					return ResponseEntity.badRequest().body("결재자를 선택해주세요.");
 				}
 			}
 
 			if (!isValidDate(new LocalDate(scheduleDTO.getStrDt()), new LocalDate(scheduleDTO.getEndDt()))) {
-				throw new CustomException(ErrorCode.INVALID_DATE_PARAMETER);
+				return ResponseEntity.badRequest().body("유효하지 않은 일정입니다.");
 			}
 
-			String typeCorrection = "VA".equals(scheduleDTO.getType())
-					? ("1".equals(scheduleDTO.getVacationType()) ? "FV" : "HV")
-					: scheduleDTO.getType();
+			String typeCorrection = "VA".equals(scheduleDTO.getType()) ?
+					("1".equals(scheduleDTO.getVacationType()) ? "FV" : "HV") : scheduleDTO.getType();
 			scheduleDTO.setType(typeCorrection);
 
 			Member approve = (scheduleDTO.getApproveId() == null) ? null : memberService.findById(scheduleDTO.getApproveId());
@@ -153,7 +152,7 @@ public class ScheduleController {
 			}
 
 			if (!isValidDate(new LocalDate(scheduleDTO.getStrDt()), new LocalDate(scheduleDTO.getEndDt()))) {
-				throw new CustomException(ErrorCode.INVALID_DATE_PARAMETER);
+				return ResponseEntity.badRequest().body("일정 종료일과 시작일을 올바르게 입력해주세요.");
 			}
 
 			scheduleService.edit(id, scheduleDTO.DTOtoEntity(), principal);
@@ -166,16 +165,16 @@ public class ScheduleController {
 			@AuthenticationPrincipal PrincipalDetail principal) {
 			Schedule schedule = scheduleService.findById(id);
 			if (schedule == null) {
-				throw new CustomException(ErrorCode.INVALID_DATE_PARAMETER);
+				return ResponseEntity.badRequest().body("유효하지 않은 일정입니다.");
 			}
 			if (!"Y".equals(schedule.getStatus())) {
-				throw new CustomException(ErrorCode.INVALID_CANCEL_PARAMETER);
+				return ResponseEntity.badRequest().body("승인 상태인 일정만 취소요청 할 수 있습니다.");
 			}
 
 			LocalDateTime startDt = schedule.getStrDt();
 			LocalDateTime now = LocalDateTime.now();
 			if (now.isAfter(startDt)) {
-				throw new CustomException(ErrorCode.INVALID_DELETE_PARAMETER);
+				return ResponseEntity.badRequest().body("지난 일정은 취소요청 할 수 없습니다.");
 			}
 
 			scheduleService.cancel(id, scheduleDTO.DTOtoEntity(), principal);

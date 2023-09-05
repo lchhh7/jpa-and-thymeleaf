@@ -46,13 +46,9 @@ public class MemberService {
 		member.setPassword(encPassword);
 		member.setRole(RoleType.USER);
 		member.setCreatedBy(member.getName());
-		try {
-			memberRepository.save(member);
-			return 1;
-		} catch(Exception e) {
-			LOGGER.info("member write error : "+e);
-			return -1;
-		}
+		memberRepository.save(member);
+		
+		return 1;
 	}
 	
 	@Transactional

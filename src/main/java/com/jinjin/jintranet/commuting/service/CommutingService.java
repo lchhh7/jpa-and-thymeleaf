@@ -44,7 +44,6 @@ public class CommutingService {
 
 	@Transactional
 	public void write(Commuting commuting , Member member) {
-		try {
 			commuting.setMember(member);
 			commuting.setCommutingTm(LocalDateTime.now());
 			
@@ -54,9 +53,6 @@ public class CommutingService {
 				}
 			}
 			commutingRepository.save(commuting);
-		} catch(Exception e) {
-			LOGGER.info("commuting write error : " + e);
-		}
 	}
 
 	@Transactional

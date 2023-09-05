@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
@@ -51,21 +52,18 @@ public class AdminCommutingController {
      */
     @GetMapping(value = "/admin/commuting/search.do")
     public ResponseEntity<Map<String, Object>> findApprovesCommute(
+            ModelMap map,
     		@AuthenticationPrincipal PrincipalDetail principal ,
             @RequestParam(value = "m", required = false) Integer m,
             @RequestParam(value = "r", required = false, defaultValue = "''") String r,
             @RequestParam(value = "y", required = false, defaultValue = "''") String y,
             @RequestParam(value = "n", required = false, defaultValue = "''") String n,
-            @PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable,
-            HttpServletRequest request) {
+            @PageableDefault(size=10, sort="id", direction = Sort.Direction.DESC) Pageable pageable, HttpServletRequest request) {
 
-        List<String> statusList = List.of( r, y, n);
-
-    	Map<String, Object> map = new HashMap<>();
-
+            List<String> statusList = List.of( r, y, n);
             Page<AdminCommuteRequestViewDTO> approvesList = commutingRequestService.approvesList(principal.getMember(), m , statusList , pageable);
             String page = PageUtils.page(approvesList, "commutings" , request);
-            
+
             map.put("list" , approvesList);
             map.put("page" , page);
             return ResponseEntity.ok().body(map);
@@ -77,9 +75,7 @@ public class AdminCommutingController {
      */
     @GetMapping(value = "/admin/commuting/{id}.do")
     public ResponseEntity<AdminCommuteRequestViewDTO> findById(@PathVariable("id") int id) {
-
-            AdminCommuteRequestViewDTO commutingRequest = commutingRequestService.findById(id);
-            return ResponseEntity.ok().body(commutingRequest);
+        return ResponseEntity.ok().body(commutingRequestService.findById(id));
     }
     
 

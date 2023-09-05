@@ -113,17 +113,12 @@ public class NoticeService {
 
 	@Transactional
 	public ResponseEntity<String> deleteAttach(int id , Member member) {
-		try {
 			NoticeAttach attach = noticeAttachRepository.findById(id).orElseThrow(() -> {
 				return new IllegalArgumentException("공지사항을 찾을 수 없습니다.");
 			}); // 영속화
 			
 			attach.setDeletedBy(member.getName());
 			return ResponseEntity.ok().body("첨부파일이 정상적으로 삭제되었습니다.");
-		} catch (Exception e) {
-			LOGGER.info("notice deleteAttach error : "+ e);
-			throw new CustomException(ErrorCode.ATTACH_DELETE_ERROR);
-		}
 	}
 
 }

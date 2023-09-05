@@ -70,7 +70,7 @@ public class NoticeController {
         }
 
         if ("<p>&nbsp;</p>".equals(dto.getContent())) {
-            throw new CustomException(ErrorCode.INVALID_CONTENT_PARAMETER);
+            return ResponseEntity.badRequest().body("내용을 입력해주세요.");
         }
         return ResponseEntity.ok().body(noticeService.write(dto , principal.getMember()));
     }
@@ -114,7 +114,7 @@ public class NoticeController {
         }
 
         if ("<p>&nbsp;</p>".equals(dto.getContent())) {
-            return ResponseEntity.ok().body("내용을 입력해주세요.");
+            return ResponseEntity.badRequest().body("내용을 입력해주세요.");
         }
         return ResponseEntity.ok().body(noticeService.edit(dto,principal));
     }
